@@ -1,0 +1,5 @@
+# file output
+out/
+bin/
+tmp/
+.settings
