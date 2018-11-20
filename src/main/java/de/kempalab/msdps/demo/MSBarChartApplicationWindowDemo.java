@@ -27,7 +27,7 @@ public class MSBarChartApplicationWindowDemo {
 		simulatorRequest.setMinimalRelativeFrequency(0.001);
 		simulatorRequest.setAnalyzeMassShifts(true);
 		simulatorRequest.setTotalNumberOfFragments(10000.0);
-		simulatorRequest.setRoundedMassPrecision(0);
+		simulatorRequest.setRoundedMassPrecision(4);
 		IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 		MSDatabase msDatabase =  response.getMsDatabaseList().get(0);
 		LOGGER.info(msDatabase);
