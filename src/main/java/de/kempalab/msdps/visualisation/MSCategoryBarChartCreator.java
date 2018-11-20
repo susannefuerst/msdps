@@ -35,7 +35,7 @@ public class MSCategoryBarChartCreator {
 	 */
 	public static JFreeChart createCombinedMSBarChart(MSDatabase msDatabase) {
 		MSCategoryDataset spectraDataset = new MSCategoryDataset(msDatabase);
-		String title = "Fragment: " + msDatabase.getFragmentKey() + "_" + msDatabase.getFragmentFormula() + ", incorpoprated tracer: " + msDatabase.getIncorporatedTracers();
+		String title = "Fragment: " + msDatabase.getFragmentKey() + "_" + msDatabase.getFragmentFormula() + ", incorporated tracer: " + msDatabase.getIncorporatedTracers();
 		JFreeChart chart = ChartFactory.createBarChart(title, CHART_X_LABEL , CHART_Y_LABEL, spectraDataset,
 				PlotOrientation.VERTICAL, true, true, false);
 		CategoryPlot categoryPlot = chart.getCategoryPlot();
