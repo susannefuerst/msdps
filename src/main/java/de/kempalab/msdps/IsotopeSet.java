@@ -73,7 +73,7 @@ public class IsotopeSet extends HashMap<Isotope, Integer> {
 	 * If we imagine the collection of associated fragments, that can be composed by the isotopes of this set, this method
 	 * returns all detectable fragment masses and their frequency as number of fragments with this mass.
 	 * 
-	 * The method randomly selects isotopes from this set to compose the fragment and measures its weight.
+	 * The method randomly selects isotopes (weighted by abundance) from this set to compose the fragment and measures its weight.
 	 * 
 	 * @return fragment masses and their frequency
 	 */
