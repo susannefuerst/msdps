@@ -4,25 +4,9 @@ import java.io.File;
 import java.io.IOException;
 
 import junit.framework.TestCase;
-import de.kempalab.msdps.ElementFormula;
-import de.kempalab.msdps.Fragment;
-import de.kempalab.msdps.FragmentsDatabase;
-import de.kempalab.msdps.IncorporationMap;
-import de.kempalab.msdps.IsotopeFormula;
-import de.kempalab.msdps.IsotopeList;
-import de.kempalab.msdps.IsotopeSet;
 import de.kempalab.msdps.MSShiftDatabase;
-import de.kempalab.msdps.MassSpectrum;
-import de.kempalab.msdps.constants.Element;
-import de.kempalab.msdps.constants.FragmentKey;
-import de.kempalab.msdps.constants.IncorporationType;
-import de.kempalab.msdps.constants.Isotope;
 import de.kempalab.msdps.constants.PathConstants;
-import de.kempalab.msdps.exception.FragmentNotFoundException;
-import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
-import de.kempalab.msdps.simulation.IsotopePatternSimulator;
-import de.kempalab.msdps.util.MathUtils;
 
 public class MSShiftDatabaseTest extends TestCase {
 	
