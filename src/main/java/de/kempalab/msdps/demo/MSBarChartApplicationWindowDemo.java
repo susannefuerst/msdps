@@ -24,7 +24,7 @@ public class MSBarChartApplicationWindowDemo {
 		Fragment fragment = FragmentsDatabase.getFragment(FragmentKey.GLN_156);
 		fragment.changeCapacity("C4N");
 		simulatorRequest.setFragments(new FragmentList(fragment));
-		simulatorRequest.setIncorporationRate(new IncorporationRate(0.0));
+		simulatorRequest.setIncorporationRate(new IncorporationRate(0.8));
 		simulatorRequest.setMinimalRelativeFrequency(0.001);
 		simulatorRequest.setAnalyzeMassShifts(true);
 		simulatorRequest.setTotalNumberOfFragments(10000.0);

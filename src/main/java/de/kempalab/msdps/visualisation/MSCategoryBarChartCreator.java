@@ -1,5 +1,7 @@
 package de.kempalab.msdps.visualisation;
 
+import java.awt.Font;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryLabelPositions;
@@ -92,6 +94,8 @@ public class MSCategoryBarChartCreator {
 					sublabel = msshiftDatabase.shiftInducingIsotopes(IncorporationType.MARKED, mass);
 				}
 				domainAxis.addSubLabel(mass, sublabel);
+				domainAxis.setTickLabelFont(new Font("SansSerif", Font.PLAIN, 14));
+				domainAxis.setSubLabelFont(new Font("SansSerif", Font.PLAIN, 14));
 			}
 		}
 		return chart;
