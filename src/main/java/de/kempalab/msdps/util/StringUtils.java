@@ -50,4 +50,42 @@ public class StringUtils {
 		return binary.substring(lastOnIndex + 1) + binary.substring(0, lastOnIndex + 1);
 	}
 	
+	/**
+	 * Returns the input string with all numbers converted to superscript.
+	 * @param string
+	 * @return The input string with all numbers converted to superscript.
+	 */
+	public static String superscript(String string) {
+	    string = string.replaceAll("0", "⁰");
+	    string = string.replaceAll("1", "¹");
+	    string = string.replaceAll("2", "²");
+	    string = string.replaceAll("3", "³");
+	    string = string.replaceAll("4", "⁴");
+	    string = string.replaceAll("5", "⁵");
+	    string = string.replaceAll("6", "⁶");
+	    string = string.replaceAll("7", "⁷");
+	    string = string.replaceAll("8", "⁸");
+	    string = string.replaceAll("9", "⁹");         
+	    return string;
+	}
+	
+	/**
+	 * Returns the input string with all numbers converted to subscript.
+	 * @param string
+	 * @return The input string with all numbers converted to subscript.
+	 */
+	public static String subscript(String str) {
+	    str = str.replaceAll("0", "₀");
+	    str = str.replaceAll("1", "₁");
+	    str = str.replaceAll("2", "₂");
+	    str = str.replaceAll("3", "₃");
+	    str = str.replaceAll("4", "₄");
+	    str = str.replaceAll("5", "₅");
+	    str = str.replaceAll("6", "₆");
+	    str = str.replaceAll("7", "₇");
+	    str = str.replaceAll("8", "₈");
+	    str = str.replaceAll("9", "₉");
+	    return str;
+	}
+	
 }

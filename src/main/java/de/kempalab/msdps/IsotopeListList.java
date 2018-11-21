@@ -85,6 +85,10 @@ public class IsotopeListList extends ArrayList<IsotopeList> {
 		return countString;
 	}
 	
+	public String toNiceFormattedFormula() {
+		return this.toIsotopeFormula().toNiceFormattedFormula();
+	}
+	
 	/**
 	 * 
 	 * @param isotopes isotopes to count

@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.Isotope;
+import de.kempalab.msdps.util.StringUtils;
 
 /**
  * A map of each isotope in a molecule to its total number in the molecule.
@@ -15,7 +16,12 @@ import de.kempalab.msdps.constants.Isotope;
  */
 @SuppressWarnings("serial")
 public class IsotopeFormula extends LinkedHashMap<Isotope, Integer> {
-
+	
+	/**
+	 * An {@link IsotopeFormula} with string representation {C_13=2, C_12=3} will be converted to an {@link ElementFormula} with string representation
+	 * {C=5}
+	 * @return An {@link ElementFormula} representation of this {@link IsotopeFormula}
+	 */
 	public ElementFormula toElementFormula() {
 		ElementFormula elementFormula = new ElementFormula();
 		for (Entry<Isotope, Integer> entry : this.entrySet()) {
@@ -35,7 +41,11 @@ public class IsotopeFormula extends LinkedHashMap<Isotope, Integer> {
 		List<Entry<Isotope, Integer>> entryList = new ArrayList<>(this.entrySet());
 		return entryList;
 	}
-
+	
+	/**
+	 * Collects only the keys (isotopes) of this {@link IsotopeFormula} in an {@link IsotopeList}
+	 * @return An {@link IsotopeList} that contains all the keys (isotopes) of this {@link IsotopeFormula}.
+	 */
 	public IsotopeList toIsotopeList() {
 		IsotopeList isotopeList = new IsotopeList();
 		for (Entry<Isotope, Integer> entry : this.entrySet()) {
@@ -57,6 +67,20 @@ public class IsotopeFormula extends LinkedHashMap<Isotope, Integer> {
 			}
 		}
 		return !allSameCounts;
+	}
+
+	public String toNiceFormattedFormula() {
+		StringBuffer buffer = new StringBuffer();
+		for (Entry<Isotope, Integer> entry : this.entrySet()) {
+			Integer countValue = entry.getValue();
+			Isotope isotope = entry.getKey();
+			if (countValue == 1) {
+				buffer.append(isotope.toNiceFormattedString());
+			} else {
+				buffer.append("(" + isotope.toNiceFormattedString() + ")" + StringUtils.subscript(String.valueOf(countValue)));
+			}
+		}
+		return buffer.toString();
 	}
 
 }

@@ -219,14 +219,14 @@ public class MSShiftDatabase extends MSDatabase {
 	}
 	
 	/**
-	 * Creates a comma-separated string representation o the isotopes that induced the shift from the p_0 peak to the peak
-	 * with the parameter mass. The number of each isotope is included in the string.
+	 * Creates a nice formula representation of the isotopes that induced the shift from the p_0 peak to the peak
+	 * with the parameter mass. i.e. (¹²C)₂(¹³C)₃(¹H)₂(²H)₅(¹⁵N)₂
 	 * @param incType a hint to the MassSpectrum we refer to 
 	 * IncorporationType.NATURAL -> natural spectrum
 	 * IncorporationType.MARKED -> marked spectrum
 	 * IncorporationType.MIXED -> mixed spectrum
 	 * @param mass
-	 * @return A comma-separated string representation of the isotopes (including numbers) that induce this mass.
+	 * @return A nice formula representation of the isotopes that induce this mass, i.e. (¹²C)₂(¹³C)₃(¹H)₂(²H)₅(¹⁵N)₂.
 	 */
 	public String shiftInducingIsotopes(IncorporationType incType, Double mass) {
 		MassSpectrum spectrum = spectrumByIncorporationType(incType);
@@ -241,7 +241,7 @@ public class MSShiftDatabase extends MSDatabase {
 			}
 		}
 		IsotopeListList shiftInducingIsotopes = shiftEntryList.get(massIndex).getValue();
-		return shiftInducingIsotopes.toCommaSeparatedCountString();
+		return shiftInducingIsotopes.toNiceFormattedFormula();
 	}
 	
 	/**
