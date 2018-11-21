@@ -27,7 +27,7 @@ public class MSCategoryToolTipGenerator extends StandardCategoryToolTipGenerator
 		}
 		MSShiftDatabase msshiftDatabase = (MSShiftDatabase) spectraDataset.getMsDatabase();
 		int naturalIncorporation = dataset.getRowIndex(MSCategoryDataset.NATURAL_INC_LABEL);
-		int completeIncorporation = dataset.getRowIndex(MSCategoryDataset.COPLETE_INC_LABEL);
+		int completeIncorporation = dataset.getRowIndex(MSCategoryDataset.COMPLETE_INC_LABEL);
 		Double mass = (Double) dataset.getColumnKey(massCategory);
 		IncorporationType incorporationType = IncorporationType.MIXED;
 		if (naturalIncorporation == legendIncorporation) {

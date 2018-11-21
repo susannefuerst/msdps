@@ -277,4 +277,12 @@ public class MSShiftDatabase extends MSDatabase {
 		}
 		return getMarkedSpectrum();
 	}
+	
+	public boolean includesMarkedSpectrum() {
+		return !getMarkedSpectrum().entrySet().isEmpty();
+	}
+	
+	public boolean includesMixedSpectrum() {
+		return !getMixedSpectrum().entrySet().isEmpty();
+	}
 }

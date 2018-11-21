@@ -5,6 +5,7 @@ import de.kempalab.msdps.FragmentList;
 import de.kempalab.msdps.FragmentsDatabase;
 import de.kempalab.msdps.MSDatabase;
 import de.kempalab.msdps.constants.FragmentKey;
+import de.kempalab.msdps.constants.MSBarChartType;
 import de.kempalab.msdps.data.IncorporationRate;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
 import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
@@ -33,7 +34,7 @@ public static final MyLogger LOGGER = MyLogger.getLogger(MSBarChartApplicationWi
 		IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 		for (MSDatabase msDatabase : response.getMsDatabaseList()) {
 			LOGGER.info(msDatabase);
-			MSBarChartApplicationWindow demo = new MSBarChartApplicationWindow("Bar Demo 1", msDatabase);
+			MSBarChartApplicationWindow demo = new MSBarChartApplicationWindow("Bar Demo 1", msDatabase, MSBarChartType.ALL_SPECTRA);
 			demo.pack();
 			demo.setVisible(true);
 		}

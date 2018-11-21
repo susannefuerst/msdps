@@ -6,6 +6,7 @@ import de.kempalab.msdps.Fragment;
 import de.kempalab.msdps.FragmentList;
 import de.kempalab.msdps.MSDatabase;
 import de.kempalab.msdps.constants.FragmentKey;
+import de.kempalab.msdps.constants.MSBarChartType;
 import de.kempalab.msdps.constants.PathConstants;
 import de.kempalab.msdps.data.IncorporationRate;
 import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
@@ -23,7 +24,7 @@ public class SaveMassSpectraToJpegDemo {
 		simulatorRequest.setAnalyzeMassShifts(true);
 		IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 		MSDatabase msDatabase = response.getMsDatabaseList().get(0);
-		msDatabase.saveMSCategoryBarChartAsJPEG(PathConstants.FILE_OUTPUT_FOLDER.toAbsolutePath(fragment.metaboliteAbbreviation() + "\\"));
+		msDatabase.saveMSCategoryBarChartAsJPEG(PathConstants.FILE_OUTPUT_FOLDER.toAbsolutePath(fragment.metaboliteAbbreviation() + "\\"), MSBarChartType.ALL_SPECTRA);
 	}
 
 }
