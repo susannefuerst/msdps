@@ -190,7 +190,8 @@ public enum Isotope implements Comparable<Isotope> {
 	 * @return
 	 */
 	public String toNiceFormattedString() {
-		return StringUtils.superscript(String.valueOf(this.getMassNumber())) + this.getElement().toString();
+		String superscript = getMassNumber() == 0 ? "" : StringUtils.superscript(String.valueOf(getMassNumber()));
+		return superscript + getElement().toString();
 	}
 
 }
