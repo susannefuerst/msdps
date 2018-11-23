@@ -14,7 +14,13 @@ import de.kempalab.msdps.constants.FragmentKey;
 public class Fragment {
 	
 	private FragmentKey fragmentKey;
+	/*
+	 * the formula of the fragment in the simple format like C11H28NO3Si3
+	 */
 	private String fragmentFormula = new String();
+	/*
+	 * defines which and how many elements in the fragment may be labeled as the result of an experimental setup (labeling experiment)
+	 */
 	private String capacityFormula = new String();
 	private ElementFormula fragmentComponents = new ElementFormula();
 	private ExperimentalIncorporationCapacity experimentalIncorporationCapacity = new ExperimentalIncorporationCapacity();
@@ -101,32 +107,63 @@ public class Fragment {
 		return fragmentKey;
 	}
 	
+	/**
+	 * a string representation as follows:
+	 * Fragment: C5H13OSi, derived from Lactic acid
+	 */
 	public String toString() {
 		return "Fragment: " + fragmentFormula + ", derived from: " + fragmentKey.getMetaboliteKey().getMoleculeName();
 	}
-
+	
+	/**
+	 * 
+	 * @return the formula of the fragment in a format like: C5H13OSi
+	 */
 	public String getFormula() {
 		return fragmentFormula;
 	}
-
+	
+	/**
+	 * 
+	 * @return the {@link ElementFormula} that corresponds to this fragment
+	 */
 	public ElementFormula getComponents() {
 		return fragmentComponents;
 	}
 	
+	/**
+	 * 
+	 * @return the {@link ExperimentalIncorporationCapacity} corresponding to this fragment
+	 */
 	public ExperimentalIncorporationCapacity getExperimentalIncorporationCapacity() {
 		return experimentalIncorporationCapacity;
 	}
 	
+	/**
+	 * 
+	 * @param additionalPart
+	 * @return a filename like: GLN_156_C4N_additionalPart
+	 */
 	public String toFileName(String additionalPart) {
 		return getFragmentKey().getMetaboliteKey().getAbbreviation() + "_" + 
 				getFragmentKey().getBaseMass() + "_" + getCapacityFormula() + "_" + additionalPart;
 	}
 	
+	/**
+	 * 
+	 * @return a string representation as:
+	 * Fragment: C5H13OSi, derived from Lactic acid, capacity: C2
+	 */
 	public String toDescriptiveString() {
 		return "Fragment: " + fragmentFormula + ", derived from: " + 
 				getFragmentKey().getMetaboliteKey().getAbbreviation() + ", capacity: " + capacityFormula;
 	}
 	
+	/**
+	 * the capacity defines which and how many elements in the fragment may be labeled as the result of an experimental setup
+	 * (labeling experiment). This changes the capacity
+	 * @param formula the formula describing the new capacity in the format C2N
+	 */
 	public void changeCapacity(String formula) {
 		this.capacityFormula = formula;
 		experimentalIncorporationCapacity = new ExperimentalIncorporationCapacity();
@@ -136,11 +173,19 @@ public class Fragment {
 	public String getCapacityFormula() {
 		return capacityFormula;
 	}
-
+	
+	/**
+	 * 
+	 * @return for example Gln for glutamine
+	 */
 	public String metaboliteAbbreviation() {
 		return fragmentKey.getMetaboliteKey().getAbbreviation();
 	}
-
+	
+	/**
+	 * 
+	 * @return the fragments base (nominal) mass
+	 */
 	public int baseMass() {
 		return getFragmentKey().getBaseMass();
 	}
