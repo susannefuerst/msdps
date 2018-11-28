@@ -2,8 +2,6 @@ package de.kempalab.msdps.visualisation;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GradientPaint;
-import java.text.NumberFormat;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -17,7 +15,6 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.title.TextTitle;
-import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.TextAnchor;
 
 import de.kempalab.msdps.MSDatabase;
