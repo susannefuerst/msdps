@@ -14,12 +14,18 @@ import de.kempalab.msdps.util.MathUtils;
 
 @SuppressWarnings("serial")
 /**
- * Imagine to have a mass spectrum corresponding to a fragment measured in a isotope labeling experiment, where all isotopologues are identified.
- * Let t_0,...,t_n be the used tracers, max_0,...,max_n the corresponding maximal numbers of elements that can be marked in the fragment by a tracer.
- * Each map t_k --> v_k, with v_k in {0,...,max_k} represents a possible tracer incorporation. An IncorporationMap is a map of each tracer incorporation
- * to the sum of the intensities of all isotopologues that represent such a tracer incorporation.
- * The correction algorithms are based on:
- *A Computational Framework for High-Throughput Isotopic Natural Abundance Correction of Omics-Level Ultra-High Resolution FT-MS Datasets. Metabolites. 2013;3(4):853–866.
+ * Imagine to have a mass spectrum corresponding to a fragment measured in a
+ * isotope labeling experiment, where all isotopologues are identified. Let
+ * t_0,...,t_n be the used tracers, max_0,...,max_n the corresponding maximal
+ * numbers of elements that can be marked in the fragment by a tracer. Each map
+ * t_k --> v_k, with v_k in {0,...,max_k} represents a possible tracer
+ * incorporation. An IncorporationMap is a map of each tracer incorporation to
+ * the sum of the intensities of all isotopologues that represent such a tracer
+ * incorporation. The correction algorithms are based on: A Computational
+ * Framework for High-Throughput Isotopic Natural Abundance Correction of
+ * Omics-Level Ultra-High Resolution FT-MS Datasets. Metabolites.
+ * 2013;3(4):853–866.
+ * 
  * @author sfuerst
  *
  */
@@ -32,10 +38,12 @@ public class IncorporationMap extends LinkedHashMap<IsotopeFormula, Double> {
 	}
 	
 	/**
-	 * Create an uncorrected {@link IncorporationMap} from spectrum, massShiftDataset and tracer
+	 * Create an uncorrected {@link IncorporationMap} from spectrum,
+	 * massShiftDataset and tracer
+	 * 
 	 * @param spectrum
 	 * @param massShiftDataset
-	 * @param tracer
+	 * @param                  tracer, the tracer used in the experiment
 	 */
 	public IncorporationMap(MassSpectrum spectrum, MassShiftDataSet massShiftDataset, IsotopeList tracer) {
 		List<Entry<Double, Double>> spectrumEntries = spectrum.toEntryList();
@@ -48,6 +56,26 @@ public class IncorporationMap extends LinkedHashMap<IsotopeFormula, Double> {
 			} else {
 				this.put(isotopeFormula, this.get(isotopeFormula) + intensity);
 			}
+		}
+	}
+
+	/**
+	 * An IncorporationMap is a map of each tracer incorporation to the sum of the
+	 * intensities of all isotopologues that represent such a tracer incorporation.
+	 * 
+	 * @param isotopeFormulas, represents the tracer incorporation. For example if
+	 *        15N and 13C have been used as tracer within an experiment then
+	 *        isotopologues that contain one 15N and two 13C are described by
+	 *        {15N:1, 13C:2}
+	 * @param intensities, array of the sums of the intensities of all isotopologues
+	 *        that represent a certain tracer incorporation
+	 */
+	public IncorporationMap(IsotopeFormula[] isotopeFormulas, Double[] intensities) {
+		if (isotopeFormulas.length != intensities.length) {
+			throw new IndexOutOfBoundsException("Isotope formulas and intensities must have the same size!");
+		}
+		for (int i = 0; i < isotopeFormulas.length; i++) {
+			this.put(isotopeFormulas[i], intensities[i]);
 		}
 	}
 
