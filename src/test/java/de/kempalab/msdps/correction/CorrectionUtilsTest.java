@@ -1,17 +1,21 @@
 package de.kempalab.msdps.correction;
 
-import junit.framework.TestCase;
 import de.kempalab.msdps.ElementFormula;
 import de.kempalab.msdps.Fragment;
 import de.kempalab.msdps.FragmentsDatabase;
 import de.kempalab.msdps.IncorporationMap;
 import de.kempalab.msdps.IsotopeFormula;
 import de.kempalab.msdps.IsotopeList;
+import de.kempalab.msdps.IsotopeListList;
 import de.kempalab.msdps.IsotopeSet;
 import de.kempalab.msdps.MSShiftDatabase;
+import de.kempalab.msdps.MassShift;
+import de.kempalab.msdps.MassShiftDataSet;
+import de.kempalab.msdps.MassShiftList;
 import de.kempalab.msdps.MassSpectrum;
 import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.FragmentKey;
+import de.kempalab.msdps.constants.FrequencyType;
 import de.kempalab.msdps.constants.IncorporationType;
 import de.kempalab.msdps.constants.Isotope;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
@@ -19,6 +23,7 @@ import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.util.MathUtils;
+import junit.framework.TestCase;
 
 public class CorrectionUtilsTest extends TestCase {
 	
@@ -364,5 +369,232 @@ public class CorrectionUtilsTest extends TestCase {
 			}
 		}
 	}
+	
+	public void correctionGlnUnlabeledTest() throws FragmentNotFoundException {
+		MassSpectrum measured = new MassSpectrum(FrequencyType.ABSOLUTE);
+		measured.put(156.083871, 2177824768.0);
+		measured.put(157.081106, 3256251.75);
+		measured.put(157.083466, 105339544.0);
+		measured.put(157.087178, 164780256.0);
+		measured.put(158.063075, 5476358.0);
+		measured.put(158.080719, 75050424.0);
+		measured.put(158.086352, 6758987.5);
+		measured.put(158.090634, 3685533.25);
+		measured.put(159.083991, 4425675.0);
+	
+		MassShiftDataSet shifts = new MassShiftDataSet();
+		shifts.put(new MassShiftList(new MassShift(0, 0, null)), new IsotopeListList(new IsotopeList(Isotope.NONE)));
+		shifts.put(new MassShiftList(new MassShift(0, 1, null)), new IsotopeListList(new IsotopeList(Isotope.N_15)));
+		shifts.put(new MassShiftList(new MassShift(0, 2, null)), new IsotopeListList(new IsotopeList(Isotope.Si_29)));
+		shifts.put(new MassShiftList(new MassShift(0, 3, null)), new IsotopeListList(new IsotopeList(Isotope.C_13)));
+		shifts.put(new MassShiftList(new MassShift(0, 2, null), new MassShift(2, 4, null)), new IsotopeListList(new IsotopeList(Isotope.Si_29), new IsotopeList(Isotope.N_15)));
+		shifts.put(new MassShiftList(new MassShift(0, 5, null)), new IsotopeListList(new IsotopeList(Isotope.Si_30)));
+		shifts.put(new MassShiftList(new MassShift(0, 3, null), new MassShift(3, 6, null)), new IsotopeListList(new IsotopeList(Isotope.C_13), new IsotopeList(Isotope.Si_29)));
+		shifts.put(new MassShiftList(new MassShift(0, 3, null), new MassShift(3, 7, null)), new IsotopeListList(new IsotopeList(Isotope.C_13), new IsotopeList(Isotope.C_13)));
+		shifts.put(new MassShiftList(new MassShift(0, 5, null), new MassShift(5, 8, null)), new IsotopeListList(new IsotopeList(Isotope.Si_30), new IsotopeList(Isotope.C_13)));
+		
+		IncorporationMap incorporationMap = new IncorporationMap(measured, shifts, new IsotopeList(Isotope.C_13, Isotope.N_15));
+		LOGGER.infoValue("incorporationMap", incorporationMap.asTable());
+		LOGGER.infoValue("incorporationMap.normalize();", incorporationMap.normalize(4).asTable());
+		ElementFormula fragmentFormula = ElementFormula.fromString(FragmentsDatabase.getFragment(FragmentKey.GLN_156).getFormula());
+		ElementFormula elementFormula = new ElementFormula();
+		elementFormula.put(Element.C, fragmentFormula.get(Element.C));
+		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
+		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
+		LOGGER.infoValue("correctedMap", correctedMap.asTable());
+		LOGGER.infoValue("correctedMap.normalize()", correctedMap.normalize(4).asTable());
+		
+		IncorporationMap normalizedCorrectedMap = correctedMap.normalize(4);
+		IsotopeFormula cn00 = new IsotopeFormula();
+		cn00.put(Isotope.C_13, 0);
+		cn00.put(Isotope.N_15, 0);
+		IsotopeFormula cn01 = new IsotopeFormula();
+		cn01.put(Isotope.C_13, 0);
+		cn01.put(Isotope.N_15, 1);
+		IsotopeFormula cn10 = new IsotopeFormula();
+		cn10.put(Isotope.C_13, 1);
+		cn10.put(Isotope.N_15, 0);
+		IsotopeFormula cn20 = new IsotopeFormula();
+		cn20.put(Isotope.C_13, 2);
+		cn20.put(Isotope.N_15, 0);
+		assertEquals(1.0, normalizedCorrectedMap.get(cn00));
+		assertEquals(0.0, normalizedCorrectedMap.get(cn10));
+		assertEquals(0.0, normalizedCorrectedMap.get(cn01));
+		assertEquals(0.0, normalizedCorrectedMap.get(cn20));
+	}
+	
+	public void correctionGlnTotallyCNLabeledTest() throws FragmentNotFoundException {
+		MassSpectrum measured = new MassSpectrum(FrequencyType.ABSOLUTE);
+		measured.put(161.094388, 3383957504.000000);
+		measured.put(162.093845, 167757680.000000);
+		measured.put(162.097430, 96693112.000000);
+		measured.put(162.100503, 2915952.500000);
+		measured.put(163.091187, 109522104.000000);
+		measured.put(163.098605, 6520942.500000);
+		measured.put(163.104047, 994677.062500);
+
+		MassShiftDataSet shifts = new MassShiftDataSet();
+		shifts.put(new MassShiftList(new MassShift(0, 0, null)),new IsotopeListList(new IsotopeList(
+				Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.N_15)));
+		shifts.put(new MassShiftList(new MassShift(0, 1, null)), new IsotopeListList(new IsotopeList(
+				Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.N_15, Isotope.Si_29)));
+		shifts.put(new MassShiftList(new MassShift(0, 2, null)), new IsotopeListList(new IsotopeList(
+				Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.N_15, Isotope.C_13)));
+		shifts.put(new MassShiftList(new MassShift(0, 3, null)), new IsotopeListList(new IsotopeList(
+				Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.N_15, Isotope.H_2)));
+		shifts.put(new MassShiftList(new MassShift(0, 4, null)), new IsotopeListList(new IsotopeList(
+				Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.N_15, Isotope.Si_30)));
+		shifts.put(new MassShiftList(new MassShift(0, 2, null), new MassShift(2, 5, null)), new IsotopeListList(
+				new IsotopeList(
+						Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.N_15, Isotope.C_13),
+				new IsotopeList(Isotope.Si_29)));
+		shifts.put(new MassShiftList(new MassShift(0, 6, null)), new IsotopeListList(new IsotopeList(
+				Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.N_15, Isotope.O_18)));
+		
+		IncorporationMap incorporationMap = new IncorporationMap(measured, shifts, new IsotopeList(Isotope.C_13, Isotope.N_15));
+		LOGGER.infoValue("incorporationMap", incorporationMap.asTable());
+		LOGGER.infoValue("incorporationMap.normalize();", incorporationMap.normalize(4).asTable());
+		ElementFormula fragmentFormula = ElementFormula.fromString(FragmentsDatabase.getFragment(FragmentKey.GLN_156).getFormula());
+		ElementFormula elementFormula = new ElementFormula();
+		elementFormula.put(Element.C, fragmentFormula.get(Element.C));
+		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
+		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
+		LOGGER.infoValue("correctedMap", correctedMap.asTable());
+		LOGGER.infoValue("correctedMap.normalize()", correctedMap.normalize(4).asTable());
+		
+		IncorporationMap normalizedCorrectedMap = correctedMap.normalize(4);
+		IsotopeFormula cn41 = new IsotopeFormula();
+		cn41.put(Isotope.C_13, 4);
+		cn41.put(Isotope.N_15, 1);
+		IsotopeFormula cn51 = new IsotopeFormula();
+		cn51.put(Isotope.C_13, 5);
+		cn51.put(Isotope.N_15, 1);
+		assertEquals(1.0, normalizedCorrectedMap.get(cn41));
+		assertEquals(0.0, normalizedCorrectedMap.get(cn51));
+
+	}
+	
+	public void correctionGlnTotallyCLabeledTest() throws FragmentNotFoundException {
+		MassSpectrum measured = new MassSpectrum(FrequencyType.ABSOLUTE);
+		measured.put(160.097400, 1584645632.000000);
+		measured.put(161.094435, 3858969.500000);
+		measured.put(161.096895, 75836104.000000);
+		measured.put(161.100447, 44920384.000000);
+		measured.put(161.103490, 1408230.125000);
+		measured.put(162.094165, 51429216.000000);
+		measured.put(162.101593, 2085006.750000);
+		measured.put(163.097390, 1833341.625000);
+
+		MassShiftDataSet shifts = new MassShiftDataSet();
+		shifts.put(new MassShiftList(new MassShift(0, 0, null)),new IsotopeListList(new IsotopeList(
+				Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.C_13)));
+		shifts.put(new MassShiftList(new MassShift(0, 1, null)), new IsotopeListList(new IsotopeList(
+				Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.N_15)));
+		shifts.put(new MassShiftList(new MassShift(0, 2, null)), new IsotopeListList(new IsotopeList(
+				Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.Si_29)));
+		shifts.put(new MassShiftList(new MassShift(0, 3, null)), new IsotopeListList(new IsotopeList(
+				Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.C_13)));
+		shifts.put(new MassShiftList(new MassShift(0, 4, null)), new IsotopeListList(new IsotopeList(
+				Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.H_2)));
+		shifts.put(new MassShiftList(new MassShift(0, 5, null)), new IsotopeListList(new IsotopeList(
+						Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.Si_30)));
+		shifts.put(new MassShiftList(new MassShift(0, 6, null)), new IsotopeListList(new IsotopeList(
+				Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.O_18)));
+		shifts.put(new MassShiftList(new MassShift(0, 5, null), new MassShift(5, 7, null)), new IsotopeListList(
+				new IsotopeList(
+						Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.C_13, Isotope.Si_30),
+				new IsotopeList(Isotope.C_13)));
+		
+		IncorporationMap incorporationMap = new IncorporationMap(measured, shifts, new IsotopeList(Isotope.C_13, Isotope.N_15));
+		LOGGER.infoValue("incorporationMap", incorporationMap.asTable());
+		LOGGER.infoValue("incorporationMap.normalize();", incorporationMap.normalize(4).asTable());
+		ElementFormula fragmentFormula = ElementFormula.fromString(FragmentsDatabase.getFragment(FragmentKey.GLN_156).getFormula());
+		ElementFormula elementFormula = new ElementFormula();
+		elementFormula.put(Element.C, fragmentFormula.get(Element.C));
+		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
+		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
+		LOGGER.infoValue("correctedMap", correctedMap.asTable());
+		LOGGER.infoValue("correctedMap.normalize()", correctedMap.normalize(4).asTable());
+		
+		IncorporationMap normalizedCorrectedMap = correctedMap.normalize(4);
+		IsotopeFormula cn40 = new IsotopeFormula();
+		cn40.put(Isotope.C_13, 4);
+		cn40.put(Isotope.N_15, 0);
+		IsotopeFormula cn41 = new IsotopeFormula();
+		cn41.put(Isotope.C_13, 4);
+		cn41.put(Isotope.N_15, 1);
+		IsotopeFormula cn50 = new IsotopeFormula();
+		cn50.put(Isotope.C_13, 5);
+		cn50.put(Isotope.N_15, 0);
+		assertEquals(1.0, normalizedCorrectedMap.get(cn40));
+		assertEquals(0.0, normalizedCorrectedMap.get(cn41));
+		assertEquals(0.0, normalizedCorrectedMap.get(cn50));
+
+	}
+	
+	public void correctionGlnTotallyNLabeledTest() throws FragmentNotFoundException {
+		MassSpectrum measured = new MassSpectrum(FrequencyType.ABSOLUTE);
+		measured.put(157.081106, 4505609216.000000);
+		measured.put(158.080438, 203910720.000000);
+		measured.put(158.084197, 329013920.000000);
+		measured.put(158.097247, 3530218.250000);
+		measured.put(159.077794, 143005824.000000);
+		measured.put(159.083474, 14104742.000000);
+		measured.put(159.087566, 10400924.000000);
+		measured.put(159.090714, 1040433.375000);
+		measured.put(160.081109, 11535833.000000);
+
+		MassShiftDataSet shifts = new MassShiftDataSet();
+		shifts.put(new MassShiftList(new MassShift(0, 0, null)),new IsotopeListList(new IsotopeList(
+				Isotope.N_15)));
+		shifts.put(new MassShiftList(new MassShift(0, 1, null)), new IsotopeListList(new IsotopeList(
+				Isotope.N_15, Isotope.Si_29)));
+		shifts.put(new MassShiftList(new MassShift(0, 2, null)), new IsotopeListList(new IsotopeList(
+				Isotope.N_15, Isotope.C_13)));
+		shifts.put(new MassShiftList(new MassShift(0, 3, null)), new IsotopeListList(new IsotopeList(
+				Isotope.N_15, Isotope.H_2)));
+		shifts.put(new MassShiftList(new MassShift(0, 4, null)), new IsotopeListList(new IsotopeList(
+				Isotope.N_15, Isotope.Si_30)));
+		shifts.put(new MassShiftList(new MassShift(0, 2, null), new MassShift(2, 5, null)), new IsotopeListList(new IsotopeList(
+				Isotope.N_15, Isotope.C_13), new IsotopeList(Isotope.Si_29)));
+		shifts.put(new MassShiftList(new MassShift(0, 6, null)), new IsotopeListList(new IsotopeList(
+				Isotope.N_15, Isotope.O_18)));
+		shifts.put(new MassShiftList(new MassShift(0, 2, null), new MassShift(2, 7, null)), new IsotopeListList(
+				new IsotopeList(
+						Isotope.N_15, Isotope.C_13),
+				new IsotopeList(Isotope.C_13)));
+		shifts.put(new MassShiftList(new MassShift(0, 4, null), new MassShift(4, 8, null)), new IsotopeListList(
+				new IsotopeList(
+						Isotope.N_15, Isotope.Si_30),
+				new IsotopeList(Isotope.C_13)));
+		
+		IncorporationMap incorporationMap = new IncorporationMap(measured, shifts, new IsotopeList(Isotope.C_13, Isotope.N_15));
+		LOGGER.infoValue("incorporationMap", incorporationMap.asTable());
+		LOGGER.infoValue("incorporationMap.normalize();", incorporationMap.normalize(4).asTable());
+		ElementFormula fragmentFormula = ElementFormula.fromString(FragmentsDatabase.getFragment(FragmentKey.GLN_156).getFormula());
+		ElementFormula elementFormula = new ElementFormula();
+		elementFormula.put(Element.C, fragmentFormula.get(Element.C));
+		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
+		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
+		LOGGER.infoValue("correctedMap", correctedMap.asTable());
+		LOGGER.infoValue("correctedMap.normalize()", correctedMap.normalize(4).asTable());
+		
+		IncorporationMap normalizedCorrectedMap = correctedMap.normalize(4);
+		IsotopeFormula cn01 = new IsotopeFormula();
+		cn01.put(Isotope.C_13, 0);
+		cn01.put(Isotope.N_15, 1);
+		IsotopeFormula cn11 = new IsotopeFormula();
+		cn11.put(Isotope.C_13, 1);
+		cn11.put(Isotope.N_15, 1);
+		IsotopeFormula cn21 = new IsotopeFormula();
+		cn21.put(Isotope.C_13, 2);
+		cn21.put(Isotope.N_15, 1);
+		assertEquals(1.0, normalizedCorrectedMap.get(cn01));
+		assertEquals(0.0, normalizedCorrectedMap.get(cn11));
+		assertEquals(0.0, normalizedCorrectedMap.get(cn21));
+
+	}
+
+
 
 }
