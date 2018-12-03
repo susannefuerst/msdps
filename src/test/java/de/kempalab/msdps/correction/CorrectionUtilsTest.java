@@ -1,6 +1,5 @@
 package de.kempalab.msdps.correction;
 
-import junit.framework.TestCase;
 import de.kempalab.msdps.ElementFormula;
 import de.kempalab.msdps.Fragment;
 import de.kempalab.msdps.FragmentsDatabase;
@@ -19,6 +18,7 @@ import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.util.MathUtils;
+import junit.framework.TestCase;
 
 public class CorrectionUtilsTest extends TestCase {
 	
@@ -363,6 +363,84 @@ public class CorrectionUtilsTest extends TestCase {
 				}
 			}
 		}
+	}
+
+	public void test12CGLN() throws FragmentNotFoundException {
+		LOGGER.info("12CGln");
+		IsotopeFormula cn00 = new IsotopeFormula();
+		cn00.put(Isotope.C_13, 0);
+		cn00.put(Isotope.N_15, 0);
+		IsotopeFormula cn01 = new IsotopeFormula();
+		cn01.put(Isotope.C_13, 0);
+		cn01.put(Isotope.N_15, 1);
+		IsotopeFormula cn10 = new IsotopeFormula();
+		cn10.put(Isotope.C_13, 1);
+		cn10.put(Isotope.N_15, 0);
+		IsotopeFormula cn20 = new IsotopeFormula();
+		cn20.put(Isotope.C_13, 2);
+		cn20.put(Isotope.N_15, 0);
+		IsotopeFormula[] isotopeFormulas = { cn00, cn01, cn10, cn20 };
+		Double[] intensities = { 2358214736.0, 8732609.75, 175964918.5, 3685533.25 };
+		IncorporationMap incorporationMap = new IncorporationMap(isotopeFormulas, intensities);
+		LOGGER.infoValue("uncorrectedMap", incorporationMap.asTable());
+		LOGGER.infoValue("uncorrectedMap normalized", incorporationMap.normalize().asTable());
+		ElementFormula fragmentFormula = ElementFormula
+				.fromString(FragmentsDatabase.getFragment(FragmentKey.GLN_156).getFormula());
+		ElementFormula elementFormula = new ElementFormula();
+		elementFormula.put(Element.C, fragmentFormula.get(Element.C));
+		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
+		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
+		LOGGER.infoValue("correctedMap", correctedMap.asTable());
+		LOGGER.infoValue("correctedMap normalized", correctedMap.normalize().asTable());
+	}
+
+	public void test13C15NGLN() throws FragmentNotFoundException {
+		LOGGER.info("13C15NGln");
+		IsotopeFormula cn41 = new IsotopeFormula();
+		cn41.put(Isotope.C_13, 4);
+		cn41.put(Isotope.N_15, 1);
+		IsotopeFormula cn51 = new IsotopeFormula();
+		cn51.put(Isotope.C_13, 5);
+		cn51.put(Isotope.N_15, 1);
+		IsotopeFormula[] isotopeFormulas = { cn41, cn51 };
+		Double[] intensities = { 3664153240.500000, 103214054.5 };
+		IncorporationMap incorporationMap = new IncorporationMap(isotopeFormulas, intensities);
+		LOGGER.infoValue("uncorrectedMap", incorporationMap.asTable());
+		LOGGER.infoValue("uncorrectedMap normalized", incorporationMap.normalize().asTable());
+		ElementFormula fragmentFormula = ElementFormula
+				.fromString(FragmentsDatabase.getFragment(FragmentKey.GLN_156).getFormula());
+		ElementFormula elementFormula = new ElementFormula();
+		elementFormula.put(Element.C, fragmentFormula.get(Element.C));
+		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
+		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
+		LOGGER.infoValue("correctedMap", correctedMap.asTable());
+		LOGGER.infoValue("correctedMap normalized", correctedMap.normalize().asTable());
+	}
+
+	public void test13CGLN() throws FragmentNotFoundException {
+		LOGGER.info("13CGln");
+		IsotopeFormula cn40 = new IsotopeFormula();
+		cn40.put(Isotope.C_13, 4);
+		cn40.put(Isotope.N_15, 0);
+		IsotopeFormula cn41 = new IsotopeFormula();
+		cn41.put(Isotope.C_13, 4);
+		cn41.put(Isotope.N_15, 1);
+		IsotopeFormula cn50 = new IsotopeFormula();
+		cn50.put(Isotope.C_13, 5);
+		cn50.put(Isotope.N_15, 0);
+		IsotopeFormula[] isotopeFormulas = { cn40, cn41, cn50 };
+		Double[] intensities = { 1717237531.0, 3858969.5, 44920384.0 };
+		IncorporationMap incorporationMap = new IncorporationMap(isotopeFormulas, intensities);
+		LOGGER.infoValue("uncorrectedMap", incorporationMap.asTable());
+		LOGGER.infoValue("uncorrectedMap normalized", incorporationMap.normalize().asTable());
+		ElementFormula fragmentFormula = ElementFormula
+				.fromString(FragmentsDatabase.getFragment(FragmentKey.GLN_156).getFormula());
+		ElementFormula elementFormula = new ElementFormula();
+		elementFormula.put(Element.C, fragmentFormula.get(Element.C));
+		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
+		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
+		LOGGER.infoValue("correctedMap", correctedMap.asTable());
+		LOGGER.infoValue("correctedMap normalized", correctedMap.normalize().asTable());
 	}
 
 }
