@@ -22,9 +22,9 @@ public class MSBarChartApplicationWindowDemo {
 	public static void main(String[] args) throws FrequencyTypeMismatchException, FragmentNotFoundException {
 		IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 		Fragment fragment = FragmentsDatabase.getFragment(FragmentKey.GLN_156);
-		fragment.changeCapacity("C4N");
+		fragment.changeCapacity("C4");
 		simulatorRequest.setFragments(new FragmentList(fragment));
-		simulatorRequest.setIncorporationRate(new IncorporationRate(0.8));
+		simulatorRequest.setIncorporationRate(new IncorporationRate(0.7));
 		simulatorRequest.setMinimalRelativeFrequency(0.001);
 		simulatorRequest.setAnalyzeMassShifts(true);
 		simulatorRequest.setTotalNumberOfFragments(10000.0);
@@ -32,7 +32,8 @@ public class MSBarChartApplicationWindowDemo {
 		IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 		MSDatabase msDatabase =  response.getMsDatabaseList().get(0);
 		LOGGER.info(msDatabase);
-		MSBarChartApplicationWindow demo = new MSBarChartApplicationWindow("Bar Demo 1", msDatabase, MSBarChartType.NATURAL_SPECTRUM_ONLY);
+		MSBarChartApplicationWindow demo = new MSBarChartApplicationWindow("Bar Demo 1", msDatabase,
+				MSBarChartType.COMPLETELY_LABELED_SPECTRUM_ONLY);
 		demo.pack();
 		demo.setVisible(true);
 	}
