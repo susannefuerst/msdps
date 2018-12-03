@@ -346,6 +346,16 @@ public class IncorporationMap extends LinkedHashMap<IsotopeFormula, Double> {
 		}
 		return normalized;
 	}
+	
+	public IncorporationMap normalize(int precision) {
+		Double sum = this.sumIntensities();
+		IncorporationMap normalized = new IncorporationMap();
+		for (Entry<IsotopeFormula, Double> entry : this.entrySet()) {
+			normalized.put(entry.getKey(), MathUtils.round(entry.getValue() / sum, precision));
+		}
+		return normalized;
+	}
+
 
 	public void put(int index, IsotopeFormula formula, double intensity) {
 		IncorporationMap copy = this.copy();
