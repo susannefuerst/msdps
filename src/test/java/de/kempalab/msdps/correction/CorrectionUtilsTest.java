@@ -615,7 +615,7 @@ public class CorrectionUtilsTest extends TestCase {
 		Double[] intensities = { 2358214736.0, 8732609.75, 175964918.5, 3685533.25 };
 		IncorporationMap incorporationMap = new IncorporationMap(isotopeFormulas, intensities);
 		LOGGER.infoValue("uncorrectedMap", incorporationMap.asTable());
-		LOGGER.infoValue("uncorrectedMap normalized", incorporationMap.normalize().asTable());
+		LOGGER.infoValue("uncorrectedMap normalized", incorporationMap.normalize(4).asTable());
 		ElementFormula fragmentFormula = ElementFormula
 				.fromString(FragmentsDatabase.getFragment(FragmentKey.GLN_156).getFormula());
 		ElementFormula elementFormula = new ElementFormula();
@@ -623,7 +623,12 @@ public class CorrectionUtilsTest extends TestCase {
 		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
 		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
 		LOGGER.infoValue("correctedMap", correctedMap.asTable());
-		LOGGER.infoValue("correctedMap normalized", correctedMap.normalize().asTable());
+		LOGGER.infoValue("correctedMap normalized", correctedMap.normalize(4).asTable());
+		IncorporationMap normalizedCorrectedMap = correctedMap.normalize(4);
+		assertEquals(1.0, normalizedCorrectedMap.get(0, 0));
+		assertEquals(0.0, normalizedCorrectedMap.get(0, 1));
+		assertEquals(0.0, normalizedCorrectedMap.get(1, 0));
+		assertEquals(0.0, normalizedCorrectedMap.get(2, 0));
 	}
 
 	public void test13C15NGLN() throws FragmentNotFoundException {
@@ -638,7 +643,7 @@ public class CorrectionUtilsTest extends TestCase {
 		Double[] intensities = { 3664153240.500000, 103214054.5 };
 		IncorporationMap incorporationMap = new IncorporationMap(isotopeFormulas, intensities);
 		LOGGER.infoValue("uncorrectedMap", incorporationMap.asTable());
-		LOGGER.infoValue("uncorrectedMap normalized", incorporationMap.normalize().asTable());
+		LOGGER.infoValue("uncorrectedMap normalized", incorporationMap.normalize(4).asTable());
 		ElementFormula fragmentFormula = ElementFormula
 				.fromString(FragmentsDatabase.getFragment(FragmentKey.GLN_156).getFormula());
 		ElementFormula elementFormula = new ElementFormula();
@@ -646,7 +651,10 @@ public class CorrectionUtilsTest extends TestCase {
 		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
 		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
 		LOGGER.infoValue("correctedMap", correctedMap.asTable());
-		LOGGER.infoValue("correctedMap normalized", correctedMap.normalize().asTable());
+		LOGGER.infoValue("correctedMap normalized", correctedMap.normalize(4).asTable());
+		IncorporationMap normalizedCorrectedMap = correctedMap.normalize(4);
+		assertEquals(1.0, normalizedCorrectedMap.get(4, 1));
+		assertEquals(0.0, normalizedCorrectedMap.get(5, 1));
 	}
 
 	public void test13CGLN() throws FragmentNotFoundException {
@@ -664,7 +672,7 @@ public class CorrectionUtilsTest extends TestCase {
 		Double[] intensities = { 1717237531.0, 3858969.5, 44920384.0 };
 		IncorporationMap incorporationMap = new IncorporationMap(isotopeFormulas, intensities);
 		LOGGER.infoValue("uncorrectedMap", incorporationMap.asTable());
-		LOGGER.infoValue("uncorrectedMap normalized", incorporationMap.normalize().asTable());
+		LOGGER.infoValue("uncorrectedMap normalized", incorporationMap.normalize(4).asTable());
 		ElementFormula fragmentFormula = ElementFormula
 				.fromString(FragmentsDatabase.getFragment(FragmentKey.GLN_156).getFormula());
 		ElementFormula elementFormula = new ElementFormula();
@@ -672,7 +680,11 @@ public class CorrectionUtilsTest extends TestCase {
 		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
 		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
 		LOGGER.infoValue("correctedMap", correctedMap.asTable());
-		LOGGER.infoValue("correctedMap normalized", correctedMap.normalize().asTable());
+		LOGGER.infoValue("correctedMap normalized", correctedMap.normalize(4).asTable());
+		IncorporationMap normalizedCorrectedMap = correctedMap.normalize(4);
+		assertEquals(1.0, normalizedCorrectedMap.get(4, 0));
+		assertEquals(0.0, normalizedCorrectedMap.get(4, 1));
+		assertEquals(0.0, normalizedCorrectedMap.get(5, 0));
 	}
 
 }
