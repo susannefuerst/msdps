@@ -32,7 +32,8 @@ import de.kempalab.msdps.util.MathUtils;
 public class IncorporationMap extends LinkedHashMap<IsotopeFormula, Double> {
 	
 	public static final MyLogger LOG = MyLogger.getLogger(IncorporationMap.class);
-	
+	Isotope[] incorporatedIsotopes;
+
 	public IncorporationMap() {
 	
 	}
@@ -43,7 +44,7 @@ public class IncorporationMap extends LinkedHashMap<IsotopeFormula, Double> {
 	 * 
 	 * @param spectrum
 	 * @param massShiftDataset
-	 * @param                  tracer, the tracer used in the experiment
+	 * @param tracer           the tracer used in the experiment
 	 */
 	public IncorporationMap(MassSpectrum spectrum, MassShiftDataSet massShiftDataset, IsotopeList tracer) {
 		List<Entry<Double, Double>> spectrumEntries = spectrum.toEntryList();
@@ -399,6 +400,36 @@ public class IncorporationMap extends LinkedHashMap<IsotopeFormula, Double> {
 		if (entryCount == index) {
 			this.put(formula, intensity);
 		}
+	}
+
+	/**
+	 * Uses the Isotopes this map refers to in a determined order and assumes the
+	 * same order for the entries in combinationOfIsotopes. That means if this map
+	 * refers to entries for 13C and 15N (in this order) a parameter
+	 * combinationOfIsotopes = {0,1} would return the sum of all the intensities of
+	 * isotopomers that incorporate 0 13C and 1 15N.
+	 * 
+	 * @param combinationOfIsotopes
+	 * @return the sum of all the intensities tracer in the parameter combination of
+	 *         isotopomers that incorporate.
+	 */
+	public Double get(int... combinationOfIsotopes) {
+		if (incorporatedIsotopes == null) {
+			incorporatedIsotopes = new Isotope[combinationOfIsotopes.length];
+			for (IsotopeFormula formula : keySet()) {
+				int counter = 0;
+				for (Isotope isotope : formula.keySet()) {
+					incorporatedIsotopes[counter] = isotope;
+					counter++;
+				}
+				break;
+			}
+		}
+		IsotopeFormula isotopeFormula = new IsotopeFormula();
+		for (int i = 0; i < incorporatedIsotopes.length; i++) {
+			isotopeFormula.put(incorporatedIsotopes[i], combinationOfIsotopes[i]);
+		}
+		return get(isotopeFormula);
 	}
 
 }
