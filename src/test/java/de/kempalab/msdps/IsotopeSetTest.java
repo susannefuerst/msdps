@@ -3,13 +3,6 @@ package de.kempalab.msdps;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
-import junit.framework.TestCase;
-import de.kempalab.msdps.Fragment;
-import de.kempalab.msdps.FragmentList;
-import de.kempalab.msdps.IsotopeList;
-import de.kempalab.msdps.IsotopeSet;
-import de.kempalab.msdps.MSDatabase;
-import de.kempalab.msdps.MassSpectrum;
 import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.FragmentKey;
 import de.kempalab.msdps.constants.FrequencyType;
@@ -22,6 +15,7 @@ import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorRequest;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorResponse;
 import de.kempalab.msdps.util.MathUtils;
+import junit.framework.TestCase;
 
 public class IsotopeSetTest extends TestCase {
 	
@@ -248,7 +242,7 @@ public class IsotopeSetTest extends TestCase {
 		expectedMap.put(123.021, 1.0);
 		expectedMap.put(234.123, 1.0);
 		expectedMap.put(152.331, 2.0);
-		MassSpectrum calculatedMap = new IsotopeSet().createSpectrumFromMasses(fragmentMasses);
+		MassSpectrum calculatedMap = MassSpectrum.createSpectrumFromMasses(fragmentMasses);
 		assertEquals(expectedMap, calculatedMap);
 	}
 	

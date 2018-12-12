@@ -370,4 +370,31 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 		}
 		return spectrum;
 	}
+
+	/**
+	 * Creates a MassSpectrum with frequencies absolute to the number of elements in
+	 * the fragmentMasses list.
+	 * 
+	 * @param fragmentMasses
+	 * @return A MassSpectrum with ABSOLUTE frequencies
+	 */
+	public static MassSpectrum createSpectrumFromMasses(ArrayList<Double> fragmentMasses) {
+		MassSpectrum spectrum = new MassSpectrum(FrequencyType.ABSOLUTE);
+		for (Double mass : fragmentMasses) {
+			if (!(mass > 0.0)) {
+				LOGGER.info("Detected mass 0.0");
+			}
+			if (spectrum.get(mass) == null /* count each mass only once */) {
+				int index = fragmentMasses.indexOf(mass);
+				int massCount = 1;
+				for (Double otherMass : fragmentMasses.subList(index + 1, fragmentMasses.size())) {
+					if (mass.equals(otherMass)) {
+						massCount++;
+					}
+				}
+				spectrum.put(mass, Double.valueOf(massCount));
+			}
+		}
+		return spectrum;
+	}
 }
