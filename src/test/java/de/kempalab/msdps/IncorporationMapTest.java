@@ -36,10 +36,10 @@ public class IncorporationMapTest extends TestCase {
 		IsotopeSet markedSetC = new IsotopeSet(fragmentC, NUMBER_OF_FRAGMENTS * (INC_C), IncorporationType.EXPERIMENTAL);
 		IsotopeSet markedSetN = new IsotopeSet(fragmentN, NUMBER_OF_FRAGMENTS * (INC_N), IncorporationType.EXPERIMENTAL);
 		
-		MassSpectrum naturalSpectrum = naturalSet.simulateSpectrum();
-		MassSpectrum markedSpectrumCN = markedSetCN.simulateSpectrum();
-		MassSpectrum markedSpectrumC = markedSetC.simulateSpectrum();
-		MassSpectrum markedSpectrumN = markedSetN.simulateSpectrum();
+		MassSpectrum naturalSpectrum = naturalSet.simulateSpectrum(0);
+		MassSpectrum markedSpectrumCN = markedSetCN.simulateSpectrum(0);
+		MassSpectrum markedSpectrumC = markedSetC.simulateSpectrum(0);
+		MassSpectrum markedSpectrumN = markedSetN.simulateSpectrum(0);
 		MassSpectrum mixedSpectrum = naturalSpectrum.merge(markedSpectrumCN);
 		mixedSpectrum = mixedSpectrum.merge(markedSpectrumC);
 		mixedSpectrum = mixedSpectrum.merge(markedSpectrumN);

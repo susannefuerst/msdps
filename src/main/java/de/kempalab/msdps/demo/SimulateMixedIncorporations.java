@@ -47,10 +47,10 @@ public class SimulateMixedIncorporations {
 		IsotopeSet markedSetC2 = new IsotopeSet(fragmentC2, NUMBER_OF_FRAGMENTS * (INC_C2), IncorporationType.EXPERIMENTAL);
 		IsotopeSet markedSetN = new IsotopeSet(fragmentN, NUMBER_OF_FRAGMENTS * (INC_N), IncorporationType.EXPERIMENTAL);
 		
-		MassSpectrum naturalSpectrum = naturalSet.simulateSpectrum();
-		MassSpectrum markedSpectrumC2N = markedSetC2N.simulateSpectrum();
-		MassSpectrum markedSpectrumC2 = markedSetC2.simulateSpectrum();
-		MassSpectrum markedSpectrumN = markedSetN.simulateSpectrum();
+		MassSpectrum naturalSpectrum = naturalSet.simulateSpectrum(0);
+		MassSpectrum markedSpectrumC2N = markedSetC2N.simulateSpectrum(0);
+		MassSpectrum markedSpectrumC2 = markedSetC2.simulateSpectrum(0);
+		MassSpectrum markedSpectrumN = markedSetN.simulateSpectrum(0);
 		MassSpectrum mixedSpectrum = naturalSpectrum.merge(markedSpectrumC2N);
 		mixedSpectrum = mixedSpectrum.merge(markedSpectrumC2);
 		mixedSpectrum = mixedSpectrum.merge(markedSpectrumN);

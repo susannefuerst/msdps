@@ -110,7 +110,7 @@ public class IsotopeSetTest extends TestCase {
 		Fragment fragment = new Fragment(FragmentKey.UNKNOWN, formula, capacityFormula);
 		double numberOfFragmentsInTheSet = 100000;
 		IsotopeSet isotopeSet = new IsotopeSet(fragment, numberOfFragmentsInTheSet, IncorporationType.NATURAL);
-		MassSpectrum spectrum = isotopeSet.simulateSpectrum();
+		MassSpectrum spectrum = isotopeSet.simulateSpectrum(0);
 		assertTrue(spectrum.containsKey(Isotope.C_13.getAtomicMass()));
 	}
 	
@@ -143,7 +143,7 @@ public class IsotopeSetTest extends TestCase {
 	public void testGetSpectrum4() {
 		Fragment fragment = new Fragment(FragmentKey.UNKNOWN, "C5H7NO2", "C2N");
 		IsotopeSet isotopeSet = new IsotopeSet(fragment, 1, IncorporationType.NATURAL);
-		MassSpectrum masses = isotopeSet.simulateSpectrum();
+		MassSpectrum masses = isotopeSet.simulateSpectrum(0);
 		LOGGER.info("calculated masses: " + masses);
 		LOGGER.info("lowest mass: " + fragment.lowestMass());
 		assertEquals(1, masses.size());
@@ -161,7 +161,7 @@ public class IsotopeSetTest extends TestCase {
 	public void testGetSpectrum5() {
 		Fragment fragment = new Fragment(FragmentKey.UNKNOWN, "C5H7NO2", "C2N");
 		IsotopeSet isotopeSet = new IsotopeSet(fragment, 1, IncorporationType.EXPERIMENTAL);
-		MassSpectrum masses = isotopeSet.simulateSpectrum();
+		MassSpectrum masses = isotopeSet.simulateSpectrum(0);
 		LOGGER.info("calculated masses: " + masses);
 		LOGGER.info("lowest incorporated mass: " + fragment.lowestFullIncorporatedMass());
 		assertEquals(1, masses.size());
@@ -178,7 +178,7 @@ public class IsotopeSetTest extends TestCase {
 	public void testGetSpectrum6() {
 		Fragment fragment = new Fragment(FragmentKey.UNKNOWN, "C5H7NO2", "C2N");
 		IsotopeSet isotopeSet = new IsotopeSet(fragment, 1000, IncorporationType.NATURAL);
-		for (Entry<Double, Double> entry : isotopeSet.simulateSpectrum().entrySet()) {
+		for (Entry<Double, Double> entry : isotopeSet.simulateSpectrum(0).entrySet()) {
 			Double mass = entry.getKey();
 			LOGGER.info("calculated mass: " + mass);
 			LOGGER.info("lowest mass: " + fragment.lowestMass());
@@ -196,7 +196,7 @@ public class IsotopeSetTest extends TestCase {
 	public void testGetSpectrum7() {
 		Fragment fragment = new Fragment(FragmentKey.UNKNOWN, "C5H7NO2", "C2N");
 		IsotopeSet isotopeSet = new IsotopeSet(fragment, 1000, IncorporationType.EXPERIMENTAL);
-		for (Entry<Double, Double> entry : isotopeSet.simulateSpectrum().entrySet()) {
+		for (Entry<Double, Double> entry : isotopeSet.simulateSpectrum(0).entrySet()) {
 			Double mass = entry.getKey();
 			assertTrue(MathUtils.round(mass, 6) <= MathUtils.round(fragment.highestMass(), 6));
 			assertTrue(MathUtils.round(mass, 6) >= MathUtils.round(fragment.lowestFullIncorporatedMass(), 6));
@@ -212,7 +212,7 @@ public class IsotopeSetTest extends TestCase {
 		Fragment fragment = new Fragment(FragmentKey.UNKNOWN, "C", "C");
 		int numberOfFragments = 100000;
 		IsotopeSet isotopeSet = new IsotopeSet(fragment, numberOfFragments, IncorporationType.NATURAL);
-		MassSpectrum masses = isotopeSet.simulateSpectrum();
+		MassSpectrum masses = isotopeSet.simulateSpectrum(0);
 		assertEquals(2, masses.size());
 		assertTrue(masses.get(Isotope.C_12.getAtomicMass()) == Isotope.C_12.getAbundance() * numberOfFragments);
 		assertTrue(masses.get(Isotope.C_13.getAtomicMass()) == Isotope.C_13.getAbundance() * numberOfFragments);
@@ -226,7 +226,7 @@ public class IsotopeSetTest extends TestCase {
 		Fragment fragment = new Fragment(FragmentKey.UNKNOWN, "C", "C");
 		int numberOfFragments = 100000;
 		IsotopeSet isotopeSet = new IsotopeSet(fragment, numberOfFragments, IncorporationType.EXPERIMENTAL);
-		MassSpectrum massAndFrequencyMap = isotopeSet.simulateSpectrum();
+		MassSpectrum massAndFrequencyMap = isotopeSet.simulateSpectrum(0);
 		assertEquals(1, massAndFrequencyMap.size());
 		assertTrue(massAndFrequencyMap.get(Isotope.C_13.getAtomicMass()) == numberOfFragments);
 	}

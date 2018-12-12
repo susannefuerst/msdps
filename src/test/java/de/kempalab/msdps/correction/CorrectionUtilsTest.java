@@ -64,10 +64,10 @@ public class CorrectionUtilsTest extends TestCase {
 						IsotopeSet markedSetC = new IsotopeSet(fragmentC, NUMBER_OF_FRAGMENTS * (INC_C), IncorporationType.EXPERIMENTAL);
 						IsotopeSet markedSetN = new IsotopeSet(fragmentN, NUMBER_OF_FRAGMENTS * (INC_N), IncorporationType.EXPERIMENTAL);
 						
-						MassSpectrum naturalSpectrum = naturalSet.simulateSpectrum();
-						MassSpectrum markedSpectrumCN = markedSetCN.simulateSpectrum();
-						MassSpectrum markedSpectrumC = markedSetC.simulateSpectrum();
-						MassSpectrum markedSpectrumN = markedSetN.simulateSpectrum();
+						MassSpectrum naturalSpectrum = naturalSet.simulateSpectrum(0);
+						MassSpectrum markedSpectrumCN = markedSetCN.simulateSpectrum(0);
+						MassSpectrum markedSpectrumC = markedSetC.simulateSpectrum(0);
+						MassSpectrum markedSpectrumN = markedSetN.simulateSpectrum(0);
 						MassSpectrum mixedSpectrum = naturalSpectrum.merge(markedSpectrumCN);
 						mixedSpectrum = mixedSpectrum.merge(markedSpectrumC);
 						mixedSpectrum = mixedSpectrum.merge(markedSpectrumN);
@@ -157,8 +157,8 @@ public class CorrectionUtilsTest extends TestCase {
 			IsotopeSet naturalSet = new IsotopeSet(fragmentC, NUMBER_OF_FRAGMENTS * (1 - INC_C), IncorporationType.NATURAL);
 			IsotopeSet markedSetC = new IsotopeSet(fragmentC, NUMBER_OF_FRAGMENTS * (INC_C), IncorporationType.EXPERIMENTAL);
 			
-			MassSpectrum naturalSpectrum = naturalSet.simulateSpectrum();
-			MassSpectrum markedSpectrumC = markedSetC.simulateSpectrum();
+			MassSpectrum naturalSpectrum = naturalSet.simulateSpectrum(0);
+			MassSpectrum markedSpectrumC = markedSetC.simulateSpectrum(0);
 			MassSpectrum mixedSpectrum = naturalSpectrum.merge(markedSpectrumC);
 
 			naturalSpectrum = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, PRECISION, PRECISION, MIN_FREQUENCY);
@@ -221,8 +221,8 @@ public class CorrectionUtilsTest extends TestCase {
 			IsotopeSet naturalSet = new IsotopeSet(fragmentN, NUMBER_OF_FRAGMENTS * (1 - INC_N), IncorporationType.NATURAL);
 			IsotopeSet markedSetN = new IsotopeSet(fragmentN, NUMBER_OF_FRAGMENTS * (INC_N), IncorporationType.EXPERIMENTAL);
 			
-			MassSpectrum naturalSpectrum = naturalSet.simulateSpectrum();
-			MassSpectrum markedSpectrumN = markedSetN.simulateSpectrum();
+			MassSpectrum naturalSpectrum = naturalSet.simulateSpectrum(0);
+			MassSpectrum markedSpectrumN = markedSetN.simulateSpectrum(0);
 			MassSpectrum mixedSpectrum = naturalSpectrum.merge(markedSpectrumN);
 
 			naturalSpectrum = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, PRECISION, PRECISION, MIN_FREQUENCY);
@@ -298,9 +298,9 @@ public class CorrectionUtilsTest extends TestCase {
 					IsotopeSet markedSetC2 = new IsotopeSet(fragmentC2, NUMBER_OF_FRAGMENTS * (INC_C2), IncorporationType.EXPERIMENTAL);
 					IsotopeSet markedSetN = new IsotopeSet(fragmentN, NUMBER_OF_FRAGMENTS * (INC_N), IncorporationType.EXPERIMENTAL);
 					
-					MassSpectrum naturalSpectrum = naturalSet.simulateSpectrum();
-					MassSpectrum markedSpectrumC2 = markedSetC2.simulateSpectrum();
-					MassSpectrum markedSpectrumN = markedSetN.simulateSpectrum();
+					MassSpectrum naturalSpectrum = naturalSet.simulateSpectrum(0);
+					MassSpectrum markedSpectrumC2 = markedSetC2.simulateSpectrum(0);
+					MassSpectrum markedSpectrumN = markedSetN.simulateSpectrum(0);
 					MassSpectrum mixedSpectrum = naturalSpectrum.merge(markedSpectrumC2);
 					mixedSpectrum = mixedSpectrum.merge(markedSpectrumN);
 					

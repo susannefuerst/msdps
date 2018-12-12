@@ -14,6 +14,7 @@ import org.apache.commons.csv.CSVRecord;
 import de.kempalab.msdps.constants.ErrorMessage;
 import de.kempalab.msdps.constants.FrequencyType;
 import de.kempalab.msdps.constants.Isotope;
+import de.kempalab.msdps.constants.NaturalConstants;
 import de.kempalab.msdps.data.DataTable;
 import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
@@ -396,5 +397,21 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 			}
 		}
 		return spectrum;
+	}
+
+	/**
+	 * 
+	 * @param charge, charge of the molecule
+	 * @return this spectrum where the masses are reduced by charge * electron mass
+	 */
+	public MassSpectrum adjustToCharge(int charge) {
+		if (charge == 0) {
+			return this;
+		}
+		MassSpectrum adjusted = new MassSpectrum(this.getFrequencyType());
+		for (Entry<Double, Double> entry : this.entrySet()) {
+			adjusted.put(entry.getKey() - charge * NaturalConstants.ELECTRON_MASS.getValue(), entry.getValue());
+		}
+		return adjusted;
 	}
 }
