@@ -74,13 +74,13 @@ public class MSShiftDatabase extends MSDatabase {
 			List<CSVRecord> records = parser.getRecords();
 			setNaturalSpectrum(ParserUtils.parseSpectrum(records,
 					MSShiftDatabaseColKey.NATURAL_MASS.getColumnIndex(),
-					MSShiftDatabaseColKey.NATURAL_FREQUENCY.getColumnIndex(), FrequencyType.RELATIVE, 1));
+					MSShiftDatabaseColKey.NATURAL_FREQUENCY.getColumnIndex(), FrequencyType.MID, 1));
 			setMarkedSpectrum(ParserUtils.parseSpectrum(records,
 					MSShiftDatabaseColKey.MARKED_MASS.getColumnIndex(),
-					MSShiftDatabaseColKey.MARKED_FREQUENCY.getColumnIndex(), FrequencyType.RELATIVE, 1));
+					MSShiftDatabaseColKey.MARKED_FREQUENCY.getColumnIndex(), FrequencyType.MID, 1));
 			setMixedSpectrum(ParserUtils.parseSpectrum(records,
 					MSShiftDatabaseColKey.MIXED_MASS.getColumnIndex(),
-					MSShiftDatabaseColKey.MIXED_FREQUENCY.getColumnIndex(), FrequencyType.RELATIVE, 1));
+					MSShiftDatabaseColKey.MIXED_FREQUENCY.getColumnIndex(), FrequencyType.MID, 1));
 			setIncorporationRate(Double.parseDouble(records.get(1).get(
 					MSShiftDatabaseColKey.INC_RATE.getColumnIndex())));
 			setFragmentKey(FragmentKey.byKeyName(records.get(1).get(

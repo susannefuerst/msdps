@@ -5,6 +5,7 @@ import de.kempalab.msdps.FragmentList;
 import de.kempalab.msdps.FragmentsDatabase;
 import de.kempalab.msdps.MSDatabase;
 import de.kempalab.msdps.constants.FragmentKey;
+import de.kempalab.msdps.constants.FrequencyType;
 import de.kempalab.msdps.constants.MSBarChartType;
 import de.kempalab.msdps.data.IncorporationRate;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
@@ -29,6 +30,7 @@ public class MSBarChartApplicationWindowDemo {
 		simulatorRequest.setAnalyzeMassShifts(true);
 		simulatorRequest.setTotalNumberOfFragments(10000.0);
 		simulatorRequest.setRoundedMassPrecision(4);
+		simulatorRequest.setTargetFrequencyType(FrequencyType.RELATIVE);
 		IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 		MSDatabase msDatabase =  response.getMsDatabaseList().get(0);
 		LOGGER.info(msDatabase);

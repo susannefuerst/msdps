@@ -4,14 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import junit.framework.TestCase;
-import de.kempalab.msdps.ElementList;
-import de.kempalab.msdps.IsotopeList;
-import de.kempalab.msdps.IsotopeListList;
-import de.kempalab.msdps.MassShift;
-import de.kempalab.msdps.MassShiftDataSet;
-import de.kempalab.msdps.MassShiftList;
-import de.kempalab.msdps.MassSpectrum;
 import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.ErrorMessage;
 import de.kempalab.msdps.constants.FrequencyType;
@@ -19,6 +11,7 @@ import de.kempalab.msdps.constants.Isotope;
 import de.kempalab.msdps.constants.PathConstants;
 import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
+import junit.framework.TestCase;
 
 public class MassSpectrumTest extends TestCase {
 	
@@ -47,7 +40,7 @@ public class MassSpectrumTest extends TestCase {
 	}
 	
 	public void testMergeFail() {
-		MassSpectrum firstSpectrum = new MassSpectrum(FrequencyType.RELATIVE);
+		MassSpectrum firstSpectrum = new MassSpectrum(FrequencyType.MID);
 		firstSpectrum.put(123.000, 10.0);
 		MassSpectrum otherSpectrum = new MassSpectrum(FrequencyType.ABSOLUTE);
 		otherSpectrum.put(123.010, 4.0);
@@ -59,14 +52,14 @@ public class MassSpectrumTest extends TestCase {
 		}
 	}
 	
-	public void testToRelativeFrequency() {
+	public void testToMIDFrequency() {
 		MassSpectrum map = new MassSpectrum(FrequencyType.ABSOLUTE);
 		map.put(123.000, 10.0);
 		map.put(123.010, 11.0);
 		map.put(124.000, 5.0);
 		map.put(125.000, 5.0);
-		MassSpectrum convertedSpectrum = map.toRelativeFrequency();
-		MassSpectrum expectedConvertedSpectrum = new MassSpectrum(FrequencyType.RELATIVE);
+		MassSpectrum convertedSpectrum = map.toMIDFrequency();
+		MassSpectrum expectedConvertedSpectrum = new MassSpectrum(FrequencyType.MID);
 		expectedConvertedSpectrum.put(123.000, 10.0 / 31.0);
 		expectedConvertedSpectrum.put(123.010, 11.0 / 31.0);
 		expectedConvertedSpectrum.put(124.000, 5.0 / 31.0);
@@ -77,31 +70,31 @@ public class MassSpectrumTest extends TestCase {
 		assertEquals(expectedConvertedSpectrum.getFrequencyType(), convertedSpectrum.getFrequencyType());
 	}
 	
-	public void testSkipLowFrequencies() {
-		MassSpectrum map = new MassSpectrum(FrequencyType.RELATIVE);
+	public void testSkipLowMIDs() {
+		MassSpectrum map = new MassSpectrum(FrequencyType.MID);
 		map.put(123.000, 0.001);
 		map.put(123.010, 0.009);
 		map.put(124.000, 0.09);
 		map.put(125.000, 0.9);
-		MassSpectrum expectedSpectrum = new MassSpectrum(FrequencyType.RELATIVE);
+		MassSpectrum expectedSpectrum = new MassSpectrum(FrequencyType.MID);
 		expectedSpectrum.put(124.000, 0.09);
 		expectedSpectrum.put(125.000, 0.9);
-		MassSpectrum newSpectrum = map.skipLowFrequencies(0.01);
+		MassSpectrum newSpectrum = map.skipLowFrequency(0.01);
 		LOGGER.info(expectedSpectrum);
 		LOGGER.info(newSpectrum);
 		assertEquals(expectedSpectrum, newSpectrum);
 	}
 	
-	public void testSkipLowFrequencies2() {
+	public void testSkipLowMIDs2() {
 		MassSpectrum map = new MassSpectrum(FrequencyType.ABSOLUTE);
 		map.put(123.000, 1.0);
 		map.put(123.010, 9.0);
 		map.put(124.000, 90.0);
 		map.put(125.000, 900.0);
-		MassSpectrum expectedSpectrum = new MassSpectrum(FrequencyType.RELATIVE);
+		MassSpectrum expectedSpectrum = new MassSpectrum(FrequencyType.MID);
 		expectedSpectrum.put(124.000, 0.09);
 		expectedSpectrum.put(125.000, 0.9);
-		MassSpectrum newSpectrum = map.skipLowFrequencies(0.01);
+		MassSpectrum newSpectrum = map.skipLowFrequency(0.01);
 		LOGGER.info(expectedSpectrum);
 		LOGGER.info(newSpectrum);
 		assertEquals(expectedSpectrum, newSpectrum);
@@ -151,7 +144,7 @@ public class MassSpectrumTest extends TestCase {
 	}
 	
 	public void roundFrequenciesTest() {
-		MassSpectrum map = new MassSpectrum(FrequencyType.RELATIVE);
+		MassSpectrum map = new MassSpectrum(FrequencyType.MID);
 		map.put(123.00019, 0.01234567);
 		map.put(123.01015, 0.62837565);
 		map.put(124.00014, 0.00013245);
@@ -160,7 +153,7 @@ public class MassSpectrumTest extends TestCase {
 		map.put(123.00018, 0.17283745);
 		map.put(123.01016, 0.14253647);
 		MassSpectrum newSpectrum = map.roundFrequencies(4);
-		MassSpectrum expectedSpectrum = new MassSpectrum(FrequencyType.RELATIVE);
+		MassSpectrum expectedSpectrum = new MassSpectrum(FrequencyType.MID);
 		expectedSpectrum.put(123.00019, 0.0123);
 		expectedSpectrum.put(123.01015, 0.6284);
 		expectedSpectrum.put(124.00014, 0.0001);
@@ -174,7 +167,7 @@ public class MassSpectrumTest extends TestCase {
 	}
 	
 	public void testSortDescendingByMass() {
-		MassSpectrum map = new MassSpectrum(FrequencyType.RELATIVE);
+		MassSpectrum map = new MassSpectrum(FrequencyType.MID);
 		map.put(123.01015, 0.6284);
 		map.put(123.00019, 0.0123);
 		map.put(125.00000, 0.0129);
@@ -183,7 +176,7 @@ public class MassSpectrumTest extends TestCase {
 		map.put(123.00018, 0.1728);
 		map.put(123.01016, 0.1425);
 		MassSpectrum newSpectrum = map.sortAscendingByMass();
-		MassSpectrum expectedSpectrum = new MassSpectrum(FrequencyType.RELATIVE);
+		MassSpectrum expectedSpectrum = new MassSpectrum(FrequencyType.MID);
 		expectedSpectrum.put(123.00018, 0.1728);
 		expectedSpectrum.put(123.00019, 0.0123);
 		expectedSpectrum.put(123.01015, 0.6284);
@@ -197,7 +190,7 @@ public class MassSpectrumTest extends TestCase {
 	}
 	
 	public void testSortAscendingByMass() {
-		MassSpectrum map = new MassSpectrum(FrequencyType.RELATIVE);
+		MassSpectrum map = new MassSpectrum(FrequencyType.MID);
 		map.put(123.01015, 0.6284);
 		map.put(123.00019, 0.0123);
 		map.put(125.00000, 0.0129);
@@ -206,7 +199,7 @@ public class MassSpectrumTest extends TestCase {
 		map.put(123.00018, 0.1728);
 		map.put(123.01016, 0.1425);
 		MassSpectrum newSpectrum = map.sortAscendingByMass();
-		MassSpectrum expectedSpectrum = new MassSpectrum(FrequencyType.RELATIVE);
+		MassSpectrum expectedSpectrum = new MassSpectrum(FrequencyType.MID);
 		expectedSpectrum.put(125.00000, 0.0129);
 		expectedSpectrum.put(124.01010, 0.0005);
 		expectedSpectrum.put(124.00014, 0.0001);
@@ -220,7 +213,7 @@ public class MassSpectrumTest extends TestCase {
 	}
 	
 	public void testSortAscendingByFrequency() {
-		MassSpectrum map = new MassSpectrum(FrequencyType.RELATIVE);
+		MassSpectrum map = new MassSpectrum(FrequencyType.MID);
 		map.put(123.01015, 0.6284);
 		map.put(123.00019, 0.0123);
 		map.put(125.00000, 0.0129);
@@ -229,7 +222,7 @@ public class MassSpectrumTest extends TestCase {
 		map.put(123.00018, 0.1728);
 		map.put(123.01016, 0.1425);
 		MassSpectrum newSpectrum = map.sortAscendingByFrequency();
-		MassSpectrum expectedSpectrum = new MassSpectrum(FrequencyType.RELATIVE);
+		MassSpectrum expectedSpectrum = new MassSpectrum(FrequencyType.MID);
 		expectedSpectrum.put(123.01015, 0.6284);
 		expectedSpectrum.put(123.00018, 0.1728);
 		expectedSpectrum.put(123.01016, 0.1425);
@@ -243,7 +236,7 @@ public class MassSpectrumTest extends TestCase {
 	}
 	
 	public void testSortDescendingByFrequency() {
-		MassSpectrum map = new MassSpectrum(FrequencyType.RELATIVE);
+		MassSpectrum map = new MassSpectrum(FrequencyType.MID);
 		map.put(123.01015, 0.6284);
 		map.put(123.00019, 0.0123);
 		map.put(125.00000, 0.0129);
@@ -252,7 +245,7 @@ public class MassSpectrumTest extends TestCase {
 		map.put(123.00018, 0.1728);
 		map.put(123.01016, 0.1425);
 		MassSpectrum newSpectrum = map.sortDescendingByFrequency();
-		MassSpectrum expectedSpectrum = new MassSpectrum(FrequencyType.RELATIVE);
+		MassSpectrum expectedSpectrum = new MassSpectrum(FrequencyType.MID);
 		expectedSpectrum.put(124.00014, 0.0001);
 		expectedSpectrum.put(124.01010, 0.0005);
 		expectedSpectrum.put(123.00019, 0.0123);

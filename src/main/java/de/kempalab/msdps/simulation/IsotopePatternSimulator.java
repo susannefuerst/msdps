@@ -8,6 +8,7 @@ import de.kempalab.msdps.MSDatabase;
 import de.kempalab.msdps.MSDatabaseList;
 import de.kempalab.msdps.MSShiftDatabase;
 import de.kempalab.msdps.MassSpectrum;
+import de.kempalab.msdps.constants.FrequencyType;
 import de.kempalab.msdps.constants.IncorporationType;
 import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
@@ -21,6 +22,7 @@ public class IsotopePatternSimulator {
 		final double naturalFragments = request.getTotalNumberOfFragments() * (1 - incRate);
 		final double experimentalFragments = request.getTotalNumberOfFragments() * incRate;
 		final boolean analyzeMassShifts = request.getAnalyzeMassShifts();
+		final FrequencyType frequencyType = request.getTargetFrequencyType();
 		MSDatabaseList msDatabaseList = new MSDatabaseList();
 		for (Fragment fragment : request.getFragments()) {
 			IsotopeSet naturalSet = new IsotopeSet(fragment, naturalFragments, IncorporationType.NATURAL);
@@ -31,9 +33,12 @@ public class IsotopePatternSimulator {
 			Integer roundMassesPrecision = request.getRoundedMassPrecision();
 			Integer roundFrequenciesPrecision = request.getRoundedFrequenciesPrecision();
 			Double minimalRelativeFrequency = request.getMinimalRelativeFrequency();
-			naturalSpectrum = prepareSpectrum(naturalSpectrum, roundMassesPrecision, roundFrequenciesPrecision, minimalRelativeFrequency);
-			markedSpectrum = prepareSpectrum(markedSpectrum, roundMassesPrecision, roundFrequenciesPrecision, minimalRelativeFrequency);
-			mixedSpectrum =	prepareSpectrum(mixedSpectrum, roundMassesPrecision, roundFrequenciesPrecision, minimalRelativeFrequency);
+			naturalSpectrum = prepareSpectrum(naturalSpectrum, roundMassesPrecision, roundFrequenciesPrecision,
+					minimalRelativeFrequency, frequencyType);
+			markedSpectrum = prepareSpectrum(markedSpectrum, roundMassesPrecision, roundFrequenciesPrecision,
+					minimalRelativeFrequency, frequencyType);
+			mixedSpectrum = prepareSpectrum(mixedSpectrum, roundMassesPrecision, roundFrequenciesPrecision,
+					minimalRelativeFrequency, frequencyType);
 			if (analyzeMassShifts) {
 				MSShiftDatabase msShiftDatabase = new MSShiftDatabase();
 				msShiftDatabase.setIncorporatedTracers(fragment.getCapacityFormula());
@@ -65,16 +70,20 @@ public class IsotopePatternSimulator {
 	}
 	
 	public static MassSpectrum prepareSpectrum(MassSpectrum spectrum, Integer roundMassesPrecision,
-			Integer roundFrequenciesPrecision, Double minimalRelativeFrequency) {
+			Integer roundFrequenciesPrecision, Double minimaFrequency, FrequencyType frequencyType) {
 		if (roundMassesPrecision != null) {
 			spectrum = spectrum.roundMasses(roundMassesPrecision);
 		}
-		spectrum = spectrum.toRelativeFrequency();
+		if (frequencyType.equals(FrequencyType.MID)) {
+			spectrum = spectrum.toMIDFrequency();
+		} else if (frequencyType.equals(FrequencyType.RELATIVE)) {
+			spectrum = spectrum.toRelativeFrequency();
+		}
 		if (roundFrequenciesPrecision != null) {
 			spectrum = spectrum.roundFrequencies(roundFrequenciesPrecision);
 		}
-		if (minimalRelativeFrequency != null) {
-			spectrum = spectrum.skipLowFrequencies(minimalRelativeFrequency);
+		if (minimaFrequency != null) {
+			spectrum = spectrum.skipLowFrequency(minimaFrequency);
 		}
 		Double sumOfFrequencies = 0.0;
 		for (Entry<Double,Double> entry : spectrum.entrySet()) {

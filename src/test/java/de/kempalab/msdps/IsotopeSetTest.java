@@ -298,7 +298,7 @@ public class IsotopeSetTest extends TestCase {
 			MassSpectrum naturalSimulatedSpectrum = msDatabase.getNaturalSpectrum().sortAscendingByMass();
 			LOGGER.infoValue("naturalSimulatedSpectrum\n", naturalSimulatedSpectrum);
 			int numberOfIsotopes = element.getIsotopes().size();
-			MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(FrequencyType.RELATIVE);
+			MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(FrequencyType.MID);
 			IsotopeList isotopes = element.getIsotopes();
 			Double mass0 = 2 * isotopes.get(0).getAtomicMass();
 			Double abundance0 = isotopes.get(0).getAbundance() * isotopes.get(0).getAbundance();
@@ -346,7 +346,7 @@ public class IsotopeSetTest extends TestCase {
 				LOGGER.infoValue("naturalCalculatedSpectrum\n", naturalCalculatedSpectrum);
 				IsotopeList isotopes = element.getIsotopes();
 				if (numberOfElements == 2  && isotopes.size() == 2) {
-					MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(FrequencyType.RELATIVE);
+					MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(FrequencyType.MID);
 					Double mass0 = 2 * isotopes.get(0).getAtomicMass();
 					Double abundance0 = isotopes.get(0).getAbundance() * isotopes.get(0).getAbundance();
 					combinatoricallyExpectedSpectrum.put(mass0, abundance0);
@@ -398,7 +398,7 @@ public class IsotopeSetTest extends TestCase {
 				if (isotopes.size() == 2) {
 					Isotope isotope1 = element.getIsotopes().get(0);
 					Isotope isotope2 = element.getIsotopes().get(1);
-					MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(FrequencyType.RELATIVE);
+					MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(FrequencyType.MID);
 					/*
 					 * m_k = (n-k)*m_I1 + k*m_I2
 					 * a_k = binom(n,k) * a_I1^(n-k) * a_I2^(k)
@@ -441,7 +441,7 @@ public class IsotopeSetTest extends TestCase {
 		naturalCalculatedSpectrum  = naturalCalculatedSpectrum.roundMasses(4).roundFrequencies(4).sortAscendingByMass();
 		LOGGER.infoValue("naturalCalculatedSpectrum\n", naturalCalculatedSpectrum);
 		IsotopeList isotopes = element.getIsotopes();
-		MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(FrequencyType.RELATIVE);
+		MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(FrequencyType.MID);
 		Double mass0 = 2 * isotopes.get(0).getAtomicMass();
 		Double abundance0 = isotopes.get(0).getAbundance() * isotopes.get(0).getAbundance();
 		combinatoricallyExpectedSpectrum.put(mass0, abundance0);
@@ -473,7 +473,7 @@ public class IsotopeSetTest extends TestCase {
 		naturalCalculatedSpectrum  = naturalCalculatedSpectrum.roundMasses(4).roundFrequencies(4).sortAscendingByMass();
 		LOGGER.infoValue("naturalCalculatedSpectrum\n", naturalCalculatedSpectrum);
 		IsotopeList isotopes = element.getIsotopes();
-		MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(FrequencyType.RELATIVE);
+		MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(FrequencyType.MID);
 		Double mass0 = 2 * isotopes.get(0).getAtomicMass();
 		Double abundance0 = isotopes.get(0).getAbundance() * isotopes.get(0).getAbundance();
 		combinatoricallyExpectedSpectrum.put(mass0, abundance0);
@@ -505,7 +505,7 @@ public class IsotopeSetTest extends TestCase {
 		naturalCalculatedSpectrum  = naturalCalculatedSpectrum.roundMasses(4).roundFrequencies(4).sortAscendingByMass();
 		LOGGER.infoValue("naturalCalculatedSpectrum\n", naturalCalculatedSpectrum);
 		IsotopeList isotopes = element.getIsotopes();
-		MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(FrequencyType.RELATIVE);
+		MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(FrequencyType.MID);
 		Double mass0 = 2 * isotopes.get(0).getAtomicMass();
 		Double abundance0 = isotopes.get(0).getAbundance() * isotopes.get(0).getAbundance();
 		combinatoricallyExpectedSpectrum.put(mass0, abundance0);

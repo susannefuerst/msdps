@@ -1,6 +1,7 @@
 package de.kempalab.msdps.simulation;
 
 import de.kempalab.msdps.FragmentList;
+import de.kempalab.msdps.constants.FrequencyType;
 import de.kempalab.msdps.data.IncorporationRate;
 
 /**
@@ -25,32 +26,35 @@ public class IsotopePatternSimulatorRequest {
 	private Integer roundedFrequenciesPrecision = 4;
 	private FragmentList fragments;
 	private Boolean analyzeMassShifts = false;
+	private FrequencyType targetFrequencyType = FrequencyType.RELATIVE;
 	
 	/**
-	 * Creates a general {@link IsotopePatternSimulatorRequest} using the following standards:
-	 * <br>
+	 * Creates a general {@link IsotopePatternSimulatorRequest} using the following
+	 * standards: <br>
 	 * incorporation rate: 1 <br>
 	 * total number of fragments: 100000 <br>
-	 * minimal relative mass frequencies: 0.003  <br> 
+	 * minimal relative mass frequencies: 0.003 <br>
 	 * mass precision: 4 <br>
 	 * mass frequency precision: 4 <br>
 	 * analyze mass shifts: false <br>
+	 * frequency type: RELATIVE <br>
 	 */
 	public IsotopePatternSimulatorRequest()  {
 		
 	}
 	
 	/**
-	 * Creates a {@link IsotopePatternSimulatorRequest} using the specified parameters. If a parameter is null the following
-	 * standards will be used:
-	 * <br>
+	 * Creates a {@link IsotopePatternSimulatorRequest} using the specified
+	 * parameters. If a parameter is null the following standards will be used: <br>
 	 * incorporation rate: 1 <br>
 	 * total number of fragments: 100000 <br>
-	 * minimal relative mass frequencies: 0.003  <br> 
+	 * minimal relative mass frequencies: 0.003 <br>
 	 * mass precision: 4 <br>
 	 * mass frequency precision: 4 <br>
 	 * analyze mass shifts: false <br>
+	 * target frequency type: RELATIVE <br>
 	 * <br>
+	 * 
 	 * @param incorporationRate
 	 * @param totalNumberOfFragments
 	 * @param minimalRelativeFrequency
@@ -60,7 +64,8 @@ public class IsotopePatternSimulatorRequest {
 	 * @param analyzeMassShifts
 	 */
 	public IsotopePatternSimulatorRequest(IncorporationRate incorporationRate, Double totalNumberOfFragments,
-			Double minimalRelativeFrequency, Integer roundedMassPrecision, Integer roundedFrequenciesPrecision,
+			FrequencyType targetFrequencyType, Double minimalRelativeFrequency, Integer roundedMassPrecision,
+			Integer roundedFrequenciesPrecision,
 			FragmentList fragments, Boolean analyzeMassShifts) {
 		if (incorporationRate != null) {
 			this.incorporationRate = incorporationRate;
@@ -79,6 +84,9 @@ public class IsotopePatternSimulatorRequest {
 		}
 		if (analyzeMassShifts != null) {
 			this.setAnalyzeMassShifts(analyzeMassShifts);
+		}
+		if (targetFrequencyType != null) {
+			this.targetFrequencyType = targetFrequencyType;
 		}
 		this.fragments = fragments;
 	}
@@ -143,6 +151,14 @@ public class IsotopePatternSimulatorRequest {
 	 */
 	public void setAnalyzeMassShifts(Boolean analyzeMassShifts) {
 		this.analyzeMassShifts = analyzeMassShifts;
+	}
+
+	public FrequencyType getTargetFrequencyType() {
+		return targetFrequencyType;
+	}
+
+	public void setTargetFrequencyType(FrequencyType targetFrequencyType) {
+		this.targetFrequencyType = targetFrequencyType;
 	}
 
 }

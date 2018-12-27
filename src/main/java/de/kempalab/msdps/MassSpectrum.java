@@ -45,7 +45,7 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 	 * @throws FrequencyTypeMismatchException 
 	 */
 	public MassSpectrum merge(MassSpectrum otherSpectrum) throws FrequencyTypeMismatchException {
-		if (this.frequencyType.equals(FrequencyType.RELATIVE) || otherSpectrum.frequencyType.equals(FrequencyType.RELATIVE)) {
+		if (this.frequencyType.equals(FrequencyType.MID) || otherSpectrum.frequencyType.equals(FrequencyType.MID)) {
 			throw new FrequencyTypeMismatchException(ErrorMessage.FREQUENCY_TYPE_MISMATCH.getMessage());
 		}
 		if (this.isEmpty()) {
@@ -71,15 +71,15 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 	}
 	
 	/**
-	 * This method converts the frequencies of this map to relative frequencies if this map contains not yet relative ones.
-	 * Otherwise this map will be returned.
-	 * @return A new map if this map contains not yet relative intensities (else this map will be returned)
+	 * 
+	 * @return A copy of this Spectrum with frequencies converted to MIDs (mass
+	 *         isotopomer distribution)
 	 */
-	public MassSpectrum toRelativeFrequency() {
-		if (this.frequencyType.equals(FrequencyType.RELATIVE)) {
+	public MassSpectrum toMIDFrequency() {
+		if (this.frequencyType.equals(FrequencyType.MID)) {
 			return this;
 		} else {
-			MassSpectrum newSpectrum = new MassSpectrum(FrequencyType.RELATIVE);
+			MassSpectrum newSpectrum = new MassSpectrum(FrequencyType.MID);
 			Double absoluteNumberOfFragments = 0.0;
 			for (Entry<Double,Double> entry : this.entrySet()) {
 				absoluteNumberOfFragments = absoluteNumberOfFragments + entry.getValue();
@@ -93,52 +93,34 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 	}
 	
 	/**
-	 * This returns a new map without the low frequency masses of this map.
-	 * If this map does not yet contain relative frequencies they will be converted for the new map.
-	 * @param minimalRelativeFrequency
-	 * @return a new map with relative frequencies greater or equal the minimalRelativeFrequency
+	 * 
+	 * @return A copy of this Spectrum with frequencies converted to relative ones
 	 */
-	public MassSpectrum skipLowFrequencies(Double minimalRelativeFrequency) {
-		MassSpectrum newSpectrum = new MassSpectrum(FrequencyType.RELATIVE);
+	public MassSpectrum toRelativeFrequency() {
 		if (this.frequencyType.equals(FrequencyType.RELATIVE)) {
-			for (Entry<Double,Double> entry : this.entrySet()) {
-				if (entry.getValue() >= minimalRelativeFrequency) {
-					newSpectrum.put(entry.getKey(), entry.getValue());
-				}
-			}
+			return this;
 		} else {
-			LOGGER.info("Frequencies will be converted to relative ones to skip lowest");
-			MassSpectrum relativeSpectrum = this.toRelativeFrequency();
-			for (Entry<Double,Double> entry : relativeSpectrum.entrySet()) {
-				if (entry.getValue() >= minimalRelativeFrequency) {
-					newSpectrum.put(entry.getKey(), entry.getValue());
-				}
+			MassSpectrum newSpectrum = new MassSpectrum(FrequencyType.RELATIVE);
+			Double highestFrequency = getHighestFrequency();
+			for (Entry<Double, Double> entry : this.entrySet()) {
+				Double relativeFrequency = (entry.getValue() / highestFrequency) * 100;
+				newSpectrum.put(entry.getKey(), relativeFrequency);
 			}
+			return newSpectrum;
 		}
-		return newSpectrum;
 	}
-	
+
 	/**
-	 * This returns a new map without the low frequency masses of this map.
-	 * If this map does not yet contain relative frequencies they will be converted for the new map.
-	 * @param minimalRelativeFrequency
-	 * @return a new map with relative frequencies greater than the minimalRelativeFrequency
+	 * 
+	 * @param minimalValue
+	 * @return A copy of this map without masses that have an abundance under the
+	 *         minimalValue
 	 */
-	public MassSpectrum skipFrequenciesUpTo(Double minimalRelativeFrequency) {
-		MassSpectrum newSpectrum = new MassSpectrum(FrequencyType.RELATIVE);
-		if (this.frequencyType.equals(FrequencyType.RELATIVE)) {
-			for (Entry<Double,Double> entry : this.entrySet()) {
-				if (entry.getValue() > minimalRelativeFrequency) {
-					newSpectrum.put(entry.getKey(), entry.getValue());
-				}
-			}
-		} else {
-			LOGGER.info("Frequencies will be converted to relative ones to skip lowest");
-			MassSpectrum relativeSpectrum = this.toRelativeFrequency();
-			for (Entry<Double,Double> entry : relativeSpectrum.entrySet()) {
-				if (entry.getValue() > minimalRelativeFrequency) {
-					newSpectrum.put(entry.getKey(), entry.getValue());
-				}
+	public MassSpectrum skipLowFrequency(Double minimalValue) {
+		MassSpectrum newSpectrum = new MassSpectrum(FrequencyType.MID);
+		for (Entry<Double, Double> entry : this.entrySet()) {
+			if (entry.getValue() >= minimalValue) {
+				newSpectrum.put(entry.getKey(), entry.getValue());
 			}
 		}
 		return newSpectrum;
@@ -413,5 +395,35 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 			adjusted.put(entry.getKey() - charge * NaturalConstants.ELECTRON_MASS.getValue(), entry.getValue());
 		}
 		return adjusted;
+	}
+
+	public Double getHighestMass() {
+		List<Entry<Double, Double>> entryList = new ArrayList<>(this.entrySet());
+		entryList.sort(Entry.comparingByKey());
+		return entryList.get(entryList.size() - 1).getKey();
+	}
+
+	public Double getLowestMass() {
+		List<Entry<Double, Double>> entryList = new ArrayList<>(this.entrySet());
+		entryList.sort(Entry.comparingByKey());
+		return entryList.get(0).getKey();
+	}
+
+	public Double getHighestFrequency() {
+		List<Entry<Double, Double>> entryList = new ArrayList<>(this.entrySet());
+		entryList.sort(Entry.comparingByValue());
+		return entryList.get(entryList.size() - 1).getValue();
+	}
+
+	public Double getLowestFrequency() {
+		List<Entry<Double, Double>> entryList = new ArrayList<>(this.entrySet());
+		entryList.sort(Entry.comparingByValue());
+		return entryList.get(0).getValue();
+	}
+
+	public Double getMostAbundandMass() {
+		List<Entry<Double, Double>> entryList = new ArrayList<>(this.entrySet());
+		entryList.sort(Entry.comparingByValue());
+		return entryList.get(entryList.size() - 1).getKey();
 	}
 }

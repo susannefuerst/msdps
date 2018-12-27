@@ -6,6 +6,7 @@ import de.kempalab.msdps.IsotopeSet;
 import de.kempalab.msdps.MSShiftDatabase;
 import de.kempalab.msdps.MassSpectrum;
 import de.kempalab.msdps.constants.FragmentKey;
+import de.kempalab.msdps.constants.FrequencyType;
 import de.kempalab.msdps.constants.IncorporationType;
 import de.kempalab.msdps.constants.MSBarChartType;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
@@ -24,6 +25,7 @@ public class SimulateMixedIncorporations {
 	public static final double NUMBER_OF_FRAGMENTS = 100000.0;
 	public static final Integer PRECISION = 4;
 	public static final double MIN_FREQUENCY = 0.003;
+	public static final FrequencyType FREQUENCY_TYPE = FrequencyType.MID;
 	
 	public static final double INC = INC_C2 + INC_C2N + INC_N;
 	
@@ -57,11 +59,16 @@ public class SimulateMixedIncorporations {
 //		MassSpectrum mixedSpectrum = naturalSpectrum.merge(markedSpectrumN);
 //		mixedSpectrum = mixedSpectrum.merge(markedSpectrumC2);
 		
-		naturalSpectrum = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, PRECISION, PRECISION, MIN_FREQUENCY);
-		markedSpectrumC2N = IsotopePatternSimulator.prepareSpectrum(markedSpectrumC2N, PRECISION, PRECISION, MIN_FREQUENCY);
-		markedSpectrumC2 = IsotopePatternSimulator.prepareSpectrum(markedSpectrumC2, PRECISION, PRECISION, MIN_FREQUENCY);
-		markedSpectrumN = IsotopePatternSimulator.prepareSpectrum(markedSpectrumN, PRECISION, PRECISION, MIN_FREQUENCY);
-		mixedSpectrum = IsotopePatternSimulator.prepareSpectrum(mixedSpectrum, PRECISION, PRECISION, MIN_FREQUENCY);
+		naturalSpectrum = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, PRECISION, PRECISION, MIN_FREQUENCY,
+				FREQUENCY_TYPE);
+		markedSpectrumC2N = IsotopePatternSimulator.prepareSpectrum(markedSpectrumC2N, PRECISION, PRECISION,
+				MIN_FREQUENCY, FREQUENCY_TYPE);
+		markedSpectrumC2 = IsotopePatternSimulator.prepareSpectrum(markedSpectrumC2, PRECISION, PRECISION,
+				MIN_FREQUENCY, FREQUENCY_TYPE);
+		markedSpectrumN = IsotopePatternSimulator.prepareSpectrum(markedSpectrumN, PRECISION, PRECISION, MIN_FREQUENCY,
+				FREQUENCY_TYPE);
+		mixedSpectrum = IsotopePatternSimulator.prepareSpectrum(mixedSpectrum, PRECISION, PRECISION, MIN_FREQUENCY,
+				FREQUENCY_TYPE);
 		
 		MSShiftDatabase msShiftDatabase = new MSShiftDatabase();
 		msShiftDatabase.setIncorporatedTracers("CN,C,N");

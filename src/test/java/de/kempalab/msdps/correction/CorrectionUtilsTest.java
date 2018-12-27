@@ -73,11 +73,16 @@ public class CorrectionUtilsTest extends TestCase {
 						mixedSpectrum = mixedSpectrum.merge(markedSpectrumN);
 						
 						
-						naturalSpectrum = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, PRECISION, PRECISION, MIN_FREQUENCY);
-						markedSpectrumCN = IsotopePatternSimulator.prepareSpectrum(markedSpectrumCN, PRECISION, PRECISION, MIN_FREQUENCY);
-						markedSpectrumC = IsotopePatternSimulator.prepareSpectrum(markedSpectrumC, PRECISION, PRECISION, MIN_FREQUENCY);
-						markedSpectrumN = IsotopePatternSimulator.prepareSpectrum(markedSpectrumN, PRECISION, PRECISION, MIN_FREQUENCY);
-						mixedSpectrum = IsotopePatternSimulator.prepareSpectrum(mixedSpectrum, PRECISION, PRECISION, MIN_FREQUENCY);
+						naturalSpectrum = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, PRECISION, PRECISION,
+								MIN_FREQUENCY, FrequencyType.MID);
+						markedSpectrumCN = IsotopePatternSimulator.prepareSpectrum(markedSpectrumCN, PRECISION,
+								PRECISION, MIN_FREQUENCY, FrequencyType.MID);
+						markedSpectrumC = IsotopePatternSimulator.prepareSpectrum(markedSpectrumC, PRECISION, PRECISION,
+								MIN_FREQUENCY, FrequencyType.MID);
+						markedSpectrumN = IsotopePatternSimulator.prepareSpectrum(markedSpectrumN, PRECISION, PRECISION,
+								MIN_FREQUENCY, FrequencyType.MID);
+						mixedSpectrum = IsotopePatternSimulator.prepareSpectrum(mixedSpectrum, PRECISION, PRECISION,
+								MIN_FREQUENCY, FrequencyType.MID);
 						
 						MSShiftDatabase msShiftDatabase = new MSShiftDatabase();
 						msShiftDatabase.setIncorporatedTracers("CN,C,N");
@@ -161,9 +166,12 @@ public class CorrectionUtilsTest extends TestCase {
 			MassSpectrum markedSpectrumC = markedSetC.simulateSpectrum(0);
 			MassSpectrum mixedSpectrum = naturalSpectrum.merge(markedSpectrumC);
 
-			naturalSpectrum = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, PRECISION, PRECISION, MIN_FREQUENCY);
-			markedSpectrumC = IsotopePatternSimulator.prepareSpectrum(markedSpectrumC, PRECISION, PRECISION, MIN_FREQUENCY);
-			mixedSpectrum = IsotopePatternSimulator.prepareSpectrum(mixedSpectrum, PRECISION, PRECISION, MIN_FREQUENCY);
+			naturalSpectrum = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, PRECISION, PRECISION,
+					MIN_FREQUENCY, FrequencyType.MID);
+			markedSpectrumC = IsotopePatternSimulator.prepareSpectrum(markedSpectrumC, PRECISION, PRECISION,
+					MIN_FREQUENCY, FrequencyType.MID);
+			mixedSpectrum = IsotopePatternSimulator.prepareSpectrum(mixedSpectrum, PRECISION, PRECISION, MIN_FREQUENCY,
+					FrequencyType.MID);
 			
 			MSShiftDatabase msShiftDatabase = new MSShiftDatabase();
 			msShiftDatabase.setIncorporatedTracers("C");
@@ -225,9 +233,12 @@ public class CorrectionUtilsTest extends TestCase {
 			MassSpectrum markedSpectrumN = markedSetN.simulateSpectrum(0);
 			MassSpectrum mixedSpectrum = naturalSpectrum.merge(markedSpectrumN);
 
-			naturalSpectrum = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, PRECISION, PRECISION, MIN_FREQUENCY);
-			markedSpectrumN = IsotopePatternSimulator.prepareSpectrum(markedSpectrumN, PRECISION, PRECISION, MIN_FREQUENCY);
-			mixedSpectrum = IsotopePatternSimulator.prepareSpectrum(mixedSpectrum, PRECISION, PRECISION, MIN_FREQUENCY);
+			naturalSpectrum = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, PRECISION, PRECISION,
+					MIN_FREQUENCY, FrequencyType.MID);
+			markedSpectrumN = IsotopePatternSimulator.prepareSpectrum(markedSpectrumN, PRECISION, PRECISION,
+					MIN_FREQUENCY, FrequencyType.MID);
+			mixedSpectrum = IsotopePatternSimulator.prepareSpectrum(mixedSpectrum, PRECISION, PRECISION, MIN_FREQUENCY,
+					FrequencyType.MID);
 			
 			MSShiftDatabase msShiftDatabase = new MSShiftDatabase();
 			msShiftDatabase.setIncorporatedTracers("N");
@@ -305,10 +316,14 @@ public class CorrectionUtilsTest extends TestCase {
 					mixedSpectrum = mixedSpectrum.merge(markedSpectrumN);
 					
 					
-					naturalSpectrum = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, PRECISION, PRECISION, MIN_FREQUENCY);
-					markedSpectrumC2 = IsotopePatternSimulator.prepareSpectrum(markedSpectrumC2, PRECISION, PRECISION, MIN_FREQUENCY);
-					markedSpectrumN = IsotopePatternSimulator.prepareSpectrum(markedSpectrumN, PRECISION, PRECISION, MIN_FREQUENCY);
-					mixedSpectrum = IsotopePatternSimulator.prepareSpectrum(mixedSpectrum, PRECISION, PRECISION, MIN_FREQUENCY);
+					naturalSpectrum = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, PRECISION, PRECISION,
+							MIN_FREQUENCY, FrequencyType.MID);
+					markedSpectrumC2 = IsotopePatternSimulator.prepareSpectrum(markedSpectrumC2, PRECISION, PRECISION,
+							MIN_FREQUENCY, FrequencyType.MID);
+					markedSpectrumN = IsotopePatternSimulator.prepareSpectrum(markedSpectrumN, PRECISION, PRECISION,
+							MIN_FREQUENCY, FrequencyType.MID);
+					mixedSpectrum = IsotopePatternSimulator.prepareSpectrum(mixedSpectrum, PRECISION, PRECISION,
+							MIN_FREQUENCY, FrequencyType.MID);
 					
 					MSShiftDatabase msShiftDatabase = new MSShiftDatabase();
 					msShiftDatabase.setIncorporatedTracers("C2,N");
