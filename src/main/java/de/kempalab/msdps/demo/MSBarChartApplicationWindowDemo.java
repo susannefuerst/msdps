@@ -6,7 +6,7 @@ import de.kempalab.msdps.FragmentsDatabase;
 import de.kempalab.msdps.MSDatabase;
 import de.kempalab.msdps.constants.FragmentKey;
 import de.kempalab.msdps.constants.FrequencyType;
-import de.kempalab.msdps.constants.MSBarChartType;
+import de.kempalab.msdps.constants.MSDatasetOption;
 import de.kempalab.msdps.data.IncorporationRate;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
 import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
@@ -35,7 +35,7 @@ public class MSBarChartApplicationWindowDemo {
 		MSDatabase msDatabase =  response.getMsDatabaseList().get(0);
 		LOGGER.info(msDatabase);
 		MSBarChartApplicationWindow demo = new MSBarChartApplicationWindow("Bar Demo 1", msDatabase,
-				MSBarChartType.NATURAL_SPECTRUM_ONLY);
+				MSDatasetOption.NATURAL_SPECTRUM_ONLY);
 		demo.pack();
 		demo.setVisible(true);
 	}
