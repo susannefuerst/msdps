@@ -29,7 +29,7 @@ import de.kempalab.msdps.constants.MSDatasetOption;
  */
 public class MSCategoryBarChartCreator {
 	
-	public static final String CHART_X_LABEL = "Mass (u)";
+	public static final String CHART_X_LABEL = "m/z";
 	public static final String CHART_Y_LABEL = "Mass Isotopomer Distribution";
 	public static final String ISOTOPE_SUBABEL_FONT = "SansSerif";
 	private static final double MAX_BAR_WIDTH = 0.05;
