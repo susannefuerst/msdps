@@ -31,6 +31,7 @@ public class MSCategoryBarChartCreator {
 	
 	public static final String CHART_X_LABEL = "Mass (u)";
 	public static final String CHART_Y_LABEL = "Mass Isotopomer Distribution";
+	public static final String ISOTOPE_SUBABEL_FONT = "SansSerif";
 	private static final double MAX_BAR_WIDTH = 0.05;
 	
 	public MSCategoryBarChartCreator() {
@@ -83,8 +84,8 @@ public class MSCategoryBarChartCreator {
 					sublabel = msshiftDatabase.shiftInducingIsotopes(IncorporationType.MARKED, mass);
 				}
 				domainAxis.addSubLabel(mass, sublabel);
-				domainAxis.setTickLabelFont(new Font("SansSerif", Font.PLAIN, 14));
-				domainAxis.setSubLabelFont(new Font("SansSerif", Font.PLAIN, 14));
+				domainAxis.setTickLabelFont(new Font(ISOTOPE_SUBABEL_FONT, Font.PLAIN, 14));
+				domainAxis.setSubLabelFont(new Font(ISOTOPE_SUBABEL_FONT, Font.PLAIN, 14));
 			}
 		}
 		return chart;
