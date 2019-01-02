@@ -69,6 +69,10 @@ public class IsotopeFormula extends LinkedHashMap<Isotope, Integer> {
 		return !allSameCounts;
 	}
 
+	/**
+	 * 
+	 * @return a string representation using sub- and superscript.
+	 */
 	public String toNiceFormattedFormula() {
 		StringBuffer buffer = new StringBuffer();
 		for (Entry<Isotope, Integer> entry : this.entrySet()) {

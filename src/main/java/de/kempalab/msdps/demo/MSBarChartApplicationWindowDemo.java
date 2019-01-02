@@ -5,6 +5,7 @@ import de.kempalab.msdps.FragmentList;
 import de.kempalab.msdps.FragmentsDatabase;
 import de.kempalab.msdps.MSDatabase;
 import de.kempalab.msdps.constants.FragmentKey;
+import de.kempalab.msdps.constants.FrequencyType;
 import de.kempalab.msdps.constants.MSBarChartType;
 import de.kempalab.msdps.data.IncorporationRate;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
@@ -24,15 +25,17 @@ public class MSBarChartApplicationWindowDemo {
 		Fragment fragment = FragmentsDatabase.getFragment(FragmentKey.GLN_156);
 		fragment.changeCapacity("C4N");
 		simulatorRequest.setFragments(new FragmentList(fragment));
-		simulatorRequest.setIncorporationRate(new IncorporationRate(0.8));
+		simulatorRequest.setIncorporationRate(new IncorporationRate(0.7));
 		simulatorRequest.setMinimalRelativeFrequency(0.001);
 		simulatorRequest.setAnalyzeMassShifts(true);
 		simulatorRequest.setTotalNumberOfFragments(10000.0);
 		simulatorRequest.setRoundedMassPrecision(4);
+		simulatorRequest.setTargetFrequencyType(FrequencyType.RELATIVE);
 		IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 		MSDatabase msDatabase =  response.getMsDatabaseList().get(0);
 		LOGGER.info(msDatabase);
-		MSBarChartApplicationWindow demo = new MSBarChartApplicationWindow("Bar Demo 1", msDatabase, MSBarChartType.NATURAL_SPECTRUM_ONLY);
+		MSBarChartApplicationWindow demo = new MSBarChartApplicationWindow("Bar Demo 1", msDatabase,
+				MSBarChartType.NATURAL_SPECTRUM_ONLY);
 		demo.pack();
 		demo.setVisible(true);
 	}

@@ -162,7 +162,7 @@ public class ElementTest extends TestCase {
 			MassSpectrum combinatoricallyCalculatedSpectrum = element.multiElementSpectrum(2, 0.0);
 			combinatoricallyCalculatedSpectrum = combinatoricallyCalculatedSpectrum.roundMasses(4).roundFrequencies(4).sortAscendingByMass();
 			LOGGER.infoValue("combinatoricallyCalculatedSpectrum\n", combinatoricallyCalculatedSpectrum);
-			MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(FrequencyType.RELATIVE);
+			MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(FrequencyType.MID);
 			IsotopeList isotopes = element.getIsotopes();
 			Double mass0 = 2 * isotopes.get(0).getAtomicMass();
 			Double abundance0 = isotopes.get(0).getAbundance() * isotopes.get(0).getAbundance();

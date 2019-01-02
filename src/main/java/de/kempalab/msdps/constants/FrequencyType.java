@@ -7,6 +7,6 @@ package de.kempalab.msdps.constants;
  */
 public enum FrequencyType {
 	
-	ABSOLUTE(), RELATIVE(),
+	ABSOLUTE(), MID(), RELATIVE();
 
 }

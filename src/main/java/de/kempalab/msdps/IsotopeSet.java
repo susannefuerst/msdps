@@ -70,14 +70,16 @@ public class IsotopeSet extends HashMap<Isotope, Integer> {
 	}
 	
 	/**
-	 * If we imagine the collection of associated fragments, that can be composed by the isotopes of this set, this method
-	 * returns all detectable fragment masses and their frequency as number of fragments with this mass.
+	 * If we imagine the collection of associated fragments, that can be composed by
+	 * the isotopes of this set, this method returns all detectable fragment masses
+	 * and their frequency as number of fragments with this mass.
 	 * 
-	 * The method randomly selects isotopes (weighted by abundance) from this set to compose the fragment and measures its weight.
+	 * The method randomly selects isotopes (weighted by abundance) from this set to
+	 * recompose the fragment and measures its weight.
 	 * 
 	 * @return fragment masses and their frequency
 	 */
-	public MassSpectrum simulateSpectrum() {
+	public MassSpectrum simulateSpectrum(int charge) {
 		ElementFormula fragmentComponents = fragmentAssociatedWithTheSet.getComponents();
 		MassSpectrum spectrum = new MassSpectrum(FrequencyType.ABSOLUTE);
 		for (int i = 1; i <= numberOfFragmentsInTheSet; i++) {
@@ -129,8 +131,7 @@ public class IsotopeSet extends HashMap<Isotope, Integer> {
 				}
 			}
 		}
-		checkQuality(spectrum);
-		return spectrum;
+		return spectrum.adjustToCharge(charge);
 	}
 	
 	@SuppressWarnings("unused")
@@ -163,42 +164,6 @@ public class IsotopeSet extends HashMap<Isotope, Integer> {
 		}
 		Isotope isotopeToChoose = availableIsotopes.get(index);
 		return isotopeToChoose;
-	}
-
-	/**
-	 * Checks if the frequencies if this map sum up to at least the FREQUENCY_QUALITY_VALUE.
-	 * @param spectrum
-	 */
-	private void checkQuality(MassSpectrum spectrum) {
-		Double sumOfFrequencies = 0.0;
-		for (Entry<Double,Double> entry : spectrum.entrySet()) {
-			sumOfFrequencies = sumOfFrequencies + entry.getValue();
-		}
-	}
-	
-	/**
-	 * Creates a MassSpectrum with frequencies absolute to the number of elements in the fragmentMasses list.
-	 * @param fragmentMasses
-	 * @return A MassSpectrum with ABSOLUTE frequencies
-	 */
-	public MassSpectrum createSpectrumFromMasses(ArrayList<Double> fragmentMasses) {
-		MassSpectrum spectrum = new MassSpectrum(FrequencyType.ABSOLUTE);
-		for (Double mass : fragmentMasses) {
-			if (!(mass > 0.0)) {
-				LOGGER.info("Detected mass 0.0");
-			}
-			if (spectrum.get(mass) == null /*count each mass only once*/) {
-				int index = fragmentMasses.indexOf(mass);
-				int massCount = 1;
-				for (Double otherMass : fragmentMasses.subList(index + 1, fragmentMasses.size())) {
-					if (mass.equals(otherMass)) {
-						massCount++;
-					}
-				}
-				spectrum.put(mass, Double.valueOf(massCount));
-			}
-		}
-		return spectrum;
 	}
 
 }
