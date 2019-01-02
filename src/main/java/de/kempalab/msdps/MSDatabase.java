@@ -13,7 +13,7 @@ import org.jfree.chart.JFreeChart;
 
 import de.kempalab.msdps.constants.FragmentKey;
 import de.kempalab.msdps.constants.FrequencyType;
-import de.kempalab.msdps.constants.MSBarChartType;
+import de.kempalab.msdps.constants.MSDatasetOption;
 import de.kempalab.msdps.constants.MSDatabaseColKey;
 import de.kempalab.msdps.data.DataTable;
 import de.kempalab.msdps.util.FileWriterUtils;
@@ -112,7 +112,7 @@ public class MSDatabase {
 	 * @param outputFolderPath
 	 * @throws IOException
 	 */
-	public void saveMSCategoryBarChartAsJPEG(String outputFolderPath, MSBarChartType barChartType) throws IOException {
+	public void saveMSCategoryBarChartAsJPEG(String outputFolderPath, MSDatasetOption datasetOption) throws IOException {
 		File folder = new File(outputFolderPath);
 		if (!folder.exists()) {
 			folder.mkdir();
@@ -120,7 +120,7 @@ public class MSDatabase {
 		String filePath = outputFolderPath + createFilename() + FileWriterUtils.JPEG_EXTENSION;
 		filePath = FileWriterUtils.checkFilePath(filePath, FileWriterUtils.JPEG_EXTENSION);
 		File jpegFile = new File(filePath);
-		JFreeChart barChart = MSCategoryBarChartCreator.createMSBarChart(this, barChartType);
+		JFreeChart barChart = MSCategoryBarChartCreator.createMSBarChart(this, datasetOption);
 		int jpegSizeScaleFactor = MathUtils.maxSize(getNaturalSpectrum(), getMarkedSpectrum(), getMixedSpectrum());
 		int width = Math.max(JPEG_WIDTH_PER_CATEGORY * jpegSizeScaleFactor, JPEG_MIN_WIDTH);
 		int height = Math.max(JPEG_HEIGHT_PER_CATEGORY * jpegSizeScaleFactor, JPEG_MIN_HEIGHT);

@@ -5,6 +5,6 @@ package de.kempalab.msdps.constants;
  * @author sfuerst
  *
  */
-public enum MSBarChartType {
+public enum MSDatasetOption {
 	NATURAL_SPECTRUM_ONLY, PARTIALLY_LABELED_SPECTRUM_ONLY, COMPLETELY_LABELED_SPECTRUM_ONLY, ALL_SPECTRA;
 }
