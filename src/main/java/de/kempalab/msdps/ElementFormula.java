@@ -45,4 +45,12 @@ public class ElementFormula extends HashMap<Element, Integer> {
 		return elements;
 	}
 
+	public Double calculateMass() {
+		Double mass = 0.0;
+		for (Entry<Element, Integer> entry : this.entrySet()) {
+			mass = mass + entry.getKey().mostCommonIsotope().getAtomicMass() * entry.getValue();
+		}
+		return mass;
+	}
+
 }
