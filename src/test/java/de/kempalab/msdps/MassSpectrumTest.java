@@ -85,22 +85,6 @@ public class MassSpectrumTest extends TestCase {
 		assertEquals(expectedSpectrum, newSpectrum);
 	}
 	
-	public void testSkipLowMIDs2() {
-		MassSpectrum map = new MassSpectrum(FrequencyType.ABSOLUTE);
-		map.put(123.000, 1.0);
-		map.put(123.010, 9.0);
-		map.put(124.000, 90.0);
-		map.put(125.000, 900.0);
-		MassSpectrum expectedSpectrum = new MassSpectrum(FrequencyType.MID);
-		expectedSpectrum.put(124.000, 0.09);
-		expectedSpectrum.put(125.000, 0.9);
-		MassSpectrum newSpectrum = map.skipLowFrequency(0.01);
-		LOGGER.info(expectedSpectrum);
-		LOGGER.info(newSpectrum);
-		assertEquals(expectedSpectrum, newSpectrum);
-		assertEquals(expectedSpectrum.getFrequencyType(), newSpectrum.getFrequencyType());
-	}
-	
 	public void testSkipHighMassses() {
 		MassSpectrum map = new MassSpectrum(FrequencyType.ABSOLUTE);
 		map.put(123.000, 1.0);

@@ -77,6 +77,7 @@ public class IsotopeSet extends HashMap<Isotope, Integer> {
 	 * The method randomly selects isotopes (weighted by abundance) from this set to
 	 * recompose the fragment and measures its weight.
 	 * 
+	 * @param charge, absolute value of the (actually negative) charge of the ion
 	 * @return fragment masses and their frequency
 	 */
 	public MassSpectrum simulateSpectrum(int charge) {

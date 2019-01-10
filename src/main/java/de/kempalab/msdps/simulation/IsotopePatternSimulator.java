@@ -22,13 +22,14 @@ public class IsotopePatternSimulator {
 		final double naturalFragments = request.getTotalNumberOfFragments() * (1 - incRate);
 		final double experimentalFragments = request.getTotalNumberOfFragments() * incRate;
 		final boolean analyzeMassShifts = request.getAnalyzeMassShifts();
+		final int charge = request.getCharge();
 		final FrequencyType frequencyType = request.getTargetFrequencyType();
 		MSDatabaseList msDatabaseList = new MSDatabaseList();
 		for (Fragment fragment : request.getFragments()) {
 			IsotopeSet naturalSet = new IsotopeSet(fragment, naturalFragments, IncorporationType.NATURAL);
 			IsotopeSet markedSet = new IsotopeSet(fragment, experimentalFragments, IncorporationType.EXPERIMENTAL);
-			MassSpectrum naturalSpectrum = naturalSet.simulateSpectrum(1);
-			MassSpectrum markedSpectrum = markedSet.simulateSpectrum(1);
+			MassSpectrum naturalSpectrum = naturalSet.simulateSpectrum(charge);
+			MassSpectrum markedSpectrum = markedSet.simulateSpectrum(charge);
 			MassSpectrum mixedSpectrum = naturalSpectrum.merge(markedSpectrum);
 			Integer roundMassesPrecision = request.getRoundedMassPrecision();
 			Integer roundFrequenciesPrecision = request.getRoundedFrequenciesPrecision();
@@ -69,6 +70,17 @@ public class IsotopePatternSimulator {
 		return simulationResponse;
 	}
 	
+	/**
+	 * Returns a new spectrum that resulted from a manipulation of the parameter
+	 * spectrum.
+	 * 
+	 * @param spectrum, spectrum to be prepared
+	 * @param roundMassesPrecision,
+	 * @param roundFrequenciesPrecision,
+	 * @param minimaFrequency,
+	 * @param frequencyType,
+	 * @return
+	 */
 	public static MassSpectrum prepareSpectrum(MassSpectrum spectrum, Integer roundMassesPrecision,
 			Integer roundFrequenciesPrecision, Double minimaFrequency, FrequencyType frequencyType) {
 		if (roundMassesPrecision != null) {
@@ -86,7 +98,7 @@ public class IsotopePatternSimulator {
 			spectrum = spectrum.skipLowFrequency(minimaFrequency);
 		}
 		Double sumOfFrequencies = 0.0;
-		for (Entry<Double,Double> entry : spectrum.entrySet()) {
+		for (Entry<Double, Double> entry : spectrum.entrySet()) {
 			sumOfFrequencies = sumOfFrequencies + entry.getValue();
 		}
 		return spectrum.sortAscendingByMass();

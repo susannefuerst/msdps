@@ -127,7 +127,7 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 	 *         minimalValue
 	 */
 	public MassSpectrum skipLowFrequency(Double minimalValue) {
-		MassSpectrum newSpectrum = new MassSpectrum(FrequencyType.MID);
+		MassSpectrum newSpectrum = new MassSpectrum(this.getFrequencyType());
 		for (Entry<Double, Double> entry : this.entrySet()) {
 			if (entry.getValue() >= minimalValue) {
 				newSpectrum.put(entry.getKey(), entry.getValue());
@@ -420,6 +420,9 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 	}
 
 	public Double getHighestFrequency() {
+		if (this.size() == 0) {
+			return 0.0;
+		}
 		List<Entry<Double, Double>> entryList = new ArrayList<>(this.entrySet());
 		entryList.sort(Entry.comparingByValue());
 		return entryList.get(entryList.size() - 1).getValue();

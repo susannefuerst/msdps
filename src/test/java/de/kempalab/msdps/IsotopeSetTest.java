@@ -263,6 +263,8 @@ public class IsotopeSetTest extends TestCase {
 			simulatorRequest.setMinimalRelativeFrequency(0.0);
 			simulatorRequest.setIncorporationRate(new IncorporationRate(0.1));
 			simulatorRequest.setFragments(new FragmentList(fragment));
+			simulatorRequest.setCharge(0);
+			simulatorRequest.setTargetFrequencyType(FrequencyType.MID);
 			IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 			MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 			MassSpectrum naturalSpectrum = msDatabase.getNaturalSpectrum();
@@ -293,6 +295,8 @@ public class IsotopeSetTest extends TestCase {
 			IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 			simulatorRequest.setFragments(new FragmentList(fragment));
 			simulatorRequest.setMinimalRelativeFrequency(0.0);
+			simulatorRequest.setCharge(0);
+			simulatorRequest.setTargetFrequencyType(FrequencyType.MID);
 			IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 			MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 			MassSpectrum naturalSimulatedSpectrum = msDatabase.getNaturalSpectrum().sortAscendingByMass();
@@ -336,6 +340,8 @@ public class IsotopeSetTest extends TestCase {
 				IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 				simulatorRequest.setFragments(new FragmentList(fragment));
 				simulatorRequest.setMinimalRelativeFrequency(0.0);
+				simulatorRequest.setCharge(0);
+				simulatorRequest.setTargetFrequencyType(FrequencyType.MID);
 				IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 				MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 				MassSpectrum naturalSimulatedSpectrum = msDatabase.getNaturalSpectrum().sortAscendingByMass();
@@ -386,6 +392,8 @@ public class IsotopeSetTest extends TestCase {
 				IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 				simulatorRequest.setFragments(new FragmentList(fragment));
 				simulatorRequest.setMinimalRelativeFrequency(0.0);
+				simulatorRequest.setCharge(0);
+				simulatorRequest.setTargetFrequencyType(FrequencyType.MID);
 				IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 				MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 				MassSpectrum naturalSimulatedSpectrum = msDatabase.getNaturalSpectrum();
@@ -433,6 +441,8 @@ public class IsotopeSetTest extends TestCase {
 		simulatorRequest.setFragments(new FragmentList(fragment));
 		simulatorRequest.setMinimalRelativeFrequency(0.0);
 		simulatorRequest.setIncorporationRate(new IncorporationRate(0.0));
+		simulatorRequest.setCharge(0);
+		simulatorRequest.setTargetFrequencyType(FrequencyType.MID);
 		IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 		MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 		MassSpectrum naturalSimulatedSpectrum = msDatabase.getNaturalSpectrum();
@@ -465,6 +475,8 @@ public class IsotopeSetTest extends TestCase {
 		simulatorRequest.setFragments(new FragmentList(fragment));
 		simulatorRequest.setMinimalRelativeFrequency(0.0);
 		simulatorRequest.setIncorporationRate(new IncorporationRate(0.0));
+		simulatorRequest.setCharge(0);
+		simulatorRequest.setTargetFrequencyType(FrequencyType.MID);
 		IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 		MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 		MassSpectrum naturalSimulatedSpectrum = msDatabase.getNaturalSpectrum();
@@ -497,6 +509,8 @@ public class IsotopeSetTest extends TestCase {
 		simulatorRequest.setFragments(new FragmentList(fragment));
 		simulatorRequest.setMinimalRelativeFrequency(0.0);
 		simulatorRequest.setIncorporationRate(new IncorporationRate(0.0));
+		simulatorRequest.setCharge(0);
+		simulatorRequest.setTargetFrequencyType(FrequencyType.MID);
 		IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 		MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 		MassSpectrum naturalSimulatedSpectrum = msDatabase.getNaturalSpectrum();
