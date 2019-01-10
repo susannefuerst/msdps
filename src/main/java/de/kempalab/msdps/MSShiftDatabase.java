@@ -228,7 +228,28 @@ public class MSShiftDatabase extends MSDatabase {
 	 * @param mass
 	 * @return A nice formula representation of the isotopes that induce this mass, i.e. (¹²C)₂(¹³C)₃(¹H)₂(²H)₅(¹⁵N)₂.
 	 */
-	public String shiftInducingIsotopes(IncorporationType incType, Double mass) {
+	public String shiftInducingIsotopesNiceFormatted(IncorporationType incType, Double mass) {
+		return shiftInducingIsotopes(incType, mass).toNiceFormattedFormula();
+	}
+	
+	/**
+	 * Creates a nice formula representation of the isotopes that induced the shift
+	 * from the p_0 peak to the peak with the parameter mass. i.e.
+	 * (¹²C)₂(¹³C)₃(¹H)₂(²H)₅(¹⁵N)₂
+	 * 
+	 * @param incType a hint to the MassSpectrum we refer to
+	 *                IncorporationType.NATURAL -> natural spectrum
+	 *                IncorporationType.MARKED -> marked spectrum
+	 *                IncorporationType.MIXED -> mixed spectrum
+	 * @param mass
+	 * @return A nice formula representation of the isotopes that induce this mass,
+	 *         i.e. (12C)2(13C)3(1H)2(2H)5(15N)2.
+	 */
+	public String shiftInducingIsotopesSimpleString(IncorporationType incType, Double mass) {
+		return shiftInducingIsotopes(incType, mass).toSimpleString();
+	}
+
+	public IsotopeFormula shiftInducingIsotopes(IncorporationType incType, Double mass) {
 		MassSpectrum spectrum = spectrumByIncorporationType(incType);
 		List<Entry<Double, Double>> spectrumEntryList = new ArrayList<>(spectrum.entrySet());
 		MassShiftDataSet shiftDataset = shiftDatasetByIncorporationType(incType);
@@ -241,14 +262,14 @@ public class MSShiftDatabase extends MSDatabase {
 			}
 		}
 		IsotopeListList shiftInducingIsotopes = shiftEntryList.get(massIndex).getValue();
-		return shiftInducingIsotopes.toNiceFormattedFormula();
+		return shiftInducingIsotopes.toIsotopeFormula();
 	}
-	
+
 	/**
 	 * @param incType a hint to the MassSpectrum or MassShiftDataset we refer to:
-	 * IncorporationType.NATURAL -> natural spectrum
-	 * IncorporationType.MARKED -> marked spectrum
-	 * IncorporationType.MIXED -> mixed spectrum
+	 *                IncorporationType.NATURAL -> natural spectrum
+	 *                IncorporationType.MARKED -> marked spectrum
+	 *                IncorporationType.MIXED -> mixed spectrum
 	 * @return The MassShiftDataset related to this IncorporationType
 	 */
 	public MassShiftDataSet shiftDatasetByIncorporationType(IncorporationType incType) {

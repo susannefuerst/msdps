@@ -77,11 +77,11 @@ public class MSCategoryBarChartCreator {
 				Double mass = (Double) massCategoryObject;
 				String sublabel = null;
 				if (datasetOption.equals(MSDatasetOption.NATURAL_SPECTRUM_ONLY)) {
-					sublabel = msshiftDatabase.shiftInducingIsotopes(IncorporationType.NATURAL, mass);
+					sublabel = msshiftDatabase.shiftInducingIsotopesNiceFormatted(IncorporationType.NATURAL, mass);
 				} else if (datasetOption.equals(MSDatasetOption.PARTIALLY_LABELED_SPECTRUM_ONLY)) {
-					sublabel = msshiftDatabase.shiftInducingIsotopes(IncorporationType.MIXED, mass);
+					sublabel = msshiftDatabase.shiftInducingIsotopesNiceFormatted(IncorporationType.MIXED, mass);
 				} else {
-					sublabel = msshiftDatabase.shiftInducingIsotopes(IncorporationType.MARKED, mass);
+					sublabel = msshiftDatabase.shiftInducingIsotopesNiceFormatted(IncorporationType.MARKED, mass);
 				}
 				domainAxis.addSubLabel(mass, sublabel);
 				domainAxis.setTickLabelFont(new Font(ISOTOPE_SUBABEL_FONT, Font.PLAIN, 14));

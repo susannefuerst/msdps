@@ -30,6 +30,14 @@ public class IsotopeListList extends ArrayList<IsotopeList> {
 		return builder.toString();
 	}
 	
+	/**
+	 * Converts as list containing the list C_13, C_13, N_15, H_1 and H_2, C12 to
+	 * the following string : [C_13|C_13|N_15|H_1][H_2|C12] (12C)(13C)2(15N)(1H)(2H)
+	 */
+	public String toSimpleString() {
+		return this.toIsotopeFormula().toSimpleString();
+	}
+
 	private static final String LIST_STRING_REGEX = "(\\[[^\\[]*\\])";
 	/**
 	 * Creates an IsotopeListList from a string like [C_13|C_13|N_15|H_1][H_2|C12], where the isotopes in brackets determine the {@link IsotopeList}

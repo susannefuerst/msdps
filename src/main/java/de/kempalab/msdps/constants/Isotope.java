@@ -194,4 +194,12 @@ public enum Isotope implements Comparable<Isotope> {
 		return superscript + getElement().toString();
 	}
 
+	/**
+	 * 
+	 * @return i.e. (13C)
+	 */
+	public String toSimpleString() {
+		return "(" + getMassNumber() + getElement().toString() + ")";
+	}
+
 }

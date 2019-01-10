@@ -10,6 +10,7 @@ import org.apache.commons.csv.CSVRecord;
 
 import de.kempalab.msdps.constants.FragmentDatabaseColKey;
 import de.kempalab.msdps.constants.FragmentKey;
+import de.kempalab.msdps.constants.MetaboliteKey;
 import de.kempalab.msdps.constants.PathConstants;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
 
@@ -35,9 +36,11 @@ public class FragmentsDatabase {
 				String fragmentFormula = csvRecord.get(FragmentDatabaseColKey.FRAGMENT_FORMULA.getColumnIndex());
 				String shortMoleculeName = csvRecord.get(FragmentDatabaseColKey.SHORT_MOLECULE_NAME.getColumnIndex());
 				String fragmentCapacity = csvRecord.get(FragmentDatabaseColKey.FRAGMENT_CAPACITY.getColumnIndex());
+				String derivate = csvRecord.get(FragmentDatabaseColKey.DERIVATE.getColumnIndex());
 				int baseMass = Integer.parseInt(csvRecord.get(FragmentDatabaseColKey.FRAGMENT_BASE_INT_MASS.getColumnIndex()));
 				FragmentKey key = FragmentKey.byMassAndAbbreviation(baseMass, shortMoleculeName);
 				Fragment fragment = new Fragment(key, fragmentFormula, fragmentCapacity);
+				fragment.setDerivate(derivate);
 				data.add(fragment);
 			}
 		} catch (IOException e) {
@@ -61,6 +64,28 @@ public class FragmentsDatabase {
 	}
 	
 	public static FragmentList getAllFregments() {
-		return data;
+		return data.copy();
+	}
+
+	public static FragmentList getFragments(MetaboliteKey metabolite) {
+		FragmentList fragments = new FragmentList();
+		for (Fragment fragment : data) {
+			if ((fragment.getFragmentKey().getMetaboliteKey().equals(metabolite))) {
+				fragments.add(fragment.copy());
+			}
+		}
+		return fragments;
+	}
+
+	public static FragmentList getFragments(MetaboliteKey[] metabolites) {
+		FragmentList fragments = new FragmentList();
+		for (MetaboliteKey metabolite : metabolites) {
+			for (Fragment fragment : data) {
+				if ((fragment.getFragmentKey().getMetaboliteKey().equals(metabolite))) {
+					fragments.add(fragment.copy());
+				}
+			}
+		}
+		return fragments;
 	}
 }

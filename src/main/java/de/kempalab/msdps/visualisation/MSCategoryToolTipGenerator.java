@@ -36,7 +36,7 @@ public class MSCategoryToolTipGenerator extends StandardCategoryToolTipGenerator
 		if (completeIncorporation == legendIncorporation) {
 			incorporationType = IncorporationType.MARKED;
 		}
-		String isotopesString = msshiftDatabase.shiftInducingIsotopes(incorporationType, mass);
+		String isotopesString = msshiftDatabase.shiftInducingIsotopesNiceFormatted(incorporationType, mass);
         return isotopesString;
     }
 

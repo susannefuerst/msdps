@@ -123,6 +123,14 @@ public class DataTable extends ArrayList<ArrayList<String>> {
 		this.add(valueColumn);
 	}
 	
+	public void addColumn(String... columnValues) {
+		ArrayList<String> column = new ArrayList<>();
+		for (String value : columnValues) {
+			column.add(value);
+		}
+		this.add(column);
+	}
+
 	/**
 	 * inserts this maps at the given column index.
 	 * @param columnIndex
@@ -176,19 +184,6 @@ public class DataTable extends ArrayList<ArrayList<String>> {
 			stringList.add(String.valueOf(entry));
 		}
 		this.add(stringList);
-	}
-	
-	/**
-	 * add this lists as columns to the specified index
-	 * @param <T>
-	 * @param arrayLists
-	 */
-	@SuppressWarnings("unchecked")
-	public <T> void addColumns(int columnIndex, ArrayList<T>...arrayLists) {
-		int shift = 0;
-		for (ArrayList<T> list : arrayLists) {
-			addColumn(columnIndex + shift, list);
-		}
 	}
 	
 	/**

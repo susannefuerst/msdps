@@ -15,4 +15,12 @@ public class FragmentList extends ArrayList<Fragment> {
 		}
 	}
 
+	public FragmentList copy() {
+		FragmentList fragments = new FragmentList();
+		for (Fragment fragment : this) {
+			fragments.add(fragment.copy());
+		}
+		return fragments;
+	}
+
 }

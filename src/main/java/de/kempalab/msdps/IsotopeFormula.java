@@ -87,4 +87,22 @@ public class IsotopeFormula extends LinkedHashMap<Isotope, Integer> {
 		return buffer.toString();
 	}
 
+	/**
+	 * 
+	 * @return i.e (12C)2(13C)5(1H)15(2H)(15N)2
+	 */
+	public String toSimpleString() {
+		StringBuffer buffer = new StringBuffer();
+		for (Entry<Isotope, Integer> entry : this.entrySet()) {
+			Integer countValue = entry.getValue();
+			Isotope isotope = entry.getKey();
+			if (countValue == 1) {
+				buffer.append(isotope.toSimpleString());
+			} else {
+				buffer.append(isotope.toSimpleString() + countValue);
+			}
+		}
+		return buffer.toString();
+	}
+
 }

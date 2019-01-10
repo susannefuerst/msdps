@@ -24,6 +24,7 @@ public class Fragment {
 	private String capacityFormula = new String();
 	private ElementFormula fragmentComponents = new ElementFormula();
 	private ExperimentalIncorporationCapacity experimentalIncorporationCapacity = new ExperimentalIncorporationCapacity();
+	private String derivate;
 	
 	public static final String FORMULA_REG_EX = "([A-Z][a-z]{0,1})([0-9]{0,3})";
 	
@@ -199,6 +200,12 @@ public class Fragment {
 		return fragment;
 	}
 
-	
+	public String getDerivate() {
+		return derivate;
+	}
+
+	public void setDerivate(String derivate) {
+		this.derivate = derivate;
+	}
  
 }
