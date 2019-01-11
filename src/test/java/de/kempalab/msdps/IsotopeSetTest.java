@@ -260,7 +260,7 @@ public class IsotopeSetTest extends TestCase {
 			Integer precision = 4;
 			simulatorRequest.setRoundedMassPrecision(precision);
 			simulatorRequest.setRoundedFrequenciesPrecision(precision);
-			simulatorRequest.setMinimalRelativeFrequency(0.0);
+			simulatorRequest.setMinimalFrequency(0.0);
 			simulatorRequest.setIncorporationRate(new IncorporationRate(0.1));
 			simulatorRequest.setFragments(new FragmentList(fragment));
 			simulatorRequest.setCharge(0);
@@ -294,7 +294,7 @@ public class IsotopeSetTest extends TestCase {
 			LOGGER.infoValue("Checking fragment", fragment.getFormula());
 			IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 			simulatorRequest.setFragments(new FragmentList(fragment));
-			simulatorRequest.setMinimalRelativeFrequency(0.0);
+			simulatorRequest.setMinimalFrequency(0.0);
 			simulatorRequest.setCharge(0);
 			simulatorRequest.setTargetFrequencyType(FrequencyType.MID);
 			IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
@@ -339,7 +339,7 @@ public class IsotopeSetTest extends TestCase {
 				LOGGER.infoValue("Checking fragment", fragment.getFormula());
 				IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 				simulatorRequest.setFragments(new FragmentList(fragment));
-				simulatorRequest.setMinimalRelativeFrequency(0.0);
+				simulatorRequest.setMinimalFrequency(0.0);
 				simulatorRequest.setCharge(0);
 				simulatorRequest.setTargetFrequencyType(FrequencyType.MID);
 				IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
@@ -391,7 +391,7 @@ public class IsotopeSetTest extends TestCase {
 				LOGGER.infoValue("Checking fragment", fragment.getFormula());
 				IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 				simulatorRequest.setFragments(new FragmentList(fragment));
-				simulatorRequest.setMinimalRelativeFrequency(0.0);
+				simulatorRequest.setMinimalFrequency(0.0);
 				simulatorRequest.setCharge(0);
 				simulatorRequest.setTargetFrequencyType(FrequencyType.MID);
 				IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
@@ -439,7 +439,7 @@ public class IsotopeSetTest extends TestCase {
 		LOGGER.infoValue("Checking fragment", fragment.getFormula());
 		IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 		simulatorRequest.setFragments(new FragmentList(fragment));
-		simulatorRequest.setMinimalRelativeFrequency(0.0);
+		simulatorRequest.setMinimalFrequency(0.0);
 		simulatorRequest.setIncorporationRate(new IncorporationRate(0.0));
 		simulatorRequest.setCharge(0);
 		simulatorRequest.setTargetFrequencyType(FrequencyType.MID);
@@ -473,7 +473,7 @@ public class IsotopeSetTest extends TestCase {
 		LOGGER.infoValue("Checking fragment", fragment.getFormula());
 		IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 		simulatorRequest.setFragments(new FragmentList(fragment));
-		simulatorRequest.setMinimalRelativeFrequency(0.0);
+		simulatorRequest.setMinimalFrequency(0.0);
 		simulatorRequest.setIncorporationRate(new IncorporationRate(0.0));
 		simulatorRequest.setCharge(0);
 		simulatorRequest.setTargetFrequencyType(FrequencyType.MID);
@@ -507,7 +507,7 @@ public class IsotopeSetTest extends TestCase {
 		LOGGER.infoValue("Checking fragment", fragment.getFormula());
 		IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 		simulatorRequest.setFragments(new FragmentList(fragment));
-		simulatorRequest.setMinimalRelativeFrequency(0.0);
+		simulatorRequest.setMinimalFrequency(0.0);
 		simulatorRequest.setIncorporationRate(new IncorporationRate(0.0));
 		simulatorRequest.setCharge(0);
 		simulatorRequest.setTargetFrequencyType(FrequencyType.MID);

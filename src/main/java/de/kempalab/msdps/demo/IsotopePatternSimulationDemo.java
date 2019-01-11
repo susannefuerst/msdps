@@ -19,7 +19,7 @@ public class IsotopePatternSimulationDemo {
 //		Fragment fragment = new Fragment(FragmentKey.UNKNOWN, "N10", "N");
 		simulatorRequest.setFragments(new FragmentList(fragment));
 		simulatorRequest.setIncorporationRate(new IncorporationRate(0.6));
-		simulatorRequest.setMinimalRelativeFrequency(0.002);
+		simulatorRequest.setMinimalFrequency(0.002);
 		simulatorRequest.setAnalyzeMassShifts(true);
 		IsotopePatternSimulator.simulate(simulatorRequest);
 	}

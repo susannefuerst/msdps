@@ -1,6 +1,7 @@
 package de.kempalab.msdps.simulation;
 
 import de.kempalab.msdps.FragmentList;
+import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.FrequencyType;
 import de.kempalab.msdps.data.IncorporationRate;
 
@@ -21,13 +22,21 @@ public class IsotopePatternSimulatorRequest {
 	
 	private IncorporationRate incorporationRate = new IncorporationRate(0.1);
 	private Double totalNumberOfFragments = 100000.0;
-	private Double minimalRelativeFrequency = 0.003;
+	private Double minimalFrequency = 0.1;
 	private Integer roundedMassPrecision = 4;
 	private Integer roundedFrequenciesPrecision = 4;
 	private FragmentList fragments;
 	private Boolean analyzeMassShifts = false;
 	private FrequencyType targetFrequencyType = FrequencyType.RELATIVE;
 	private int charge = 1;
+	/*
+	 * only for independent tracer incorporation
+	 */
+	private Element tracer1;
+	private Element tracer2;
+	private IncorporationRate tracer1Inc;
+	private IncorporationRate tracer2Inc;
+	private IncorporationRate tracerAllInc;
 	
 	/**
 	 * Creates a general {@link IsotopePatternSimulatorRequest} using the following
@@ -75,7 +84,7 @@ public class IsotopePatternSimulatorRequest {
 			this.totalNumberOfFragments = totalNumberOfFragments;
 		}
 		if (minimalRelativeFrequency != null) {
-			this.minimalRelativeFrequency = minimalRelativeFrequency;	
+			this.minimalFrequency = minimalRelativeFrequency;
 		}
 		if (roundedMassPrecision != null) {
 			this.roundedMassPrecision = roundedMassPrecision;
@@ -108,12 +117,12 @@ public class IsotopePatternSimulatorRequest {
 		this.totalNumberOfFragments = totalNumberOfFragments;
 	}
 
-	public Double getMinimalRelativeFrequency() {
-		return minimalRelativeFrequency;
+	public Double getMinimalFrequency() {
+		return minimalFrequency;
 	}
 
-	public void setMinimalRelativeFrequency(Double minimalRelativeFrequency) {
-		this.minimalRelativeFrequency = minimalRelativeFrequency;
+	public void setMinimalFrequency(Double minimalFrequency) {
+		this.minimalFrequency = minimalFrequency;
 	}
 
 	public Integer getRoundedMassPrecision() {
@@ -168,6 +177,46 @@ public class IsotopePatternSimulatorRequest {
 
 	public void setCharge(int charge) {
 		this.charge = charge;
+	}
+
+	public Element getTracer1() {
+		return tracer1;
+	}
+
+	public void setTracer1(Element tracer1) {
+		this.tracer1 = tracer1;
+	}
+
+	public Element getTracer2() {
+		return tracer2;
+	}
+
+	public void setTracer2(Element tracer2) {
+		this.tracer2 = tracer2;
+	}
+
+	public IncorporationRate getTracer1Inc() {
+		return tracer1Inc;
+	}
+
+	public void setTracer1Inc(IncorporationRate tracer1Inc) {
+		this.tracer1Inc = tracer1Inc;
+	}
+
+	public IncorporationRate getTracer2Inc() {
+		return tracer2Inc;
+	}
+
+	public void setTracer2Inc(IncorporationRate tracer2Inc) {
+		this.tracer2Inc = tracer2Inc;
+	}
+
+	public IncorporationRate getTracerAllInc() {
+		return tracerAllInc;
+	}
+
+	public void setTracerAllInc(IncorporationRate tracerAllInc) {
+		this.tracerAllInc = tracerAllInc;
 	}
 
 }

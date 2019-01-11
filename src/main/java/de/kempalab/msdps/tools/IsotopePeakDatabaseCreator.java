@@ -7,10 +7,9 @@ import de.kempalab.msdps.Fragment;
 import de.kempalab.msdps.FragmentList;
 import de.kempalab.msdps.FragmentsDatabase;
 import de.kempalab.msdps.IsotopeFormula;
-import de.kempalab.msdps.IsotopeSet;
 import de.kempalab.msdps.MSDatabase;
 import de.kempalab.msdps.MSShiftDatabase;
-import de.kempalab.msdps.MassSpectrum;
+import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.FrequencyType;
 import de.kempalab.msdps.constants.IncorporationType;
 import de.kempalab.msdps.constants.MetaboliteKey;
@@ -44,121 +43,57 @@ public class IsotopePeakDatabaseCreator {
 			if (capacity.isEmpty()) {
 				continue;
 			}
-			String baseID = fragment.getFragmentKey().getMetaboliteKey().getMoleculeName() + "_"
-					+ fragment.getDerivate() + "_" + fragment.baseMass();
-			String rt = "NA";
-			String identity = fragment.getFragmentKey().getMetaboliteKey().getMoleculeName() + "_"
-					+ fragment.baseMass();
-			String formula = fragment.getFormula();
-			if (capacity.get("C") == null || capacity.get("N") == null) {
-				IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
-				simulatorRequest.setFragments(new FragmentList(fragment));
-				simulatorRequest.setIncorporationRate(new IncorporationRate(0.5));
-				simulatorRequest.setMinimalRelativeFrequency(MIN_FREQUENCY);
-				simulatorRequest.setAnalyzeMassShifts(true);
-				simulatorRequest.setTotalNumberOfFragments(NUMBER_OF_FRAGMENTS);
-				simulatorRequest.setRoundedMassPrecision(PRECISION);
-				simulatorRequest.setTargetFrequencyType(FREQUENCY_TYPE);
+			IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
+			simulatorRequest.setFragments(new FragmentList(fragment));
+			simulatorRequest.setIncorporationRate(new IncorporationRate(0.5));
+			simulatorRequest.setMinimalFrequency(MIN_FREQUENCY);
+			simulatorRequest.setAnalyzeMassShifts(true);
+			simulatorRequest.setTotalNumberOfFragments(NUMBER_OF_FRAGMENTS);
+			simulatorRequest.setRoundedMassPrecision(PRECISION);
+			simulatorRequest.setTargetFrequencyType(FREQUENCY_TYPE);
+			if (capacity.get(Element.C) == null || capacity.get(Element.N) == null) {
 				IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 				MSDatabase msDatabase = response.getMsDatabaseList().get(0);
-				MassSpectrum mixedSpectrum = msDatabase.getMixedSpectrum();
-				int entryCount = 0;
-				for (Entry<Double, Double> entry : mixedSpectrum.entrySet()) {
-					String id = baseID + entryCount;
-					Double exactMass = entry.getKey();
-					Double predictedMass = exactMass;
-					Double predictedIntensity = entry.getValue();
-					IsotopeFormula shiftInducingIsotopes = ((MSShiftDatabase) msDatabase).shiftInducingIsotopes(IncorporationType.MIXED, exactMass);
-					String heavyIsotopes = shiftInducingIsotopes.toSimpleString();
-					Integer c = shiftInducingIsotopes.get(Isotope.C_13) != null ? shiftInducingIsotopes.get(Isotope.C_13) : 0;
-					Integer n = shiftInducingIsotopes.get(Isotope.N_15) != null ? shiftInducingIsotopes.get(Isotope.N_15) : 0;
-					table.addColumn(id);
-					table.addColumn(exactMass.toString());
-					table.addColumn("N/A");
-					table.addColumn(identity);
-					table.addColumn(formula);
-					table.addColumn(predictedMass.toString());
-					table.addColumn(predictedIntensity.toString());
-					table.addColumn(heavyIsotopes);
-					table.addColumn(c.toString());
-					table.addColumn(n.toString());
-					entryCount++;
-				}
+				addRows(msDatabase, table, fragment);
 			} else {
-				String cCapacity = "C" + capacity.get("C");
-				String nCapacity = "N" + capacity.get("N");
-				Fragment fragmentCN = fragment.copy();
-				Fragment fragmentC = fragment.copy();
-				fragmentC.changeCapacity(cCapacity);
-				Fragment fragmentN = fragment.copy();
-				fragmentN.changeCapacity(nCapacity);
-
-				IsotopeSet naturalSet = new IsotopeSet(fragmentCN, NUMBER_OF_FRAGMENTS * (1 - INC),
-						IncorporationType.NATURAL);
-				IsotopeSet markedSetCN = new IsotopeSet(fragmentCN, NUMBER_OF_FRAGMENTS * (INC_CN),
-						IncorporationType.EXPERIMENTAL);
-				IsotopeSet markedSetC = new IsotopeSet(fragmentC, NUMBER_OF_FRAGMENTS * (INC_C),
-						IncorporationType.EXPERIMENTAL);
-				IsotopeSet markedSetN = new IsotopeSet(fragmentN, NUMBER_OF_FRAGMENTS * (INC_N),
-						IncorporationType.EXPERIMENTAL);
-
-				MassSpectrum naturalSpectrum = naturalSet.simulateSpectrum(1);
-				MassSpectrum markedSpectrumCN = markedSetCN.simulateSpectrum(1);
-				MassSpectrum markedSpectrumC = markedSetC.simulateSpectrum(1);
-				MassSpectrum markedSpectrumN = markedSetN.simulateSpectrum(1);
-				MassSpectrum mixedSpectrum = naturalSpectrum.merge(markedSpectrumCN);
-				mixedSpectrum = mixedSpectrum.merge(markedSpectrumC);
-				mixedSpectrum = mixedSpectrum.merge(markedSpectrumN);
-
-				naturalSpectrum = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, PRECISION, PRECISION,
-						MIN_FREQUENCY, FREQUENCY_TYPE);
-				markedSpectrumCN = IsotopePatternSimulator.prepareSpectrum(markedSpectrumCN, PRECISION, PRECISION,
-						MIN_FREQUENCY, FREQUENCY_TYPE);
-				markedSpectrumC = IsotopePatternSimulator.prepareSpectrum(markedSpectrumC, PRECISION, PRECISION,
-						MIN_FREQUENCY, FREQUENCY_TYPE);
-				markedSpectrumN = IsotopePatternSimulator.prepareSpectrum(markedSpectrumN, PRECISION, PRECISION,
-						MIN_FREQUENCY, FREQUENCY_TYPE);
-				mixedSpectrum = IsotopePatternSimulator.prepareSpectrum(mixedSpectrum, PRECISION, PRECISION,
-						MIN_FREQUENCY, FREQUENCY_TYPE);
-
-				MSShiftDatabase msShiftDatabase = new MSShiftDatabase();
-				msShiftDatabase.setIncorporatedTracers("CN,C,N");
-				msShiftDatabase.setIncorporationRate(INC);
-				msShiftDatabase.setFragmentKey(fragmentCN.getFragmentKey());
-				msShiftDatabase.setNaturalSpectrum(naturalSpectrum);
-				msShiftDatabase.setMarkedSpectrum(markedSpectrumC);
-				msShiftDatabase.setMixedSpectrum(mixedSpectrum);
-				msShiftDatabase.setFragmentFormula(fragmentCN.getFormula());
-
-				int entryCount = 0;
-				for (Entry<Double, Double> entry : mixedSpectrum.entrySet()) {
-					String id = baseID + entryCount;
-					Double exactMass = entry.getKey();
-					Double predictedMass = exactMass;
-					Double predictedIntensity = entry.getValue();
-					IsotopeFormula shiftInducingIsotopes = ((MSShiftDatabase) msShiftDatabase)
-							.shiftInducingIsotopes(IncorporationType.MIXED, exactMass);
-					String heavyIsotopes = shiftInducingIsotopes.toSimpleString();
-					Integer c = shiftInducingIsotopes.get(Isotope.C_13) != null
-							? shiftInducingIsotopes.get(Isotope.C_13)
-							: 0;
-					Integer n = shiftInducingIsotopes.get(Isotope.N_15) != null
-							? shiftInducingIsotopes.get(Isotope.N_15)
-							: 0;
-					table.addColumn(id);
-					table.addColumn(exactMass.toString());
-					table.addColumn("N/A");
-					table.addColumn(identity);
-					table.addColumn(formula);
-					table.addColumn(predictedMass.toString());
-					table.addColumn(predictedIntensity.toString());
-					table.addColumn(heavyIsotopes);
-					table.addColumn(c.toString());
-					table.addColumn(n.toString());
-					entryCount++;
-				}
+				simulatorRequest.setTracer1(Element.C);
+				simulatorRequest.setTracer2(Element.N);
+				simulatorRequest.setTracer1Inc(new IncorporationRate(INC_C));
+				simulatorRequest.setTracer2Inc(new IncorporationRate(INC_N));
+				simulatorRequest.setTracerAllInc(new IncorporationRate(INC_CN));
+				IsotopePatternSimulatorResponse response = IsotopePatternSimulator
+						.simulateIndependentTracerIncorporation(simulatorRequest);
+				MSDatabase msDatabase = response.getMsDatabaseList().get(0);
+				addRows(msDatabase, table, fragment);
 			}
 		}
+	}
+
+	private static void addRows(MSDatabase msDatabase, DataTable table, Fragment fragment) {
+		String moleculeName = fragment.getFragmentKey().getMetaboliteKey().getMoleculeName();
+		String baseID = moleculeName + "_" + fragment.getDerivate() + "_" + fragment.baseMass();
+		String rt = "NA";
+		String identity = moleculeName + "_" + fragment.baseMass();
+		String formula = fragment.getFormula();
+		int entryCount = 0;
+		for (Entry<Double, Double> entry : msDatabase.getMixedSpectrum().entrySet()) {
+			String id = baseID + entryCount;
+			Double exactMass = entry.getKey();
+			String mass = exactMass.toString();
+			String predictedIntensity = entry.getValue().toString();
+			IsotopeFormula shiftInducingIsotopes = ((MSShiftDatabase) msDatabase)
+					.shiftInducingIsotopes(IncorporationType.MIXED, exactMass);
+			String heavyIsotopes = shiftInducingIsotopes.toSimpleString();
+			String c = shiftInducingIsotopes.get(Isotope.C_13) != null
+					? shiftInducingIsotopes.get(Isotope.C_13).toString()
+					: "0";
+			String n = shiftInducingIsotopes.get(Isotope.N_15) != null
+					? shiftInducingIsotopes.get(Isotope.N_15).toString()
+					: "0";
+			table.addRow(id, mass, rt, identity, formula, mass, predictedIntensity, heavyIsotopes, c, n);
+			entryCount++;
+		}
+
 	}
 
 }

@@ -20,7 +20,7 @@ public class SaveMassSpectraToJpegDemo {
 		Fragment fragment = new Fragment(FragmentKey.UNKNOWN, "CO2", "C");
 		simulatorRequest.setFragments(new FragmentList(fragment));
 		simulatorRequest.setIncorporationRate(new IncorporationRate(0.6));
-		simulatorRequest.setMinimalRelativeFrequency(0.002);
+		simulatorRequest.setMinimalFrequency(0.002);
 		simulatorRequest.setAnalyzeMassShifts(true);
 		IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 		MSDatabase msDatabase = response.getMsDatabaseList().get(0);

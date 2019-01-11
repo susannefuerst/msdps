@@ -64,7 +64,7 @@ public class DataTable extends ArrayList<ArrayList<String>> {
 		return max;
 	}
 	
-	public void addRow(String[] rowValues) {
+	public void addRow(String... rowValues) {
 		for (String value : rowValues) {
 			this.addColumn(value);
 		}

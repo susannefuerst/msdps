@@ -16,7 +16,7 @@ public class SaveMassSpectraToCsvDemo {
 		IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 		simulatorRequest.setFragments(FragmentsDatabase.getAllFregments());
 		simulatorRequest.setIncorporationRate(new IncorporationRate(0.6));
-		simulatorRequest.setMinimalRelativeFrequency(0.002);
+		simulatorRequest.setMinimalFrequency(0.002);
 		simulatorRequest.setAnalyzeMassShifts(true);
 		IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 		for (MSDatabase msDatabase : response.getMsDatabaseList()) {
