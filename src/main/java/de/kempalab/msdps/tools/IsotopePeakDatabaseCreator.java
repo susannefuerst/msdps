@@ -1,5 +1,6 @@
 package de.kempalab.msdps.tools;
 
+import java.io.IOException;
 import java.util.Map.Entry;
 
 import de.kempalab.msdps.ExperimentalIncorporationCapacity;
@@ -35,7 +36,7 @@ public class IsotopePeakDatabaseCreator {
 
 	public static final double INC = INC_C + INC_CN + INC_N;
 
-	public static void main(String[] args) throws FrequencyTypeMismatchException {
+	public static void main(String[] args) throws FrequencyTypeMismatchException, IOException {
 		DataTable table = new DataTable("ID", "exactMass", "RT", "identity", "formula", "predictedMass", "predictedIntensity", 
 				"heavyIsotopes", "incorporatedC", "incorporatedN");
 		for (Fragment fragment : FRAGMENTS) {
@@ -66,6 +67,7 @@ public class IsotopePeakDatabaseCreator {
 				MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 				addRows(msDatabase, table, fragment);
 			}
+			table.writeToCsv("N/A", true, "Z:\\data\\db\test.csv");
 		}
 	}
 
