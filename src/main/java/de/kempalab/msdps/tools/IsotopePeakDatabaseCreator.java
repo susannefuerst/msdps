@@ -13,6 +13,7 @@ import de.kempalab.msdps.MSShiftDatabase;
 import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.FrequencyType;
 import de.kempalab.msdps.constants.IncorporationType;
+import de.kempalab.msdps.constants.Isotope;
 import de.kempalab.msdps.constants.MetaboliteKey;
 import de.kempalab.msdps.data.DataTable;
 import de.kempalab.msdps.data.IncorporationRate;
@@ -20,7 +21,6 @@ import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorRequest;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorResponse;
-import net.sf.mzmine.modules.isotopeincorporation.simulation.data.constants.Isotope;
 
 public class IsotopePeakDatabaseCreator {
 
@@ -67,8 +67,8 @@ public class IsotopePeakDatabaseCreator {
 				MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 				addRows(msDatabase, table, fragment);
 			}
-			table.writeToCsv("N/A", true, "Z:\\data\\db\test.csv");
 		}
+		table.writeToCsv("N/A", true, "Z:\\data\\db\\test.csv");
 	}
 
 	private static void addRows(MSDatabase msDatabase, DataTable table, Fragment fragment) {
@@ -79,7 +79,7 @@ public class IsotopePeakDatabaseCreator {
 		String formula = fragment.getFormula();
 		int entryCount = 0;
 		for (Entry<Double, Double> entry : msDatabase.getMixedSpectrum().entrySet()) {
-			String id = baseID + entryCount;
+			String id = baseID + "_" + entryCount;
 			Double exactMass = entry.getKey();
 			String mass = exactMass.toString();
 			String predictedIntensity = entry.getValue().toString();
