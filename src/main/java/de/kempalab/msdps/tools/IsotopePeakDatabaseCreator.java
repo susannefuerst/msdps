@@ -25,7 +25,7 @@ import de.kempalab.msdps.simulation.IsotopePatternSimulatorResponse;
 public class IsotopePeakDatabaseCreator {
 
 	public static final MetaboliteKey[] METABOLITES = { MetaboliteKey.GLN };
-	public static final FragmentList FRAGMENTS = FragmentsDatabase.getFragments(METABOLITES);
+	public static final FragmentList FRAGMENTS = FragmentsDatabase.getAllFregments();
 	public static final double INC_CN = 0.2;
 	public static final double INC_C = 0.2;
 	public static final double INC_N = 0.2;
@@ -68,7 +68,7 @@ public class IsotopePeakDatabaseCreator {
 				addRows(msDatabase, table, fragment);
 			}
 		}
-		table.writeToCsv("N/A", true, "Z:\\data\\db\\test.csv");
+		table.writeToCsv("N/A", true, "Z:\\data\\db\\predictedFragmentIsotopePattern.csv");
 	}
 
 	private static void addRows(MSDatabase msDatabase, DataTable table, Fragment fragment) {
