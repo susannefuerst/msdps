@@ -64,6 +64,12 @@ public class DataTable extends ArrayList<ArrayList<String>> {
 		return max;
 	}
 	
+	public void addRow(String[] rowValues) {
+		for (String value : rowValues) {
+			this.addColumn(value);
+		}
+	}
+
 	/**
 	 * Writes this table as csv file to the defined path.
 	 * 
