@@ -197,6 +197,7 @@ public class Fragment {
 
 	public Fragment copy() {
 		Fragment fragment = new Fragment(getFragmentKey(), getFormula(), getCapacityFormula());
+		fragment.setDerivate(derivate);
 		return fragment;
 	}
 
