@@ -42,13 +42,14 @@ public class MyLogger extends Logger {
 	}
 	
 	public void debugValue(String debug, Object object) {
-		if (isDebugEnabled()) {
+		if (this.isDebugEnabled()) {
 			super.debug(debug + ":\t" + object);
 		}
 	}
 	
+	@Override
 	public void debug(Object object) {
-		if (isDebugEnabled()) {
+		if (this.isDebugEnabled()) {
 			super.debug(object);
 		}
 	}
@@ -58,7 +59,7 @@ public class MyLogger extends Logger {
 	}
 	
 	public void debugHorizontalLine() {
-		if (isDebugEnabled()) {
+		if (this.isDebugEnabled()) {
 			System.out.println("\n_________________________________________________________________________________________________________\n");
 		}
 	}

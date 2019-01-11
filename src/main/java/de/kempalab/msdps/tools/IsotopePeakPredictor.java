@@ -12,11 +12,14 @@ import de.kempalab.msdps.constants.IncorporationType;
 import de.kempalab.msdps.constants.Isotope;
 import de.kempalab.msdps.data.DataTable;
 import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
+import de.kempalab.msdps.log.MyLogger;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorRequest;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorResponse;
 
 public class IsotopePeakPredictor implements Runnable {
+	
+	public static final MyLogger LOGGER = MyLogger.getLogger(IsotopePeakPredictor.class);
 
 	DataTable table;
 	IsotopePatternSimulatorRequest request;
@@ -29,6 +32,7 @@ public class IsotopePeakPredictor implements Runnable {
 	@Override
 	public void run() {
 		Fragment fragment = request.getFragments().get(0);
+		LOGGER.info("Started " + fragment.getFragmentKey().name());
 		ExperimentalIncorporationCapacity capacity = fragment.getExperimentalIncorporationCapacity();
 		if (capacity.get(Element.C) == null || capacity.get(Element.N) == null) {
 			IsotopePatternSimulatorResponse response;
@@ -53,7 +57,7 @@ public class IsotopePeakPredictor implements Runnable {
 				e.printStackTrace();
 			}
 		}
-
+		LOGGER.info("Terminated " + fragment.getFragmentKey().name());
 	}
 
 	private static void addRows(MSDatabase msDatabase, DataTable table, Fragment fragment) {

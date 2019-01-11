@@ -186,7 +186,7 @@ public class MassShiftList extends ArrayList<MassShift> {
 			MassShift thisShift = this.get(index);
 			MassShift nextShift = this.get(index + 1);
 			if (!nextShift.follows(thisShift)) {
-//				LOGGER.info(this.toString() + " is not connected.");
+				LOGGER.debug(this.toString() + " is not connected.");
 				return false;
 			}
 		}
