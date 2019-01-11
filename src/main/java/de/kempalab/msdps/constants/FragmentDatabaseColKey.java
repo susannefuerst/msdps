@@ -9,7 +9,7 @@ public enum FragmentDatabaseColKey {
 	MOLECULE_NAME("moleculeName", 1),
 	SHORT_MOLECULE_NAME("shortMoleculeName", 2),
 	FRAGMENT_CAPACITY("fragmentCapacity", 3),
-	FRAGMENT_BASE_INT_MASS("fragmentFormula", 4), DERIVATE("derivate", 6);
+	FRAGMENT_BASE_INT_MASS("fragmentFormula", 4), DERIVATE("derivate", 5);
 	
 	private String header;
 	private int columnIndex;
