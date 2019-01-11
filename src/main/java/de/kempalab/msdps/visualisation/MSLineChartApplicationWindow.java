@@ -11,9 +11,9 @@ import org.jfree.ui.RefineryUtilities;
 
 import de.kempalab.msdps.MSShiftDatabase;
 import de.kempalab.msdps.MassSpectrum;
-import de.kempalab.msdps.constants.MSDatasetOption;
 import de.kempalab.msdps.constants.PathConstants;
 
+@SuppressWarnings("serial")
 public class MSLineChartApplicationWindow extends ApplicationFrame {
 	
 	public MSLineChartApplicationWindow(String title, MassSpectrum massSpectrum) {
