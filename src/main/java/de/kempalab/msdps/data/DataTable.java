@@ -23,9 +23,10 @@ import de.kempalab.msdps.util.FileWriterUtils;
 public class DataTable extends ArrayList<ArrayList<String>> {
 	
 	private ArrayList<String> header = new ArrayList<>();
+	private int numberOfColumns;
 
-	public DataTable() {
-		
+	public DataTable(int numberOfColumns) {
+		this.numberOfColumns = numberOfColumns;
 	}
 	
 	public DataTable(ArrayList<String> header) {
@@ -33,6 +34,7 @@ public class DataTable extends ArrayList<ArrayList<String>> {
 	}
 	
 	public DataTable(String... headers) {
+		this.numberOfColumns = headers.length;
 		for (String header : headers) {
 			this.header.add(header);
 		}
@@ -65,8 +67,16 @@ public class DataTable extends ArrayList<ArrayList<String>> {
 	}
 	
 	public void addRow(String... rowValues) {
+		int columnCount = 0;
 		for (String value : rowValues) {
-			this.addColumn(value);
+			if (this.isEmpty()) {
+				for (int i = 0; i < numberOfColumns; i++) {
+					ArrayList<String> column = new ArrayList<>();
+					this.addColumn(column);
+				}
+			}
+			this.get(columnCount).add(value);
+			columnCount ++;
 		}
 	}
 
