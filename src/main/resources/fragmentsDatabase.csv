@@ -25,15 +25,15 @@ C9H28O4PSi3,Fructose-6-phosphate,F6P,NA,315,(1MEOX)(6TMS),315.1028,
 C12H36O4PSi4,Fructose-6-phosphate,F6P,NA,387,(1MEOX)(6TMS),387.1423,
 C8H17O3Si2,Fumaric acid,Fum,C3,217,(2TMS),217.0711,
 C9H17O4Si2,Fumaric acid,Fum,C4,245,(2TMS),245.066,all
-C9H21O2Si2,Gluconic acid-6-phosphate,6PGA,C3,217,(7TMS),217.1075,
-C9H28O4PSi3,Gluconic acid-6-phosphate,6PGA,NA,315,(7TMS),315.1028,
-C12H36O4PSi4,Gluconic acid-6-phosphate,6PGA,NA,387,(7TMS),387.1423,
+C9H21O2Si2,Gluconic acid-6-phosphate,PGA6,C3,217,(7TMS),217.1075,
+C9H28O4PSi3,Gluconic acid-6-phosphate,PGA6,NA,315,(7TMS),315.1028,
+C12H36O4PSi4,Gluconic acid-6-phosphate,PGA6,NA,387,(7TMS),387.1423,
 C6H14NO2Si,Glucose_MP / BP,Glc,C2N,160,(1MEOX)(5TMS),160.27,"[1,2]"
 C8H21O2Si2,Glucose_MP / BP,Glc,C2,205,(1MEOX)(5TMS),205.1075,"[5,6]"
 C9H21O2Si2,Glucose_MP / BP,Glc,C3,217,(1MEOX)(5TMS),217.1075,"[4,5,6]"
 C9H28O4PSi3,Glucose_MP / BP,Glc,NA,315,(1MEOX)(5TMS),315.1028,
-C9H21O2Si2,Glucose-1/6-phosphate,G1/6P,C3,217,(1MEOX)(6TMS),217.1075,"[4,5,6]"
-C11H30O5PSi3,Glucose-1/6-phosphate,G1/6P,C2,357,(1MEOX)(6TMS),357.1133,
+C9H21O2Si2,Glucose-1/6-phosphate,G16P,C3,217,(1MEOX)(6TMS),217.1075,"[4,5,6]"
+C11H30O5PSi3,Glucose-1/6-phosphate,G16P,C2,357,(1MEOX)(6TMS),357.1133,
 C9H21O2Si2,Glucose-6-phosphate,G6P,C3,217,(1MEOX)(6TMS),217.1075,"[4,5,6]"
 C11H30O5PSi3,Glucose-6-phosphate,G6P,C2,357,(1MEOX)(6TMS),357.1133,
 C10H24NO2Si2,Glutamic acid,Glu,C4N,246,(3TMS),246.134,"[1,2,3,5] * or 4?"
@@ -43,17 +43,17 @@ C9H20NO2Si2,Glutamic acid,Glu,C3N?,230,(2TMS),230.1027,
 C10H22NO4Si2,Glutamic acid,Glu,C5N,276,(2TMS),276.1082,all
 C7H14NOSi,Glutamine,Gln,C4N,156,(3TMS),156.0839,"[2,3,4,5]"
 C10H25N2OSi2,Glutamine,Gln,C4N,245,(3TMS),245.15,
-C9H19O3Si2,Glutaric acid_ 2-hydroxy-,2HG,C3,231,(3TMS),231.0867,
-C10H23O3Si2,Glutaric acid_ 2-hydroxy-,2HG,C4,247,(3TMS),247.118,symmetry
-C13H29O5Si3,Glutaric acid_ 2-hydroxy-,2HG,NA,349,(3TMS),349.1317,sec. structure
+C9H19O3Si2,Glutaric acid_ 2-hydroxy-,HG2,C3,231,(3TMS),231.0867,
+C10H23O3Si2,Glutaric acid_ 2-hydroxy-,HG2,C4,247,(3TMS),247.118,symmetry
+C13H29O5Si3,Glutaric acid_ 2-hydroxy-,HG2,NA,349,(3TMS),349.1317,sec. structure
 C6H10NO2Si,Glutaric acid_ 2-oxo-,aKG,C3N,156,(1MEOX)(2TMS),156.0475,
 C8H12NO3Si,Glutaric acid_ 2-oxo-,aKG,C5N,198,(1MEOX)(2TMS),198.0581,symmetry
 C11H22NO4Si2,Glutaric acid_ 2-oxo-,aKG,C5N,288,(1MEOX)(2TMS),288.1082,all
 C9H21O3Si2,Glutaric acid,Glt,NA,233,(2TMS),233.1024,
 C10H21O4Si2,Glutaric acid,Glt,NA,261,(2TMS),261.0973,
-C9H28O4PSi3,Glyceric acid-3-phosphate,3PGA,NA,315,(4TMS),315.1028,
-C11H30O5PSi3,Glyceric acid-3-phosphate,3PGA,C2,357,(4TMS),357.1133,"[2,3]"
-C12H36O4PSi4,Glyceric acid-3-phosphate,3PGA,NA,387,(4TMS),387.1423,
+C9H28O4PSi3,Glyceric acid-3-phosphate,PGA3,NA,315,(4TMS),315.1028,
+C11H30O5PSi3,Glyceric acid-3-phosphate,PGA3,C2,357,(4TMS),357.1133,"[2,3]"
+C12H36O4PSi4,Glyceric acid-3-phosphate,PGA3,NA,387,(4TMS),387.1423,
 C9H22O2Si2,Glycerol,Glyc,C3,218,(3TMS),218.1153,all
 C11H29O3Si3,Glycerol,Glyc,NA,293,(3TMS),293.1419,
 C9H28O4PSi3,Glycerol-3-phosphate,Glyc3P,NA,315,(4TMS),315.1028,sec. structure
