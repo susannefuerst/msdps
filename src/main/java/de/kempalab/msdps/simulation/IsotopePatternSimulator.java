@@ -122,13 +122,13 @@ public class IsotopePatternSimulator {
 
 			naturalSpectrum = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, roundMassesPrecision,
 					roundFrequenciesPrecision, minimalFrequency, frequencyType);
-			markedSpectrumTracerAll = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, roundMassesPrecision,
+			markedSpectrumTracerAll = IsotopePatternSimulator.prepareSpectrum(markedSpectrumTracerAll, roundMassesPrecision,
 					roundFrequenciesPrecision, minimalFrequency, frequencyType);
-			markedSpectrumTracer1 = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, roundMassesPrecision,
+			markedSpectrumTracer1 = IsotopePatternSimulator.prepareSpectrum(markedSpectrumTracer1, roundMassesPrecision,
 					roundFrequenciesPrecision, minimalFrequency, frequencyType);
-			markedSpectrumTracer2 = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, roundMassesPrecision,
+			markedSpectrumTracer2 = IsotopePatternSimulator.prepareSpectrum(markedSpectrumTracer2, roundMassesPrecision,
 					roundFrequenciesPrecision, minimalFrequency, frequencyType);
-			mixedSpectrum = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, roundMassesPrecision,
+			mixedSpectrum = IsotopePatternSimulator.prepareSpectrum(mixedSpectrum, roundMassesPrecision,
 					roundFrequenciesPrecision, minimalFrequency, frequencyType);
 
 			MSShiftDatabase msShiftDatabase = new MSShiftDatabase();

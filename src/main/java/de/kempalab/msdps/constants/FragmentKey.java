@@ -1,7 +1,5 @@
 package de.kempalab.msdps.constants;
 
-import net.sf.mzmine.modules.isotopeincorporation.simulation.data.constants.MetaboliteKey;
-
 /**
  * A {@link FragmentKey} identifies a fragment derived from a certain metabolite by its characteristic mass.
  * @author sfuerst
