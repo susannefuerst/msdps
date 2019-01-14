@@ -20,7 +20,7 @@ import org.jfree.ui.TextAnchor;
 import de.kempalab.msdps.MSDatabase;
 import de.kempalab.msdps.MSShiftDatabase;
 import de.kempalab.msdps.constants.IncorporationType;
-import de.kempalab.msdps.constants.MSDatasetOption;
+import de.kempalab.msdps.constants.MSBarChartType;
 
 /**
  * Class to create different charts to visualize mass spectra.
@@ -46,7 +46,7 @@ public class MSCategoryBarChartCreator {
 	 * @param datasetOption
 	 * @return a {@link JFreeChart} that may be used for visualization of the spectra in the {@link MSDatabase}.
 	 */
-	public static JFreeChart createMSBarChart(MSDatabase msDatabase, MSDatasetOption datasetOption) {
+	public static JFreeChart createMSBarChart(MSDatabase msDatabase, MSBarChartType datasetOption) {
 		MSCategoryDataset spectraDataset = new MSCategoryDataset(msDatabase, datasetOption);
 		String title = "Fragment: " + msDatabase.getFragmentKey() + "_" + msDatabase.getFragmentFormula();
 		String subtitle = "incorporated tracer: " + msDatabase.getIncorporatedTracers();
@@ -72,13 +72,13 @@ public class MSCategoryBarChartCreator {
         NumberAxis rangeAxis = (NumberAxis) categoryPlot.getRangeAxis();
         rangeAxis.setUpperMargin(0.10);
 		MSShiftDatabase msshiftDatabase = (MSShiftDatabase) spectraDataset.getMsDatabase();
-		if (!datasetOption.equals(MSDatasetOption.ALL_SPECTRA)) {
+		if (!datasetOption.equals(MSBarChartType.ALL_SPECTRA)) {
 			for (Object massCategoryObject : spectraDataset.getColumnKeys()) {
 				Double mass = (Double) massCategoryObject;
 				String sublabel = null;
-				if (datasetOption.equals(MSDatasetOption.NATURAL_SPECTRUM_ONLY)) {
+				if (datasetOption.equals(MSBarChartType.NATURAL_SPECTRUM_ONLY)) {
 					sublabel = msshiftDatabase.shiftInducingIsotopesNiceFormatted(IncorporationType.NATURAL, mass);
-				} else if (datasetOption.equals(MSDatasetOption.PARTIALLY_LABELED_SPECTRUM_ONLY)) {
+				} else if (datasetOption.equals(MSBarChartType.PARTIALLY_LABELED_SPECTRUM_ONLY)) {
 					sublabel = msshiftDatabase.shiftInducingIsotopesNiceFormatted(IncorporationType.MIXED, mass);
 				} else {
 					sublabel = msshiftDatabase.shiftInducingIsotopesNiceFormatted(IncorporationType.MARKED, mass);

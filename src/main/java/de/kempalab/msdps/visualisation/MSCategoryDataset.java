@@ -10,7 +10,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import de.kempalab.msdps.MSDatabase;
 import de.kempalab.msdps.MassSpectrum;
-import de.kempalab.msdps.constants.MSDatasetOption;
+import de.kempalab.msdps.constants.MSBarChartType;
 
 @SuppressWarnings("serial")
 public class MSCategoryDataset extends DefaultCategoryDataset {
@@ -20,9 +20,9 @@ public class MSCategoryDataset extends DefaultCategoryDataset {
 	
 	private MSDatabase msDatabase;
 	
-	public MSCategoryDataset(MSDatabase msDatabase, MSDatasetOption msDatasetOption) {
+	public MSCategoryDataset(MSDatabase msDatabase, MSBarChartType msDatasetOption) {
 		this.setMsDatabase(msDatabase);
-		if (msDatasetOption.equals(MSDatasetOption.ALL_SPECTRA)) {
+		if (msDatasetOption.equals(MSBarChartType.ALL_SPECTRA)) {
 			LinkedHashMap<Entry<Double, String>, Double> mergedSpectraDataEntries = mergeAndSortByMassForBarChart(msDatabase);
 			for (Entry<Entry<Double,String>, Double> entry : mergedSpectraDataEntries.entrySet()) {
 				Double massCategory = entry.getValue();
@@ -30,17 +30,17 @@ public class MSCategoryDataset extends DefaultCategoryDataset {
 				String incorporationType = entry.getKey().getValue();
 				setValue(frequencyValue, incorporationType, massCategory);
 			}
-		} else if (msDatasetOption.equals(MSDatasetOption.NATURAL_SPECTRUM_ONLY)) {
+		} else if (msDatasetOption.equals(MSBarChartType.NATURAL_SPECTRUM_ONLY)) {
 			MassSpectrum naturalSpectrum = msDatabase.getNaturalSpectrum();
 			for (Entry<Double, Double> entry : naturalSpectrum.entrySet()) {
 				setValue(entry.getValue(), NATURAL_INC_LABEL, entry.getKey());
 			}		
-		} else if (msDatasetOption.equals(MSDatasetOption.PARTIALLY_LABELED_SPECTRUM_ONLY)) {
+		} else if (msDatasetOption.equals(MSBarChartType.PARTIALLY_LABELED_SPECTRUM_ONLY)) {
 			MassSpectrum mixedSpectrum = msDatabase.getMixedSpectrum();
 			for (Entry<Double, Double> entry : mixedSpectrum.entrySet()) {
 				setValue(entry.getValue(), msDatabase.incorporationPerCent() + "% incorporation", entry.getKey());
 			}		
-		} else if (msDatasetOption.equals(MSDatasetOption.COMPLETELY_LABELED_SPECTRUM_ONLY)) {
+		} else if (msDatasetOption.equals(MSBarChartType.COMPLETELY_LABELED_SPECTRUM_ONLY)) {
 			MassSpectrum markedSpectrum = msDatabase.getMarkedSpectrum();
 			for (Entry<Double, Double> entry : markedSpectrum.entrySet()) {
 				setValue(entry.getValue(), COMPLETE_INC_LABEL, entry.getKey());

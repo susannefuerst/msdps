@@ -11,7 +11,7 @@ import org.jfree.ui.RefineryUtilities;
 
 import de.kempalab.msdps.MSDatabase;
 import de.kempalab.msdps.MSShiftDatabase;
-import de.kempalab.msdps.constants.MSDatasetOption;
+import de.kempalab.msdps.constants.MSBarChartType;
 import de.kempalab.msdps.constants.PathConstants;
 
 /**
@@ -29,7 +29,7 @@ public class MSBarChartApplicationWindow extends ApplicationFrame {
 	 * @param title
 	 * @param msDatabase
 	 */
-	public MSBarChartApplicationWindow(String title, MSDatabase msDatabase, MSDatasetOption datasetOption) {
+	public MSBarChartApplicationWindow(String title, MSDatabase msDatabase, MSBarChartType datasetOption) {
 		super(title);
 		JFreeChart chart = MSCategoryBarChartCreator.createMSBarChart(msDatabase, datasetOption);
 		ChartPanel chartPanel = new ChartPanel(chart, false);
@@ -45,7 +45,7 @@ public class MSBarChartApplicationWindow extends ApplicationFrame {
 	public static void main(String[] args) throws IOException {
 		File file = new File(PathConstants.TEST_RESOURCES.toAbsolutePath("MSShiftDatabaseTest01.csv"));
 		MSShiftDatabase msDatabase = new MSShiftDatabase(file.getAbsolutePath());
-		MSBarChartApplicationWindow demo = new MSBarChartApplicationWindow("Bar Demo 1", msDatabase, MSDatasetOption.NATURAL_SPECTRUM_ONLY);
+		MSBarChartApplicationWindow demo = new MSBarChartApplicationWindow("Bar Demo 1", msDatabase, MSBarChartType.NATURAL_SPECTRUM_ONLY);
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);

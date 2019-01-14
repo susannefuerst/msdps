@@ -8,7 +8,7 @@ import de.kempalab.msdps.MassSpectrum;
 import de.kempalab.msdps.constants.FragmentKey;
 import de.kempalab.msdps.constants.FrequencyType;
 import de.kempalab.msdps.constants.IncorporationType;
-import de.kempalab.msdps.constants.MSDatasetOption;
+import de.kempalab.msdps.constants.MSBarChartType;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
 import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
@@ -75,7 +75,7 @@ public class SimulateMixedIncorporations {
 		
 		LOGGER.info(msShiftDatabase);
 		MSBarChartApplicationWindow demo = new MSBarChartApplicationWindow("Bar Demo 1", msShiftDatabase,
-				MSDatasetOption.ALL_SPECTRA);
+				MSBarChartType.ALL_SPECTRA);
 		demo.pack();
 		demo.setVisible(true);
 	}
