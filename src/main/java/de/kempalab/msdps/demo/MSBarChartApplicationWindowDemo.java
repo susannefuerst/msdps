@@ -26,11 +26,11 @@ public class MSBarChartApplicationWindowDemo {
 		fragment.changeCapacity("C4");
 		simulatorRequest.setFragments(new FragmentList(fragment));
 		simulatorRequest.setIncorporationRate(new IncorporationRate(0.5));
-		simulatorRequest.setMinimalFrequency(0.001);
+		simulatorRequest.setMinimalIntensity(0.001);
 		simulatorRequest.setAnalyzeMassShifts(true);
 		simulatorRequest.setTotalNumberOfFragments(10000.0);
 		simulatorRequest.setRoundedMassPrecision(4);
-		simulatorRequest.setTargetFrequencyType(IntensityType.ABSOLUTE);
+		simulatorRequest.setTargetIntensityType(IntensityType.ABSOLUTE);
 		IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 		MSDatabase msDatabase =  response.getMsDatabaseList().get(0);
 		LOGGER.info(msDatabase);

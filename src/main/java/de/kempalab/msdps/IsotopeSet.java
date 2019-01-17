@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Set;
 
 import de.kempalab.msdps.constants.Element;
-import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.IncorporationType;
+import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.Isotope;
 import de.kempalab.msdps.log.MyLogger;
 
@@ -44,8 +44,8 @@ public class IsotopeSet extends HashMap<Isotope, Integer> {
 		this.fragmentAssociatedWithTheSet = fragment;
 		this.numberOfFragmentsInTheSet = numberOfFragmentsInTheSet;
 		this.incorporationType = incorporationType;
-		ElementFormula components = fragment.getComponents();
-		ExperimentalIncorporationCapacity capacity = fragment.getExperimentalIncorporationCapacity();
+		ElementFormula components = fragment.getFormula();
+		ElementFormula capacity = fragment.getTracerCapacity();
 		Set<Entry<Element, Integer>> componentEntries = components.entrySet();
 		for (Entry<Element, Integer> componentEntry : componentEntries) {
 			Element element = componentEntry.getKey();
@@ -82,7 +82,7 @@ public class IsotopeSet extends HashMap<Isotope, Integer> {
 	 * @return fragment masses and their intensity
 	 */
 	public MassSpectrum simulateSpectrum(int charge) {
-		ElementFormula fragmentComponents = fragmentAssociatedWithTheSet.getComponents();
+		ElementFormula fragmentComponents = fragmentAssociatedWithTheSet.getFormula();
 		MassSpectrum spectrum = new MassSpectrum(IntensityType.ABSOLUTE);
 		for (int i = 1; i <= numberOfFragmentsInTheSet; i++) {
 			double massOfFragment = 0.0;
@@ -90,7 +90,7 @@ public class IsotopeSet extends HashMap<Isotope, Integer> {
 				// select randomly isotopes of the current element from this set to compose the fragment
 				Element elementInFragment = componentEntry.getKey();
 				ArrayList<Isotope> existingIsotopes = elementInFragment.getIsotopes();
-				ExperimentalIncorporationCapacity capacity = fragmentAssociatedWithTheSet.getExperimentalIncorporationCapacity();
+				ElementFormula capacity = fragmentAssociatedWithTheSet.getTracerCapacity();
 				Integer numberOfIsotopicallyVariableElementsInFragment = componentEntry.getValue();
 				Integer numberOfExperimentallyIncorporatedElements = capacity.get(elementInFragment) == null ? 0 : capacity.get(elementInFragment);
 				if (this.incorporationType.equals(IncorporationType.EXPERIMENTAL) && numberOfExperimentallyIncorporatedElements > 0) {

@@ -1,12 +1,10 @@
 package de.kempalab.msdps;
 
-import junit.framework.TestCase;
-import de.kempalab.msdps.Fragment;
-import de.kempalab.msdps.FragmentsDatabase;
 import de.kempalab.msdps.constants.FragmentKey;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
 import de.kempalab.msdps.log.MyLogger;
 import de.kempalab.msdps.util.MathUtils;
+import junit.framework.TestCase;
 
 public class FragmentsDatabaseTest extends TestCase {
 	
@@ -18,7 +16,7 @@ public class FragmentsDatabaseTest extends TestCase {
 	
 	public void testGetFragment() throws FragmentNotFoundException {
 		Fragment fragment = FragmentsDatabase.getFragment(FragmentKey.LAC_117);
-		assertEquals(fragment.getFormula(), "C5H13OSi");
+		assertEquals(fragment.getFormula().toSimpleString(), "C5H13OSi");
 		assertEquals(fragment.metaboliteAbbreviation(), "Lac");
 		assertEquals(fragment.baseMass(), 117);
 		assertEquals(fragment.metaboliteName(), "Lactic acid");

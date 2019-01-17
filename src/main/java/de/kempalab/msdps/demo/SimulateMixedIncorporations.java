@@ -6,8 +6,8 @@ import de.kempalab.msdps.IsotopeSet;
 import de.kempalab.msdps.MSShiftDatabase;
 import de.kempalab.msdps.MassSpectrum;
 import de.kempalab.msdps.constants.FragmentKey;
-import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.IncorporationType;
+import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.MSBarChartType;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
 import de.kempalab.msdps.exception.IntensityTypeMismatchException;
@@ -70,7 +70,7 @@ public class SimulateMixedIncorporations {
 		msShiftDatabase.setNaturalSpectrum(naturalSpectrum);
 		msShiftDatabase.setMarkedSpectrum(markedSpectrumC);
 		msShiftDatabase.setMixedSpectrum(mixedSpectrum);
-		msShiftDatabase.setFragmentFormula(fragmentCN.getFormula());
+		msShiftDatabase.setFragmentFormula(fragmentCN.getFormula().toSimpleString());
 //		msShiftDatabase.analyseAllShifts();
 		
 		LOGGER.info(msShiftDatabase);

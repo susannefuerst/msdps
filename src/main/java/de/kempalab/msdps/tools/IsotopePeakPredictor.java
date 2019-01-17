@@ -2,7 +2,7 @@ package de.kempalab.msdps.tools;
 
 import java.util.Map.Entry;
 
-import de.kempalab.msdps.ExperimentalIncorporationCapacity;
+import de.kempalab.msdps.ElementFormula;
 import de.kempalab.msdps.Fragment;
 import de.kempalab.msdps.IsotopeFormula;
 import de.kempalab.msdps.MSDatabase;
@@ -33,7 +33,7 @@ public class IsotopePeakPredictor implements Runnable {
 	public void run() {
 		Fragment fragment = request.getFragments().get(0);
 		LOGGER.info("Started " + fragment.getFragmentKey().name());
-		ExperimentalIncorporationCapacity capacity = fragment.getExperimentalIncorporationCapacity();
+		ElementFormula capacity = fragment.getTracerCapacity();
 		if (capacity.get(Element.C) == null || capacity.get(Element.N) == null) {
 			IsotopePatternSimulatorResponse response;
 			try {
@@ -65,7 +65,7 @@ public class IsotopePeakPredictor implements Runnable {
 		String baseID = moleculeName + "_" + fragment.getDerivate() + "_" + fragment.baseMass();
 		String rt = "NA";
 		String identity = moleculeName + "_" + fragment.baseMass();
-		String formula = fragment.getFormula();
+		String formula = fragment.getFormula().toSimpleString();
 		int entryCount = 0;
 		for (Entry<Double, Double> entry : msDatabase.getMixedSpectrum().entrySet()) {
 			String id = baseID + "_" + entryCount;

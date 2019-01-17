@@ -5,8 +5,8 @@ import java.util.Map.Entry;
 
 import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.FragmentKey;
-import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.IncorporationType;
+import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.Isotope;
 import de.kempalab.msdps.data.IncorporationRate;
 import de.kempalab.msdps.exception.IntensityTypeMismatchException;
@@ -47,7 +47,7 @@ public class IsotopeSetTest extends TestCase {
 		double numberOfFragmentsInTheSet = 100000;
 		IsotopeSet isotopeSet = new IsotopeSet(fragment, numberOfFragmentsInTheSet, IncorporationType.NATURAL);
 		int totalElementNumberInFragment = 0;
-		for (Entry<Element, Integer> entry : fragment.getComponents().entrySet()) {
+		for (Entry<Element, Integer> entry : fragment.getFormula().entrySet()) {
 			totalElementNumberInFragment = totalElementNumberInFragment + entry.getValue();
 		}
 		int expectedTotalElementNumberInSet = (int) (totalElementNumberInFragment * numberOfFragmentsInTheSet);
@@ -80,7 +80,7 @@ public class IsotopeSetTest extends TestCase {
 		double numberOfFragmentsInTheSet = 100000;
 		IsotopeSet isotopeSet = new IsotopeSet(fragment, numberOfFragmentsInTheSet, IncorporationType.EXPERIMENTAL);
 		int totalElementNumberInFragment = 0;
-		for (Entry<Element, Integer> entry : fragment.getComponents().entrySet()) {
+		for (Entry<Element, Integer> entry : fragment.getFormula().entrySet()) {
 			totalElementNumberInFragment = totalElementNumberInFragment + entry.getValue();
 		}
 		int expectedTotalElementNumberInSet = (int) (totalElementNumberInFragment * numberOfFragmentsInTheSet);
@@ -259,12 +259,12 @@ public class IsotopeSetTest extends TestCase {
 			IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 			Integer precision = 4;
 			simulatorRequest.setRoundedMassPrecision(precision);
-			simulatorRequest.setRoundedFrequenciesPrecision(precision);
-			simulatorRequest.setMinimalFrequency(0.0);
+			simulatorRequest.setRoundedIntensityPrecision(precision);
+			simulatorRequest.setMinimalIntensity(0.0);
 			simulatorRequest.setIncorporationRate(new IncorporationRate(0.1));
 			simulatorRequest.setFragments(new FragmentList(fragment));
 			simulatorRequest.setCharge(0);
-			simulatorRequest.setTargetFrequencyType(IntensityType.MID);
+			simulatorRequest.setTargetIntensityType(IntensityType.MID);
 			IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 			MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 			MassSpectrum naturalSpectrum = msDatabase.getNaturalSpectrum();
@@ -294,9 +294,9 @@ public class IsotopeSetTest extends TestCase {
 			LOGGER.infoValue("Checking fragment", fragment.getFormula());
 			IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 			simulatorRequest.setFragments(new FragmentList(fragment));
-			simulatorRequest.setMinimalFrequency(0.0);
+			simulatorRequest.setMinimalIntensity(0.0);
 			simulatorRequest.setCharge(0);
-			simulatorRequest.setTargetFrequencyType(IntensityType.MID);
+			simulatorRequest.setTargetIntensityType(IntensityType.MID);
 			IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 			MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 			MassSpectrum naturalSimulatedSpectrum = msDatabase.getNaturalSpectrum().sortAscendingByMass();
@@ -339,9 +339,9 @@ public class IsotopeSetTest extends TestCase {
 				LOGGER.infoValue("Checking fragment", fragment.getFormula());
 				IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 				simulatorRequest.setFragments(new FragmentList(fragment));
-				simulatorRequest.setMinimalFrequency(0.0);
+				simulatorRequest.setMinimalIntensity(0.0);
 				simulatorRequest.setCharge(0);
-				simulatorRequest.setTargetFrequencyType(IntensityType.MID);
+				simulatorRequest.setTargetIntensityType(IntensityType.MID);
 				IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 				MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 				MassSpectrum naturalSimulatedSpectrum = msDatabase.getNaturalSpectrum().sortAscendingByMass();
@@ -391,9 +391,9 @@ public class IsotopeSetTest extends TestCase {
 				LOGGER.infoValue("Checking fragment", fragment.getFormula());
 				IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 				simulatorRequest.setFragments(new FragmentList(fragment));
-				simulatorRequest.setMinimalFrequency(0.0);
+				simulatorRequest.setMinimalIntensity(0.0);
 				simulatorRequest.setCharge(0);
-				simulatorRequest.setTargetFrequencyType(IntensityType.MID);
+				simulatorRequest.setTargetIntensityType(IntensityType.MID);
 				IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 				MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 				MassSpectrum naturalSimulatedSpectrum = msDatabase.getNaturalSpectrum();
@@ -439,10 +439,10 @@ public class IsotopeSetTest extends TestCase {
 		LOGGER.infoValue("Checking fragment", fragment.getFormula());
 		IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 		simulatorRequest.setFragments(new FragmentList(fragment));
-		simulatorRequest.setMinimalFrequency(0.0);
+		simulatorRequest.setMinimalIntensity(0.0);
 		simulatorRequest.setIncorporationRate(new IncorporationRate(0.0));
 		simulatorRequest.setCharge(0);
-		simulatorRequest.setTargetFrequencyType(IntensityType.MID);
+		simulatorRequest.setTargetIntensityType(IntensityType.MID);
 		IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 		MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 		MassSpectrum naturalSimulatedSpectrum = msDatabase.getNaturalSpectrum();
@@ -473,10 +473,10 @@ public class IsotopeSetTest extends TestCase {
 		LOGGER.infoValue("Checking fragment", fragment.getFormula());
 		IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 		simulatorRequest.setFragments(new FragmentList(fragment));
-		simulatorRequest.setMinimalFrequency(0.0);
+		simulatorRequest.setMinimalIntensity(0.0);
 		simulatorRequest.setIncorporationRate(new IncorporationRate(0.0));
 		simulatorRequest.setCharge(0);
-		simulatorRequest.setTargetFrequencyType(IntensityType.MID);
+		simulatorRequest.setTargetIntensityType(IntensityType.MID);
 		IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 		MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 		MassSpectrum naturalSimulatedSpectrum = msDatabase.getNaturalSpectrum();
@@ -507,10 +507,10 @@ public class IsotopeSetTest extends TestCase {
 		LOGGER.infoValue("Checking fragment", fragment.getFormula());
 		IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 		simulatorRequest.setFragments(new FragmentList(fragment));
-		simulatorRequest.setMinimalFrequency(0.0);
+		simulatorRequest.setMinimalIntensity(0.0);
 		simulatorRequest.setIncorporationRate(new IncorporationRate(0.0));
 		simulatorRequest.setCharge(0);
-		simulatorRequest.setTargetFrequencyType(IntensityType.MID);
+		simulatorRequest.setTargetIntensityType(IntensityType.MID);
 		IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 		MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 		MassSpectrum naturalSimulatedSpectrum = msDatabase.getNaturalSpectrum();

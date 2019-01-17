@@ -3,7 +3,7 @@ package de.kempalab.msdps.tools;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import de.kempalab.msdps.ExperimentalIncorporationCapacity;
+import de.kempalab.msdps.ElementFormula;
 import de.kempalab.msdps.Fragment;
 import de.kempalab.msdps.FragmentList;
 import de.kempalab.msdps.FragmentsDatabase;
@@ -36,18 +36,18 @@ public class ThreatenedIsotopePeakDatabaseCreator {
 		DataTable table = new DataTable("ID", "exactMass", "RT", "identity", "formula", "predictedMass",
 				"predictedIntensity", "heavyIsotopes", "incorporatedC", "incorporatedN");
 		for (Fragment fragment : FRAGMENTS) {
-			ExperimentalIncorporationCapacity capacity = fragment.getExperimentalIncorporationCapacity();
+			ElementFormula capacity = fragment.getTracerCapacity();
 			if (capacity.isEmpty()) {
 				continue;
 			}
 			IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 			simulatorRequest.setFragments(new FragmentList(fragment));
 			simulatorRequest.setIncorporationRate(new IncorporationRate(0.5));
-			simulatorRequest.setMinimalFrequency(MIN_FREQUENCY);
+			simulatorRequest.setMinimalIntensity(MIN_FREQUENCY);
 			simulatorRequest.setAnalyzeMassShifts(true);
 			simulatorRequest.setTotalNumberOfFragments(NUMBER_OF_FRAGMENTS);
 			simulatorRequest.setRoundedMassPrecision(PRECISION);
-			simulatorRequest.setTargetFrequencyType(FREQUENCY_TYPE);
+			simulatorRequest.setTargetIntensityType(FREQUENCY_TYPE);
 			simulatorRequest.setTracer1(Element.C);
 			simulatorRequest.setTracer2(Element.N);
 			simulatorRequest.setTracer1Inc(new IncorporationRate(INC_C));

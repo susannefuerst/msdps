@@ -3,12 +3,11 @@ package de.kempalab.msdps;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 
-import junit.framework.TestCase;
-import de.kempalab.msdps.Fragment;
 import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.ErrorMessage;
 import de.kempalab.msdps.constants.FragmentKey;
 import de.kempalab.msdps.util.MathUtils;
+import junit.framework.TestCase;
 
 public class FragmentTest extends TestCase {
 	
@@ -23,8 +22,8 @@ public class FragmentTest extends TestCase {
 		HashMap<Element, Integer> expectedCapacity = new HashMap<>();
 		expectedCapacity.put(Element.C, 2);
 		expectedCapacity.put(Element.N, 1);
-		assertEquals(expectedFormulaMap, fragment.getComponents());
-		assertEquals(expectedCapacity, fragment.getExperimentalIncorporationCapacity());
+		assertEquals(expectedFormulaMap, fragment.getFormula());
+		assertEquals(expectedCapacity, fragment.getTracerCapacity());
 	}
 	
 	public void testFragmentFail() {
@@ -67,12 +66,12 @@ public class FragmentTest extends TestCase {
 		HashMap<Element, Integer> expectedCapacity = new HashMap<>();
 		expectedCapacity.put(Element.C, 2);
 		expectedCapacity.put(Element.N, 1);
-		assertEquals(expectedCapacity, fragment.getExperimentalIncorporationCapacity());
+		assertEquals(expectedCapacity, fragment.getTracerCapacity());
 		fragment.changeCapacity("CH");
 		expectedCapacity.clear();
 		expectedCapacity.put(Element.C, 1);
 		expectedCapacity.put(Element.H, 1);
-		assertEquals(expectedCapacity, fragment.getExperimentalIncorporationCapacity());
+		assertEquals(expectedCapacity, fragment.getTracerCapacity());
 	}
 	
 }

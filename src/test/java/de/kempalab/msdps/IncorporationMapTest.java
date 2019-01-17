@@ -2,8 +2,8 @@ package de.kempalab.msdps;
 
 import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.FragmentKey;
-import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.IncorporationType;
+import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.Isotope;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
 import de.kempalab.msdps.exception.IntensityTypeMismatchException;
@@ -64,7 +64,7 @@ public class IncorporationMapTest extends TestCase {
 		msShiftDatabase.setNaturalSpectrum(naturalSpectrum);
 		msShiftDatabase.setMarkedSpectrum(markedSpectrumCN);
 		msShiftDatabase.setMixedSpectrum(mixedSpectrum);
-		msShiftDatabase.setFragmentFormula(fragmentCN.getFormula());
+		msShiftDatabase.setFragmentFormula(fragmentCN.getFormula().toSimpleString());
 		msShiftDatabase.analyseAllShifts();
 		
 		LOG.info(msShiftDatabase);
