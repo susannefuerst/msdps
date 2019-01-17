@@ -5,11 +5,11 @@ import de.kempalab.msdps.IsotopeSet;
 import de.kempalab.msdps.MSShiftDatabase;
 import de.kempalab.msdps.MassSpectrum;
 import de.kempalab.msdps.constants.FragmentKey;
-import de.kempalab.msdps.constants.FrequencyType;
+import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.IncorporationType;
 import de.kempalab.msdps.constants.MSBarChartType;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
-import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
+import de.kempalab.msdps.exception.IntensityTypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.visualisation.MSBarChartApplicationWindow;
@@ -22,11 +22,11 @@ public class SimulateMixedIncorporations2 {
 	public static final double NUMBER_OF_FRAGMENTS = 100000.0;
 	public static final Integer PRECISION = 4;
 	public static final double MIN_FREQUENCY = 0.003;
-	public static final FrequencyType FREQUENCY_TYPE = FrequencyType.MID;
+	public static final IntensityType FREQUENCY_TYPE = IntensityType.MID;
 	
 	public static final double INC = INC_C;
 	
-	public static void main(String[] args) throws FragmentNotFoundException, FrequencyTypeMismatchException {
+	public static void main(String[] args) throws FragmentNotFoundException, IntensityTypeMismatchException {
 		Fragment fragmentC = new Fragment(FragmentKey.UNKNOWN, "C2", "C");
 
 		IsotopeSet naturalSet = new IsotopeSet(fragmentC, NUMBER_OF_FRAGMENTS * (1 - INC), IncorporationType.NATURAL);

@@ -2,11 +2,11 @@ package de.kempalab.msdps;
 
 import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.FragmentKey;
-import de.kempalab.msdps.constants.FrequencyType;
+import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.IncorporationType;
 import de.kempalab.msdps.constants.Isotope;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
-import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
+import de.kempalab.msdps.exception.IntensityTypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.util.MathUtils;
@@ -16,7 +16,7 @@ public class IncorporationMapTest extends TestCase {
 	
 	public static final MyLogger LOG = MyLogger.getLogger(IncorporationMapTest.class);
 	
-	public void testConstructor() throws FrequencyTypeMismatchException, FragmentNotFoundException {
+	public void testConstructor() throws IntensityTypeMismatchException, FragmentNotFoundException {
 		final double INC_CN = 0.1;
 		final double INC_C = 0.5;
 		final double INC_N = 0.2;
@@ -47,15 +47,15 @@ public class IncorporationMapTest extends TestCase {
 		
 		
 		naturalSpectrum = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, PRECISION, PRECISION, MIN_FREQUENCY,
-				FrequencyType.MID);
+				IntensityType.MID);
 		markedSpectrumCN = IsotopePatternSimulator.prepareSpectrum(markedSpectrumCN, PRECISION, PRECISION,
-				MIN_FREQUENCY, FrequencyType.MID);
+				MIN_FREQUENCY, IntensityType.MID);
 		markedSpectrumC = IsotopePatternSimulator.prepareSpectrum(markedSpectrumC, PRECISION, PRECISION, MIN_FREQUENCY,
-				FrequencyType.MID);
+				IntensityType.MID);
 		markedSpectrumN = IsotopePatternSimulator.prepareSpectrum(markedSpectrumN, PRECISION, PRECISION, MIN_FREQUENCY,
-				FrequencyType.MID);
+				IntensityType.MID);
 		mixedSpectrum = IsotopePatternSimulator.prepareSpectrum(mixedSpectrum, PRECISION, PRECISION, MIN_FREQUENCY,
-				FrequencyType.MID);
+				IntensityType.MID);
 		
 		MSShiftDatabase msShiftDatabase = new MSShiftDatabase();
 		msShiftDatabase.setIncorporatedTracers("CN,C,N");

@@ -8,7 +8,7 @@ import de.kempalab.msdps.MSDatabase;
 import de.kempalab.msdps.MassShiftDataSet;
 import de.kempalab.msdps.MassShiftList;
 import de.kempalab.msdps.MassSpectrum;
-import de.kempalab.msdps.constants.FrequencyType;
+import de.kempalab.msdps.constants.IntensityType;
 
 public class ParserUtils {
 	
@@ -20,7 +20,7 @@ public class ParserUtils {
 	 * @param frequencyColumnIndex
 	 * @return A MassSpectrum from the csv records with 0.0 entries removed.
 	 */
-	public static MassSpectrum parseSpectrum(List<CSVRecord> records, int massColumnIndex, int frequencyColumnIndex, FrequencyType frequencyType, int headerRow) {
+	public static MassSpectrum parseSpectrum(List<CSVRecord> records, int massColumnIndex, int frequencyColumnIndex, IntensityType frequencyType, int headerRow) {
 		MassSpectrum massSpectrum = new MassSpectrum(frequencyType);
 		for (CSVRecord csvRecord : records) {
 			try {

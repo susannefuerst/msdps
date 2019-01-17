@@ -15,11 +15,11 @@ import de.kempalab.msdps.MassShiftList;
 import de.kempalab.msdps.MassSpectrum;
 import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.FragmentKey;
-import de.kempalab.msdps.constants.FrequencyType;
+import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.IncorporationType;
 import de.kempalab.msdps.constants.Isotope;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
-import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
+import de.kempalab.msdps.exception.IntensityTypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.util.MathUtils;
@@ -33,7 +33,7 @@ public class CorrectionUtilsTest extends TestCase {
 	private static final boolean TEST_INCS = false;
 	
 	
-	public void testIncorporationRate01() throws FragmentNotFoundException, FrequencyTypeMismatchException {
+	public void testIncorporationRate01() throws FragmentNotFoundException, IntensityTypeMismatchException {
 		if (TEST_INCS) {
 //		LOGGER.enableDebug();
 //		IncorporationMap.LOG.enableDebug();
@@ -74,15 +74,15 @@ public class CorrectionUtilsTest extends TestCase {
 						
 						
 						naturalSpectrum = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, PRECISION, PRECISION,
-								MIN_FREQUENCY, FrequencyType.MID);
+								MIN_FREQUENCY, IntensityType.MID);
 						markedSpectrumCN = IsotopePatternSimulator.prepareSpectrum(markedSpectrumCN, PRECISION,
-								PRECISION, MIN_FREQUENCY, FrequencyType.MID);
+								PRECISION, MIN_FREQUENCY, IntensityType.MID);
 						markedSpectrumC = IsotopePatternSimulator.prepareSpectrum(markedSpectrumC, PRECISION, PRECISION,
-								MIN_FREQUENCY, FrequencyType.MID);
+								MIN_FREQUENCY, IntensityType.MID);
 						markedSpectrumN = IsotopePatternSimulator.prepareSpectrum(markedSpectrumN, PRECISION, PRECISION,
-								MIN_FREQUENCY, FrequencyType.MID);
+								MIN_FREQUENCY, IntensityType.MID);
 						mixedSpectrum = IsotopePatternSimulator.prepareSpectrum(mixedSpectrum, PRECISION, PRECISION,
-								MIN_FREQUENCY, FrequencyType.MID);
+								MIN_FREQUENCY, IntensityType.MID);
 						
 						MSShiftDatabase msShiftDatabase = new MSShiftDatabase();
 						msShiftDatabase.setIncorporatedTracers("CN,C,N");
@@ -146,7 +146,7 @@ public class CorrectionUtilsTest extends TestCase {
 		}
 	}
 	
-	public void testIncorporationRate02() throws FragmentNotFoundException, FrequencyTypeMismatchException {
+	public void testIncorporationRate02() throws FragmentNotFoundException, IntensityTypeMismatchException {
 		LOGGER.enableDebug();
 		IncorporationMap.LOG.enableDebug();
 		double maxError = 0.0;
@@ -167,11 +167,11 @@ public class CorrectionUtilsTest extends TestCase {
 			MassSpectrum mixedSpectrum = naturalSpectrum.merge(markedSpectrumC);
 
 			naturalSpectrum = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, PRECISION, PRECISION,
-					MIN_FREQUENCY, FrequencyType.MID);
+					MIN_FREQUENCY, IntensityType.MID);
 			markedSpectrumC = IsotopePatternSimulator.prepareSpectrum(markedSpectrumC, PRECISION, PRECISION,
-					MIN_FREQUENCY, FrequencyType.MID);
+					MIN_FREQUENCY, IntensityType.MID);
 			mixedSpectrum = IsotopePatternSimulator.prepareSpectrum(mixedSpectrum, PRECISION, PRECISION, MIN_FREQUENCY,
-					FrequencyType.MID);
+					IntensityType.MID);
 			
 			MSShiftDatabase msShiftDatabase = new MSShiftDatabase();
 			msShiftDatabase.setIncorporatedTracers("C");
@@ -214,7 +214,7 @@ public class CorrectionUtilsTest extends TestCase {
 		LOGGER.debugValue("maxError", maxError);
 	}
 	
-	public void testIncorporationRate03() throws FragmentNotFoundException, FrequencyTypeMismatchException {
+	public void testIncorporationRate03() throws FragmentNotFoundException, IntensityTypeMismatchException {
 		LOGGER.enableDebug();
 		IncorporationMap.LOG.enableDebug();
 		Double maxError = 0.0;
@@ -234,11 +234,11 @@ public class CorrectionUtilsTest extends TestCase {
 			MassSpectrum mixedSpectrum = naturalSpectrum.merge(markedSpectrumN);
 
 			naturalSpectrum = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, PRECISION, PRECISION,
-					MIN_FREQUENCY, FrequencyType.MID);
+					MIN_FREQUENCY, IntensityType.MID);
 			markedSpectrumN = IsotopePatternSimulator.prepareSpectrum(markedSpectrumN, PRECISION, PRECISION,
-					MIN_FREQUENCY, FrequencyType.MID);
+					MIN_FREQUENCY, IntensityType.MID);
 			mixedSpectrum = IsotopePatternSimulator.prepareSpectrum(mixedSpectrum, PRECISION, PRECISION, MIN_FREQUENCY,
-					FrequencyType.MID);
+					IntensityType.MID);
 			
 			MSShiftDatabase msShiftDatabase = new MSShiftDatabase();
 			msShiftDatabase.setIncorporatedTracers("N");
@@ -281,7 +281,7 @@ public class CorrectionUtilsTest extends TestCase {
 		LOGGER.debugValue("maxError", maxError);
 	}
 	
-	public void testIncorporationRate04() throws FragmentNotFoundException, FrequencyTypeMismatchException {
+	public void testIncorporationRate04() throws FragmentNotFoundException, IntensityTypeMismatchException {
 		if (TEST_INCS) {
 		LOGGER.enableDebug();
 		IncorporationMap.LOG.enableDebug();
@@ -317,13 +317,13 @@ public class CorrectionUtilsTest extends TestCase {
 					
 					
 					naturalSpectrum = IsotopePatternSimulator.prepareSpectrum(naturalSpectrum, PRECISION, PRECISION,
-							MIN_FREQUENCY, FrequencyType.MID);
+							MIN_FREQUENCY, IntensityType.MID);
 					markedSpectrumC2 = IsotopePatternSimulator.prepareSpectrum(markedSpectrumC2, PRECISION, PRECISION,
-							MIN_FREQUENCY, FrequencyType.MID);
+							MIN_FREQUENCY, IntensityType.MID);
 					markedSpectrumN = IsotopePatternSimulator.prepareSpectrum(markedSpectrumN, PRECISION, PRECISION,
-							MIN_FREQUENCY, FrequencyType.MID);
+							MIN_FREQUENCY, IntensityType.MID);
 					mixedSpectrum = IsotopePatternSimulator.prepareSpectrum(mixedSpectrum, PRECISION, PRECISION,
-							MIN_FREQUENCY, FrequencyType.MID);
+							MIN_FREQUENCY, IntensityType.MID);
 					
 					MSShiftDatabase msShiftDatabase = new MSShiftDatabase();
 					msShiftDatabase.setIncorporatedTracers("C2,N");
@@ -386,7 +386,7 @@ public class CorrectionUtilsTest extends TestCase {
 	}
 	
 	public void correctionGlnUnlabeledTest() throws FragmentNotFoundException {
-		MassSpectrum measured = new MassSpectrum(FrequencyType.ABSOLUTE);
+		MassSpectrum measured = new MassSpectrum(IntensityType.ABSOLUTE);
 		measured.put(156.083871, 2177824768.0);
 		measured.put(157.081106, 3256251.75);
 		measured.put(157.083466, 105339544.0);
@@ -439,7 +439,7 @@ public class CorrectionUtilsTest extends TestCase {
 	}
 	
 	public void correctionGlnTotallyCNLabeledTest() throws FragmentNotFoundException {
-		MassSpectrum measured = new MassSpectrum(FrequencyType.ABSOLUTE);
+		MassSpectrum measured = new MassSpectrum(IntensityType.ABSOLUTE);
 		measured.put(161.094388, 3383957504.000000);
 		measured.put(162.093845, 167757680.000000);
 		measured.put(162.097430, 96693112.000000);
@@ -490,7 +490,7 @@ public class CorrectionUtilsTest extends TestCase {
 	}
 	
 	public void correctionGlnTotallyCLabeledTest() throws FragmentNotFoundException {
-		MassSpectrum measured = new MassSpectrum(FrequencyType.ABSOLUTE);
+		MassSpectrum measured = new MassSpectrum(IntensityType.ABSOLUTE);
 		measured.put(160.097400, 1584645632.000000);
 		measured.put(161.094435, 3858969.500000);
 		measured.put(161.096895, 75836104.000000);
@@ -548,7 +548,7 @@ public class CorrectionUtilsTest extends TestCase {
 	}
 	
 	public void correctionGlnTotallyNLabeledTest() throws FragmentNotFoundException {
-		MassSpectrum measured = new MassSpectrum(FrequencyType.ABSOLUTE);
+		MassSpectrum measured = new MassSpectrum(IntensityType.ABSOLUTE);
 		measured.put(157.081106, 4505609216.000000);
 		measured.put(158.080438, 203910720.000000);
 		measured.put(158.084197, 329013920.000000);

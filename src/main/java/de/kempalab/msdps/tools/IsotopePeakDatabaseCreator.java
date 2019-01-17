@@ -11,13 +11,13 @@ import de.kempalab.msdps.IsotopeFormula;
 import de.kempalab.msdps.MSDatabase;
 import de.kempalab.msdps.MSShiftDatabase;
 import de.kempalab.msdps.constants.Element;
-import de.kempalab.msdps.constants.FrequencyType;
+import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.IncorporationType;
 import de.kempalab.msdps.constants.Isotope;
 import de.kempalab.msdps.constants.MetaboliteKey;
 import de.kempalab.msdps.data.DataTable;
 import de.kempalab.msdps.data.IncorporationRate;
-import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
+import de.kempalab.msdps.exception.IntensityTypeMismatchException;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorRequest;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorResponse;
@@ -32,11 +32,11 @@ public class IsotopePeakDatabaseCreator {
 	public static final double NUMBER_OF_FRAGMENTS = 100000.0;
 	public static final Integer PRECISION = 4;
 	public static final double MIN_FREQUENCY = 0.1;
-	public static final FrequencyType FREQUENCY_TYPE = FrequencyType.RELATIVE;
+	public static final IntensityType FREQUENCY_TYPE = IntensityType.RELATIVE;
 
 	public static final double INC = INC_C + INC_CN + INC_N;
 
-	public static void main(String[] args) throws FrequencyTypeMismatchException, IOException {
+	public static void main(String[] args) throws IntensityTypeMismatchException, IOException {
 		DataTable table = new DataTable("ID", "exactMass", "RT", "identity", "formula", "predictedMass", "predictedIntensity", 
 				"heavyIsotopes", "incorporatedC", "incorporatedN");
 		for (Fragment fragment : FRAGMENTS) {

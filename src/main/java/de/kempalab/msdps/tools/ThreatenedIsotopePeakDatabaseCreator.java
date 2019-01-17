@@ -9,7 +9,7 @@ import de.kempalab.msdps.FragmentList;
 import de.kempalab.msdps.FragmentsDatabase;
 import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.FragmentKey;
-import de.kempalab.msdps.constants.FrequencyType;
+import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.MetaboliteKey;
 import de.kempalab.msdps.data.DataTable;
 import de.kempalab.msdps.data.IncorporationRate;
@@ -27,7 +27,7 @@ public class ThreatenedIsotopePeakDatabaseCreator {
 	public static final double NUMBER_OF_FRAGMENTS = 100000.0;
 	public static final Integer PRECISION = 4;
 	public static final double MIN_FREQUENCY = 0.1;
-	public static final FrequencyType FREQUENCY_TYPE = FrequencyType.RELATIVE;
+	public static final IntensityType FREQUENCY_TYPE = IntensityType.RELATIVE;
 	public static final double INC = INC_C + INC_CN + INC_N;
 
 	public static void main(String[] args) throws InterruptedException, IOException, FragmentNotFoundException {

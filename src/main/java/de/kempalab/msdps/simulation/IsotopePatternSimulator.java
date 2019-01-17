@@ -11,22 +11,22 @@ import de.kempalab.msdps.MSDatabaseList;
 import de.kempalab.msdps.MSShiftDatabase;
 import de.kempalab.msdps.MassSpectrum;
 import de.kempalab.msdps.constants.Element;
-import de.kempalab.msdps.constants.FrequencyType;
+import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.IncorporationType;
-import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
+import de.kempalab.msdps.exception.IntensityTypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
 
 public class IsotopePatternSimulator {
 	
 	public static final MyLogger LOGGER = MyLogger.getLogger(IsotopePatternSimulator.class);
 	
-	public static IsotopePatternSimulatorResponse simulate(IsotopePatternSimulatorRequest request) throws FrequencyTypeMismatchException {
+	public static IsotopePatternSimulatorResponse simulate(IsotopePatternSimulatorRequest request) throws IntensityTypeMismatchException {
 		final double incRate = request.getIncorporationRate().getRateValue();
 		final double naturalFragments = request.getTotalNumberOfFragments() * (1 - incRate);
 		final double experimentalFragments = request.getTotalNumberOfFragments() * incRate;
 		final boolean analyzeMassShifts = request.getAnalyzeMassShifts();
 		final int charge = request.getCharge();
-		final FrequencyType frequencyType = request.getTargetFrequencyType();
+		final IntensityType frequencyType = request.getTargetFrequencyType();
 		final Integer roundMassesPrecision = request.getRoundedMassPrecision();
 		final Integer roundFrequenciesPrecision = request.getRoundedFrequenciesPrecision();
 		final Double minimalRelativeFrequency = request.getMinimalFrequency();
@@ -74,7 +74,7 @@ public class IsotopePatternSimulator {
 	}
 	
 	public static IsotopePatternSimulatorResponse simulateIndependentTracerIncorporation(
-			IsotopePatternSimulatorRequest request) throws FrequencyTypeMismatchException {
+			IsotopePatternSimulatorRequest request) throws IntensityTypeMismatchException {
 		final double tracer1Inc = request.getTracer1Inc().getRateValue();
 		final double tracer2Inc = request.getTracer2Inc().getRateValue();
 		final double tracerAllInc = request.getTracerAllInc().getRateValue();
@@ -84,7 +84,7 @@ public class IsotopePatternSimulator {
 		}
 		final boolean analyzeMassShifts = request.getAnalyzeMassShifts();
 		final int charge = request.getCharge();
-		final FrequencyType frequencyType = request.getTargetFrequencyType();
+		final IntensityType frequencyType = request.getTargetFrequencyType();
 		final Element tracer1 = request.getTracer1();
 		final Element tracer2 = request.getTracer2();
 		final double numberOfFragments = request.getTotalNumberOfFragments();
@@ -162,20 +162,20 @@ public class IsotopePatternSimulator {
 	 * @return
 	 */
 	public static MassSpectrum prepareSpectrum(MassSpectrum spectrum, Integer roundMassesPrecision,
-			Integer roundFrequenciesPrecision, Double minimalFrequency, FrequencyType frequencyType) {
+			Integer roundFrequenciesPrecision, Double minimalFrequency, IntensityType frequencyType) {
 		if (roundMassesPrecision != null) {
 			spectrum = spectrum.roundMasses(roundMassesPrecision);
 		}
-		if (frequencyType.equals(FrequencyType.MID)) {
-			spectrum = spectrum.toMIDFrequency();
-		} else if (frequencyType.equals(FrequencyType.RELATIVE)) {
-			spectrum = spectrum.toRelativeFrequency();
+		if (frequencyType.equals(IntensityType.MID)) {
+			spectrum = spectrum.toMID();
+		} else if (frequencyType.equals(IntensityType.RELATIVE)) {
+			spectrum = spectrum.toRelativeIntensity();
 		}
 		if (roundFrequenciesPrecision != null) {
-			spectrum = spectrum.roundFrequencies(roundFrequenciesPrecision);
+			spectrum = spectrum.roundIntensities(roundFrequenciesPrecision);
 		}
 		if (minimalFrequency != null) {
-			spectrum = spectrum.skipLowFrequency(minimalFrequency);
+			spectrum = spectrum.skipLowIntensity(minimalFrequency);
 		}
 		Double sumOfFrequencies = 0.0;
 		for (Entry<Double, Double> entry : spectrum.entrySet()) {

@@ -11,7 +11,7 @@ import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.IncorporationType;
 import de.kempalab.msdps.constants.Isotope;
 import de.kempalab.msdps.data.DataTable;
-import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
+import de.kempalab.msdps.exception.IntensityTypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorRequest;
@@ -42,7 +42,7 @@ public class IsotopePeakPredictor implements Runnable {
 				synchronized (table) {
 					addRows(msDatabase, table, fragment);
 				}
-			} catch (FrequencyTypeMismatchException e) {
+			} catch (IntensityTypeMismatchException e) {
 				e.printStackTrace();
 			}
 		} else {
@@ -53,7 +53,7 @@ public class IsotopePeakPredictor implements Runnable {
 				synchronized (table) {
 					addRows(msDatabase, table, fragment);
 				}
-			} catch (FrequencyTypeMismatchException e) {
+			} catch (IntensityTypeMismatchException e) {
 				e.printStackTrace();
 			}
 		}

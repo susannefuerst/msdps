@@ -2,7 +2,7 @@ package de.kempalab.msdps.simulation;
 
 import de.kempalab.msdps.FragmentList;
 import de.kempalab.msdps.constants.Element;
-import de.kempalab.msdps.constants.FrequencyType;
+import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.data.IncorporationRate;
 
 /**
@@ -27,7 +27,7 @@ public class IsotopePatternSimulatorRequest {
 	private Integer roundedFrequenciesPrecision = 4;
 	private FragmentList fragments;
 	private Boolean analyzeMassShifts = false;
-	private FrequencyType targetFrequencyType = FrequencyType.RELATIVE;
+	private IntensityType targetFrequencyType = IntensityType.RELATIVE;
 	private int charge = 1;
 	/*
 	 * only for independent tracer incorporation
@@ -74,7 +74,7 @@ public class IsotopePatternSimulatorRequest {
 	 * @param analyzeMassShifts
 	 */
 	public IsotopePatternSimulatorRequest(IncorporationRate incorporationRate, Double totalNumberOfFragments,
-			FrequencyType targetFrequencyType, Double minimalRelativeFrequency, Integer roundedMassPrecision,
+			IntensityType targetFrequencyType, Double minimalRelativeFrequency, Integer roundedMassPrecision,
 			Integer roundedFrequenciesPrecision,
 			FragmentList fragments, Boolean analyzeMassShifts) {
 		if (incorporationRate != null) {
@@ -163,11 +163,11 @@ public class IsotopePatternSimulatorRequest {
 		this.analyzeMassShifts = analyzeMassShifts;
 	}
 
-	public FrequencyType getTargetFrequencyType() {
+	public IntensityType getTargetFrequencyType() {
 		return targetFrequencyType;
 	}
 
-	public void setTargetFrequencyType(FrequencyType targetFrequencyType) {
+	public void setTargetFrequencyType(IntensityType targetFrequencyType) {
 		this.targetFrequencyType = targetFrequencyType;
 	}
 

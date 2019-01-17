@@ -5,17 +5,18 @@ import java.util.HashMap;
 import java.util.Set;
 
 import de.kempalab.msdps.constants.Element;
-import de.kempalab.msdps.constants.FrequencyType;
+import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.IncorporationType;
 import de.kempalab.msdps.constants.Isotope;
 import de.kempalab.msdps.log.MyLogger;
 
 /**
- * An IsotopeSet represents a number of fragments with a natural or experimental isotope distribution.
- * All fragments are viewed as a collection of isotopes mapped to their total number in the set.
- * So we (nearly) forget about the fragments and just see all the atoms.
+ * An IsotopeSet represents a number of fragments with a natural or experimental
+ * isotope distribution. All fragments are viewed as a collection of isotopes
+ * mapped to their total number in the set. So we (nearly) forget about the
+ * fragments and just see all the atoms.
  * 
- * @author sfuerst
+ * @author Susanne Fürst, susannefuerst@freenet.de, susanne.fuerst@mdc-berlin.de
  *
  */
 @SuppressWarnings("serial")
@@ -72,17 +73,17 @@ public class IsotopeSet extends HashMap<Isotope, Integer> {
 	/**
 	 * If we imagine the collection of associated fragments, that can be composed by
 	 * the isotopes of this set, this method returns all detectable fragment masses
-	 * and their frequency as number of fragments with this mass.
+	 * and their intensity as number of fragments with this mass.
 	 * 
 	 * The method randomly selects isotopes (weighted by abundance) from this set to
 	 * recompose the fragment and measures its weight.
 	 * 
 	 * @param charge, absolute value of the (actually negative) charge of the ion
-	 * @return fragment masses and their frequency
+	 * @return fragment masses and their intensity
 	 */
 	public MassSpectrum simulateSpectrum(int charge) {
 		ElementFormula fragmentComponents = fragmentAssociatedWithTheSet.getComponents();
-		MassSpectrum spectrum = new MassSpectrum(FrequencyType.ABSOLUTE);
+		MassSpectrum spectrum = new MassSpectrum(IntensityType.ABSOLUTE);
 		for (int i = 1; i <= numberOfFragmentsInTheSet; i++) {
 			double massOfFragment = 0.0;
 			for (Entry<Element, Integer> componentEntry : fragmentComponents.entrySet()) {
@@ -94,6 +95,8 @@ public class IsotopeSet extends HashMap<Isotope, Integer> {
 				Integer numberOfExperimentallyIncorporatedElements = capacity.get(elementInFragment) == null ? 0 : capacity.get(elementInFragment);
 				if (this.incorporationType.equals(IncorporationType.EXPERIMENTAL) && numberOfExperimentallyIncorporatedElements > 0) {
 					numberOfIsotopicallyVariableElementsInFragment = numberOfIsotopicallyVariableElementsInFragment - numberOfExperimentallyIncorporatedElements;
+					// TODO: improve! This could cause problems if the tracer is not the heaviest
+					// isotope.
 					Isotope heaviestIsotope = elementInFragment.heaviestIsotope();
 					Integer remainingNumberOfIsotopesInTheSet = Integer.valueOf(get(heaviestIsotope) - numberOfExperimentallyIncorporatedElements);
 					put(heaviestIsotope,remainingNumberOfIsotopesInTheSet);
@@ -116,6 +119,8 @@ public class IsotopeSet extends HashMap<Isotope, Integer> {
 				int numberOfAvailableIsotopes = availableIsotopes.size();
 				if (numberOfAvailableIsotopes > 0) {
 					for (int k = 1; k <= numberOfIsotopicallyVariableElementsInFragment; k++) {
+						// TODO: Check if the isotopeToChoose can be used to create a formula associated
+						// to the mass.
 						Isotope isotopeToChoose = chooseIsotopeWeightedByAbundance(availableIsotopes);
 //						Isotope isotopeToChoose = chooseIsotopeRandomly(availableIsotopes);
 						Integer remainingNumberOfIsotopesInTheSet = Integer.valueOf(get(isotopeToChoose) - 1);

@@ -7,14 +7,14 @@ import de.kempalab.msdps.MSDatabase;
 import de.kempalab.msdps.constants.MSBarChartType;
 import de.kempalab.msdps.constants.PathConstants;
 import de.kempalab.msdps.data.IncorporationRate;
-import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
+import de.kempalab.msdps.exception.IntensityTypeMismatchException;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorRequest;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorResponse;
 
 public class MassSpectraToCsvAndJpeg {
 	
-	public static void main(String[] args) throws FrequencyTypeMismatchException, IOException {
+	public static void main(String[] args) throws IntensityTypeMismatchException, IOException {
 		IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 		simulatorRequest.setFragments(FragmentsDatabase.getAllFregments());
 		simulatorRequest.setIncorporationRate(new IncorporationRate(0.6));
