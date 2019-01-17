@@ -15,11 +15,11 @@ import org.apache.commons.csv.CSVRecord;
 import com.google.common.collect.Range;
 
 import de.kempalab.msdps.constants.ErrorMessage;
-import de.kempalab.msdps.constants.FrequencyType;
+import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.Isotope;
 import de.kempalab.msdps.constants.NaturalConstants;
 import de.kempalab.msdps.data.DataTable;
-import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
+import de.kempalab.msdps.exception.IntensityTypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
 import de.kempalab.msdps.util.MathUtils;
 import de.kempalab.msdps.util.ParserUtils;
@@ -30,8 +30,9 @@ import net.sf.mzmine.datamodel.RawDataFile;
 import net.sf.mzmine.datamodel.impl.SimpleDataPoint;
 import net.sf.mzmine.datamodel.impl.SimpleScan;
 import net.sf.mzmine.project.impl.RawDataFileImpl;
+
 /**
- * A map, used to identify a mass (the map key) to its frequency (the map value)
+ * A map, used to identify a mass (the map key) to its intensity (the map value)
  * 
  * @author sfuerst
  *
@@ -39,24 +40,26 @@ import net.sf.mzmine.project.impl.RawDataFileImpl;
 @SuppressWarnings("serial")
 public class MassSpectrum extends LinkedHashMap<Double,Double> {
 	public static final MyLogger LOGGER = MyLogger.getLogger(MassSpectrum.class);
-	private FrequencyType frequencyType = FrequencyType.ABSOLUTE;
+	private IntensityType intensityType = IntensityType.ABSOLUTE;
 	public static final boolean NEW_VERSION = true;
 
-	public MassSpectrum(FrequencyType frequencyType) {
-		this.frequencyType = frequencyType;
+	public MassSpectrum(IntensityType intensityType) {
+		this.intensityType = intensityType;
 	}
 	
 	/**
-	 * Merges this map with an other map by adding frequencies of masses that are contained in both maps and adding
-	 * new entries from the other map that are not contained in this map. This only makes sense if both have FrequencyType.ABSOLUTE.
+	 * Merges this map with an other map by adding intensities of masses that are
+	 * contained in both maps and adding new entries from the other map that are not
+	 * contained in this map. This only makes sense if both have
+	 * IntensityType.ABSOLUTE.
 	 * 
 	 * @param otherSpectrum
 	 * @return a new merged MassSpectrum
-	 * @throws FrequencyTypeMismatchException 
+	 * @throws IntensityTypeMismatchException
 	 */
-	public MassSpectrum merge(MassSpectrum otherSpectrum) throws FrequencyTypeMismatchException {
-		if (this.frequencyType.equals(FrequencyType.MID) || otherSpectrum.frequencyType.equals(FrequencyType.MID)) {
-			throw new FrequencyTypeMismatchException(ErrorMessage.FREQUENCY_TYPE_MISMATCH.getMessage());
+	public MassSpectrum merge(MassSpectrum otherSpectrum) throws IntensityTypeMismatchException {
+		if (this.intensityType.equals(IntensityType.MID) || otherSpectrum.intensityType.equals(IntensityType.MID)) {
+			throw new IntensityTypeMismatchException(ErrorMessage.INTENSITY_TYPE_MISMATCH.getMessage());
 		}
 		if (this.isEmpty()) {
 			return otherSpectrum;
@@ -64,39 +67,39 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 		if (otherSpectrum.isEmpty()) {
 			return this;
 		}
-		MassSpectrum newSpectrum = new MassSpectrum(FrequencyType.ABSOLUTE);
+		MassSpectrum newSpectrum = new MassSpectrum(IntensityType.ABSOLUTE);
 		for (Entry<Double, Double> entry : this.entrySet()) {
 			Double thisMass = entry.getKey();
-			Double thisFrequency = entry.getValue();
-			double thisOldFrequency = newSpectrum.get(thisMass) != null ? newSpectrum.get(thisMass) : 0;
-			newSpectrum.put(thisMass, thisOldFrequency + thisFrequency);
+			Double thisIntensity = entry.getValue();
+			double thisOldIntensity = newSpectrum.get(thisMass) != null ? newSpectrum.get(thisMass) : 0;
+			newSpectrum.put(thisMass, thisOldIntensity + thisIntensity);
 		}
 		for (Entry<Double,Double> otherEntry : otherSpectrum.entrySet()) {
 			Double otherMass = otherEntry.getKey();
-			Double otherFrequency = otherEntry.getValue();
-			double otherOldFrequency = newSpectrum.get(otherMass) != null ? newSpectrum.get(otherMass) : 0;
-			newSpectrum.put(otherMass, otherOldFrequency + otherFrequency);
+			Double otherIntensity = otherEntry.getValue();
+			double otherOldIntensity = newSpectrum.get(otherMass) != null ? newSpectrum.get(otherMass) : 0;
+			newSpectrum.put(otherMass, otherOldIntensity + otherIntensity);
 		}
 		return newSpectrum;
 	}
 	
 	/**
 	 * 
-	 * @return A copy of this Spectrum with frequencies converted to MIDs (mass
+	 * @return A copy of this Spectrum with intensities converted to MIDs (mass
 	 *         isotopomer distribution)
 	 */
-	public MassSpectrum toMIDFrequency() {
-		if (this.frequencyType.equals(FrequencyType.MID)) {
+	public MassSpectrum toMID() {
+		if (this.intensityType.equals(IntensityType.MID)) {
 			return this;
 		} else {
-			MassSpectrum newSpectrum = new MassSpectrum(FrequencyType.MID);
+			MassSpectrum newSpectrum = new MassSpectrum(IntensityType.MID);
 			Double absoluteNumberOfFragments = 0.0;
 			for (Entry<Double,Double> entry : this.entrySet()) {
 				absoluteNumberOfFragments = absoluteNumberOfFragments + entry.getValue();
 			}
 			for (Entry<Double,Double> entry : this.entrySet()) {
-				Double relativeFrequency = entry.getValue() / absoluteNumberOfFragments;
-				newSpectrum.put(entry.getKey(), relativeFrequency);
+				Double relativeIntensity = entry.getValue() / absoluteNumberOfFragments;
+				newSpectrum.put(entry.getKey(), relativeIntensity);
 			}
 			return newSpectrum;
 		}
@@ -104,17 +107,17 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 	
 	/**
 	 * 
-	 * @return A copy of this Spectrum with frequencies converted to relative ones
+	 * @return A copy of this Spectrum with intensities converted to relative ones
 	 */
-	public MassSpectrum toRelativeFrequency() {
-		if (this.frequencyType.equals(FrequencyType.RELATIVE)) {
+	public MassSpectrum toRelativeIntensity() {
+		if (this.intensityType.equals(IntensityType.RELATIVE)) {
 			return this;
 		} else {
-			MassSpectrum newSpectrum = new MassSpectrum(FrequencyType.RELATIVE);
-			Double highestFrequency = getHighestFrequency();
+			MassSpectrum newSpectrum = new MassSpectrum(IntensityType.RELATIVE);
+			Double highestIntensity = getHighestIntensity();
 			for (Entry<Double, Double> entry : this.entrySet()) {
-				Double relativeFrequency = (entry.getValue() / highestFrequency) * 100;
-				newSpectrum.put(entry.getKey(), relativeFrequency);
+				Double relativeIntensity = (entry.getValue() / highestIntensity) * 100;
+				newSpectrum.put(entry.getKey(), relativeIntensity);
 			}
 			return newSpectrum;
 		}
@@ -126,8 +129,8 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 	 * @return A copy of this map without masses that have an abundance under the
 	 *         minimalValue
 	 */
-	public MassSpectrum skipLowFrequency(Double minimalValue) {
-		MassSpectrum newSpectrum = new MassSpectrum(this.getFrequencyType());
+	public MassSpectrum skipLowIntensity(Double minimalValue) {
+		MassSpectrum newSpectrum = new MassSpectrum(this.getIntensityType());
 		for (Entry<Double, Double> entry : this.entrySet()) {
 			if (entry.getValue() >= minimalValue) {
 				newSpectrum.put(entry.getKey(), entry.getValue());
@@ -142,7 +145,7 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 	 * @return a new map with masses lower than upper bound
 	 */
 	public MassSpectrum skipHighMasses(Double highestMass) {
-		MassSpectrum newSpectrum = new MassSpectrum(this.frequencyType);
+		MassSpectrum newSpectrum = new MassSpectrum(this.intensityType);
 		for (Entry<Double,Double> entry : this.entrySet()) {
 			if (entry.getKey() <= highestMass) {
 				newSpectrum.put(entry.getKey(), entry.getValue());
@@ -152,18 +155,19 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 	}
 	
 	/**
-	 * This method rounds all masses to the given precision. If this causes doubled masses they will be saved as one mass
-	 * with their frequencies added.
+	 * This method rounds all masses to the given precision. If this causes doubled
+	 * masses they will be saved as one mass with their intensities added.
+	 * 
 	 * @param precision
 	 * @return a new map with masses rounded to the given precision.
 	 */
 	public MassSpectrum roundMasses(int precision) {
-		MassSpectrum newSpectrum = new MassSpectrum(this.frequencyType);
+		MassSpectrum newSpectrum = new MassSpectrum(this.intensityType);
 		for (Entry<Double,Double> currentEntry : this.entrySet()) {
 			Double roundedMass = MathUtils.round(currentEntry.getKey(), precision);
 			if (newSpectrum.containsKey(roundedMass)) {
-				Double oldFrequency = newSpectrum.get(roundedMass);
-				newSpectrum.put(roundedMass, currentEntry.getValue() + oldFrequency);
+				Double oldIntensity = newSpectrum.get(roundedMass);
+				newSpectrum.put(roundedMass, currentEntry.getValue() + oldIntensity);
 				
 			} else {
 				newSpectrum.put(roundedMass, currentEntry.getValue());
@@ -173,15 +177,16 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 	}
 	
 	/**
-	 * This method rounds the frequencies of this map to the given precision.
+	 * This method rounds the intensities of this map to the given precision.
+	 * 
 	 * @param precision
-	 * @return a new map with frequencies rounded to the given precision.
+	 * @return a new map with intensities rounded to the given precision.
 	 */
-	public MassSpectrum roundFrequencies(int precision) {
-		MassSpectrum newSpectrum = new MassSpectrum(this.frequencyType);
+	public MassSpectrum roundIntensities(int precision) {
+		MassSpectrum newSpectrum = new MassSpectrum(this.intensityType);
 		for (Entry<Double,Double> currentEntry : this.entrySet()) {
-			Double roundedFrequency = MathUtils.round(currentEntry.getValue(), precision);
-			newSpectrum.put(currentEntry.getKey(), roundedFrequency);
+			Double roundedIntensity = MathUtils.round(currentEntry.getValue(), precision);
+			newSpectrum.put(currentEntry.getKey(), roundedIntensity);
 		}
 		return newSpectrum;
 		
@@ -194,7 +199,7 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 	public MassSpectrum sortDescendingByMass() {
 		List<Entry<Double, Double>> entryList = new ArrayList<>(this.entrySet());
 		entryList.sort(Entry.comparingByKey());
-		MassSpectrum sortedList = new MassSpectrum(this.frequencyType);
+		MassSpectrum sortedList = new MassSpectrum(this.intensityType);
 		for (int index = entryList.size() - 1; index >= 0; index--) {
 			Entry<Double, Double> entry = entryList.get(index);
 	            sortedList.put(entry.getKey(), entry.getValue());
@@ -206,10 +211,10 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 	 * 
 	 * @return a new sorted spectrum
 	 */
-	public MassSpectrum sortDescendingByFrequency() {
+	public MassSpectrum sortDescendingByIntensity() {
 		List<Entry<Double, Double>> entryList = new ArrayList<>(this.entrySet());
 		entryList.sort(Entry.comparingByValue());
-		MassSpectrum sortedList = new MassSpectrum(this.frequencyType);
+		MassSpectrum sortedList = new MassSpectrum(this.intensityType);
 		for (int index = entryList.size() - 1; index >= 0; index--) {
 			Entry<Double, Double> entry = entryList.get(index);
 	            sortedList.put(entry.getKey(), entry.getValue());
@@ -221,10 +226,10 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 	 * 
 	 * @return a new sorted spectrum
 	 */
-	public MassSpectrum sortAscendingByFrequency() {
+	public MassSpectrum sortAscendingByIntensity() {
 		List<Entry<Double, Double>> entryList = new ArrayList<>(this.entrySet());
 		entryList.sort(Entry.comparingByValue());
-		MassSpectrum sortedList = new MassSpectrum(this.frequencyType);
+		MassSpectrum sortedList = new MassSpectrum(this.intensityType);
 		for (Entry<Double, Double> entry : entryList) {
 			sortedList.put(entry.getKey(), entry.getValue());
         }
@@ -238,15 +243,15 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 	public MassSpectrum sortAscendingByMass() {
 		List<Entry<Double, Double>> entryList = new ArrayList<>(this.entrySet());
 		entryList.sort(Entry.comparingByKey());
-		MassSpectrum sortedList = new MassSpectrum(this.frequencyType);
+		MassSpectrum sortedList = new MassSpectrum(this.intensityType);
 		for (Entry<Double, Double> entry : entryList) {
 			sortedList.put(entry.getKey(), entry.getValue());
         }
         return sortedList;
 	}
 	
-	public FrequencyType getFrequencyType() {
-		return frequencyType;
+	public IntensityType getIntensityType() {
+		return intensityType;
 	}
 	
 	/**
@@ -341,7 +346,7 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 		return entryList;
 	}
 	
-	public Double sumOfFrequencies() {
+	public Double sumOfIntensities() {
 		Double sum = 0.0;
 		for (Entry<Double, Double> entry : this.entrySet()) {
 			sum = sum + entry.getValue();
@@ -356,7 +361,7 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 		try {
 			parser = CSVParser.parse(csvData, Charset.defaultCharset(), CSVFormat.RFC4180);
 			List<CSVRecord> records = parser.getRecords();
-			spectrum = ParserUtils.parseSpectrum(records, 0, 1, FrequencyType.ABSOLUTE, 7);
+			spectrum = ParserUtils.parseSpectrum(records, 0, 1, IntensityType.ABSOLUTE, 7);
 		} catch (Exception e) {
 			System.out.println(e.getStackTrace());
 			e.printStackTrace();
@@ -365,14 +370,14 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 	}
 
 	/**
-	 * Creates a MassSpectrum with frequencies absolute to the number of elements in
+	 * Creates a MassSpectrum with intensities absolute to the number of elements in
 	 * the fragmentMasses list.
 	 * 
 	 * @param fragmentMasses
-	 * @return A MassSpectrum with ABSOLUTE frequencies
+	 * @return A MassSpectrum with ABSOLUTE intensities
 	 */
 	public static MassSpectrum createSpectrumFromMasses(ArrayList<Double> fragmentMasses) {
-		MassSpectrum spectrum = new MassSpectrum(FrequencyType.ABSOLUTE);
+		MassSpectrum spectrum = new MassSpectrum(IntensityType.ABSOLUTE);
 		for (Double mass : fragmentMasses) {
 			if (!(mass > 0.0)) {
 				LOGGER.info("Detected mass 0.0");
@@ -400,7 +405,7 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 		if (charge == 0) {
 			return this;
 		}
-		MassSpectrum adjusted = new MassSpectrum(this.getFrequencyType());
+		MassSpectrum adjusted = new MassSpectrum(this.getIntensityType());
 		for (Entry<Double, Double> entry : this.entrySet()) {
 			adjusted.put(entry.getKey() - charge * NaturalConstants.ELECTRON_MASS.getValue(), entry.getValue());
 		}
@@ -419,7 +424,7 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 		return entryList.get(0).getKey();
 	}
 
-	public Double getHighestFrequency() {
+	public Double getHighestIntensity() {
 		if (this.size() == 0) {
 			return 0.0;
 		}
@@ -428,7 +433,7 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 		return entryList.get(entryList.size() - 1).getValue();
 	}
 
-	public Double getLowestFrequency() {
+	public Double getLowestIntensity() {
 		List<Entry<Double, Double>> entryList = new ArrayList<>(this.entrySet());
 		entryList.sort(Entry.comparingByValue());
 		return entryList.get(0).getValue();
