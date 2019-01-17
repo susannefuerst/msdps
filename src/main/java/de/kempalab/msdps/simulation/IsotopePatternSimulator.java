@@ -163,9 +163,6 @@ public class IsotopePatternSimulator {
 	 */
 	public static MassSpectrum prepareSpectrum(MassSpectrum spectrum, Integer roundMassesPrecision,
 			Integer roundFrequenciesPrecision, Double minimalFrequency, FrequencyType frequencyType) {
-		if (roundMassesPrecision != null) {
-			spectrum = spectrum.roundMasses(roundMassesPrecision);
-		}
 		if (frequencyType.equals(FrequencyType.MID)) {
 			spectrum = spectrum.toMIDFrequency();
 		} else if (frequencyType.equals(FrequencyType.RELATIVE)) {
@@ -178,6 +175,9 @@ public class IsotopePatternSimulator {
 			spectrum = spectrum.skipLowFrequency(minimalFrequency);
 		}
 		Double sumOfFrequencies = 0.0;
+		if (roundMassesPrecision != null) {
+			spectrum = spectrum.roundMasses(roundMassesPrecision);
+		}
 		for (Entry<Double, Double> entry : spectrum.entrySet()) {
 			sumOfFrequencies = sumOfFrequencies + entry.getValue();
 		}

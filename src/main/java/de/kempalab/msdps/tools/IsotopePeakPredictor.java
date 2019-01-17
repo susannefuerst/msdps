@@ -68,7 +68,7 @@ public class IsotopePeakPredictor implements Runnable {
 		String formula = fragment.getFormula();
 		int entryCount = 0;
 		for (Entry<Double, Double> entry : msDatabase.getMixedSpectrum().entrySet()) {
-			String id = baseID + "_" + entryCount;
+			String id = baseID + "_" + format(entryCount);
 			Double exactMass = entry.getKey();
 			String mass = exactMass.toString();
 			String predictedIntensity = entry.getValue().toString();
@@ -81,9 +81,16 @@ public class IsotopePeakPredictor implements Runnable {
 			String n = shiftInducingIsotopes.get(Isotope.N_15) != null
 					? shiftInducingIsotopes.get(Isotope.N_15).toString()
 					: "0";
-			table.addRow(id, mass, rt, identity, formula, mass, predictedIntensity, heavyIsotopes, c, n);
+			table.addRow(id, mass, rt, identity + "_" + c + n, formula, mass, predictedIntensity, heavyIsotopes, c, n);
 			entryCount++;
 		}
+	}
+
+	private static String format(int entryCount) {
+		if (entryCount < 10) {
+			return "0" + entryCount;
+		}
+		return String.valueOf(entryCount);
 	}
 
 }

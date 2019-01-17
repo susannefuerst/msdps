@@ -62,6 +62,6 @@ public class ThreatenedIsotopePeakDatabaseCreator {
 		for (Thread thread : threads) {
 			thread.join();
 		}
-		table.writeToCsv("N/A", true, "Z:\\data\\db\\gln_test.csv");
+		table.writeToCsv("N/A", true, "Z:\\data\\db\\gln_test_detaiedientity.csv");
 	}
 }

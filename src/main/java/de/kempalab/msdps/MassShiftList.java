@@ -68,14 +68,14 @@ public class MassShiftList extends ArrayList<MassShift> {
 	 */
 	public MassShiftList findConnectedSubSequence(int startPeak, int endPeak){
 		MassShiftList reducedList = this.reduce(startPeak, endPeak);
-		LOGGER.debug("Checking this list of mass shifts for a connected sequence:\n" + reducedList);
+		//LOGGER.debug("Checking this list of mass shifts for a connected sequence:\n" + reducedList);
 		if (reducedList.isConnected(startPeak, endPeak)) {
 			return reducedList;
 		}
 		ArrayList<Integer> indexSet = reducedList.indexSet();
 		int n = indexSet.size();
 		for (int k = n; k >= 1; k--) {
-			LOGGER.debug("Checking all " + k + "- elementary subsets...");
+			//LOGGER.debug("Checking all " + k + "- elementary subsets...");
 			StringBuilder binaryBuilder = new StringBuilder();
 			for (int i = 0; i < n - k; i++) {
 				binaryBuilder.append(MathUtils.OFF);
@@ -186,11 +186,11 @@ public class MassShiftList extends ArrayList<MassShift> {
 			MassShift thisShift = this.get(index);
 			MassShift nextShift = this.get(index + 1);
 			if (!nextShift.follows(thisShift)) {
-				LOGGER.debug(this.toString() + " is not connected.");
+				//LOGGER.debug(this.toString() + " is not connected.");
 				return false;
 			}
 		}
-		LOGGER.debug(this.toString() + " is connected.");
+		//LOGGER.debug(this.toString() + " is connected.");
 		return true;
 	}
 	

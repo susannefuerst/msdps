@@ -28,7 +28,7 @@ import junit.framework.TestCase;
 public class CorrectionUtilsTest extends TestCase {
 	
 	public static final MyLogger LOGGER = MyLogger.getLogger(CorrectionUtilsTest.class);
-	private static final Double ALLOWED_INC_ERROR = 0.006;
+	private static final Double ALLOWED_INC_ERROR = 0.007;
 	//some of these tests take a lot of time so do not run them automatically
 	private static final boolean TEST_INCS = false;
 	
