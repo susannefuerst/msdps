@@ -73,10 +73,10 @@ public class CorrectionUtilsTest extends TestCase {
 								.simulateIndependentTracerIncorporation(request);
 						MSShiftDatabase msShiftDatabase = (MSShiftDatabase) response.getMsDatabaseList().get(0);
 
-						LOGGER.debug(msShiftDatabase.toString());
+						LOGGER.info(msShiftDatabase.toString());
 						IncorporationMap incorporationMap = new IncorporationMap(msShiftDatabase.getMixedSpectrum(),
 								msShiftDatabase.getMixedMassShifts(), new IsotopeList(Isotope.C_13, Isotope.N_15));
-						LOGGER.debug("UncorrectedIncorporation " + incorporationMap.asTable());
+						LOGGER.info("UncorrectedIncorporation " + incorporationMap.asTable());
 
 						ElementFormula fragmentFormula = ElementFormula
 								.fromString(msShiftDatabase.getFragmentFormula());
@@ -88,30 +88,30 @@ public class CorrectionUtilsTest extends TestCase {
 						 */
 						IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
 
-						LOGGER.debug("correctedMap " + correctedMap.asTable());
-						LOGGER.debug("Simulated incorporations ");
-						LOGGER.debug("INC_C " + INC_C);
-						LOGGER.debug("INC_N " + INC_N);
-						LOGGER.debug("INC_CN " + INC_CN);
-						LOGGER.debug("Check C incorporation...");
+						LOGGER.info("correctedMap " + correctedMap.asTable());
+						LOGGER.info("Simulated incorporations ");
+						LOGGER.info("INC_C " + INC_C);
+						LOGGER.info("INC_N " + INC_N);
+						LOGGER.info("INC_CN " + INC_CN);
+						LOGGER.info("Check C incorporation...");
 						IsotopeFormula formulaC = new IsotopeFormula();
 						formulaC.put(Isotope.C_13, 1);
 						formulaC.put(Isotope.N_15, 0);
-						LOGGER.debug("calculatedIncC " + correctedMap.get(formulaC));
-						LOGGER.debug("expectedIncC " + INC_C);
+						LOGGER.info("calculatedIncC " + correctedMap.get(formulaC));
+						LOGGER.info("expectedIncC " + INC_C);
 
-						LOGGER.debug("Check N incorporation...");
+						LOGGER.info("Check N incorporation...");
 						IsotopeFormula formulaN = new IsotopeFormula();
 						formulaN.put(Isotope.C_13, 0);
 						formulaN.put(Isotope.N_15, 1);
-						LOGGER.debug("calculatedIncN " + correctedMap.get(formulaN));
-						LOGGER.debug("expectedIncN " + INC_N);
-						LOGGER.debug("Check CN incorporation...");
+						LOGGER.info("calculatedIncN " + correctedMap.get(formulaN));
+						LOGGER.info("expectedIncN " + INC_N);
+						LOGGER.info("Check CN incorporation...");
 						IsotopeFormula formulaCN = new IsotopeFormula();
 						formulaCN.put(Isotope.C_13, 1);
 						formulaCN.put(Isotope.N_15, 1);
-						LOGGER.debug("calculatedIncCN " + correctedMap.get(formulaCN));
-						LOGGER.debug("expectedIncCN " + INC_CN);
+						LOGGER.info("calculatedIncCN " + correctedMap.get(formulaCN));
+						LOGGER.info("expectedIncCN " + INC_CN);
 						Double actualCN = correctedMap.get(formulaCN) != null ? correctedMap.get(formulaCN) : 0.0;
 						Double actualC = correctedMap.get(formulaC) != null ? correctedMap.get(formulaC) : 0.0;
 						Double actualN = correctedMap.get(formulaN) != null ? correctedMap.get(formulaN) : 0.0;
@@ -121,7 +121,7 @@ public class CorrectionUtilsTest extends TestCase {
 						assertTrue(MathUtils.approximatelyEquals(actualC, INC_C, ALLOWED_INC_ERROR));
 						assertTrue(MathUtils.approximatelyEquals(actualN, INC_N, ALLOWED_INC_ERROR));
 						assertTrue(MathUtils.approximatelyEquals(actualCN, INC_CN, ALLOWED_INC_ERROR));
-						LOGGER.debug("---------------------------- PASSED -----------------------------");
+						LOGGER.info("---------------------------- PASSED -----------------------------");
 					}
 				}
 			}
@@ -149,10 +149,10 @@ public class CorrectionUtilsTest extends TestCase {
 			IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(request);
 			MSShiftDatabase msShiftDatabase = (MSShiftDatabase) response.getMsDatabaseList().get(0);
 
-			LOGGER.debug(msShiftDatabase.toString());
+			LOGGER.info(msShiftDatabase.toString());
 			IncorporationMap incorporationMap = new IncorporationMap(msShiftDatabase.getMixedSpectrum(),
 					msShiftDatabase.getMixedMassShifts(), new IsotopeList(Isotope.C_13));
-			LOGGER.debug("UncorrectedIncorporation " + incorporationMap.asTable());
+			LOGGER.info("UncorrectedIncorporation " + incorporationMap.asTable());
 			/*
 			 * recalculate the incorporation rates
 			 */
@@ -161,14 +161,14 @@ public class CorrectionUtilsTest extends TestCase {
 			elementFormula.put(Element.C, fragmentFormula.get(Element.C));
 			IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
 
-			LOGGER.debug("correctedMap " + correctedMap.asTable());
-			LOGGER.debug("Simulated incorporation ");
-			LOGGER.debug("INC_C " + INC_C);
-			LOGGER.debug("Check C incorporation...");
+			LOGGER.info("correctedMap " + correctedMap.asTable());
+			LOGGER.info("Simulated incorporation ");
+			LOGGER.info("INC_C " + INC_C);
+			LOGGER.info("Check C incorporation...");
 			IsotopeFormula formulaC = new IsotopeFormula();
 			formulaC.put(Isotope.C_13, 1);
-			LOGGER.debug("calculatedIncC " + correctedMap.get(formulaC));
-			LOGGER.debug("expectedIncC " + INC_C);
+			LOGGER.info("calculatedIncC " + correctedMap.get(formulaC));
+			LOGGER.info("expectedIncC " + INC_C);
 			Double actualC = correctedMap.get(formulaC) != null ? correctedMap.get(formulaC) : 0.0;
 			if (Math.abs(actualC - INC_C) > maxError) {
 				maxError = Math.abs(actualC - INC_C);
@@ -177,9 +177,9 @@ public class CorrectionUtilsTest extends TestCase {
 			 * compare the recalculated with the start values
 			 */
 			assertTrue(MathUtils.approximatelyEquals(actualC, INC_C, ALLOWED_INC_ERROR));
-			LOGGER.debug("---------------------------- PASSED -----------------------------");
+			LOGGER.info("---------------------------- PASSED -----------------------------");
 		}
-		LOGGER.debug("maxError " + maxError);
+		LOGGER.info("maxError " + maxError);
 	}
 
 	public void testIncorporationRate03() throws IntensityTypeMismatchException {
@@ -203,11 +203,11 @@ public class CorrectionUtilsTest extends TestCase {
 			IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(request);
 			MSShiftDatabase msShiftDatabase = (MSShiftDatabase) response.getMsDatabaseList().get(0);
 
-			LOGGER.debug(msShiftDatabase.toString());
+			LOGGER.info(msShiftDatabase.toString());
 
 			IncorporationMap incorporationMap = new IncorporationMap(msShiftDatabase.getMixedSpectrum(),
 					msShiftDatabase.getMixedMassShifts(), new IsotopeList(Isotope.N_15));
-			LOGGER.debug("UncorrectedIncorporation" + incorporationMap.asTable());
+			LOGGER.info("UncorrectedIncorporation" + incorporationMap.asTable());
 			/*
 			 * recalculate the incorporation rates
 			 */
@@ -216,16 +216,16 @@ public class CorrectionUtilsTest extends TestCase {
 			elementFormula.put(Element.N, fragmentFormula.get(Element.N));
 			IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
 
-			LOGGER.debug("correctedMap " + correctedMap.asTable());
+			LOGGER.info("correctedMap " + correctedMap.asTable());
 
-			LOGGER.debug("Simulated incorporation");
-			LOGGER.debug("INC_N " + INC_N);
+			LOGGER.info("Simulated incorporation");
+			LOGGER.info("INC_N " + INC_N);
 
-			LOGGER.debug("Check N incorporation...");
+			LOGGER.info("Check N incorporation...");
 			IsotopeFormula formulaN = new IsotopeFormula();
 			formulaN.put(Isotope.N_15, 1);
-			LOGGER.debug("calculatedIncN " + correctedMap.get(formulaN));
-			LOGGER.debug("expectedIncN " + INC_N);
+			LOGGER.info("calculatedIncN " + correctedMap.get(formulaN));
+			LOGGER.info("expectedIncN " + INC_N);
 
 			Double actualN = correctedMap.get(formulaN) != null ? correctedMap.get(formulaN) : 0.0;
 			if (Math.abs(actualN - INC_N) > maxError) {
@@ -235,9 +235,9 @@ public class CorrectionUtilsTest extends TestCase {
 			 * compare the recalculated with the start values
 			 */
 			assertTrue(MathUtils.approximatelyEquals(actualN, INC_N, ALLOWED_INC_ERROR));
-			LOGGER.debug("---------------------------- PASSED -----------------------------");
+			LOGGER.info("---------------------------- PASSED -----------------------------");
 		}
-		LOGGER.debug("maxError " + maxError);
+		LOGGER.info("maxError " + maxError);
 	}
 
 	public void testIncorporationRate04() throws IntensityTypeMismatchException {
@@ -273,11 +273,11 @@ public class CorrectionUtilsTest extends TestCase {
 							.simulateIndependentTracerIncorporation(request);
 					MSShiftDatabase msShiftDatabase = (MSShiftDatabase) response.getMsDatabaseList().get(0);
 
-					LOGGER.debug(msShiftDatabase.toString());
+					LOGGER.info(msShiftDatabase.toString());
 
 					IncorporationMap incorporationMap = new IncorporationMap(msShiftDatabase.getMixedSpectrum(),
 							msShiftDatabase.getMixedMassShifts(), new IsotopeList(Isotope.C_13, Isotope.N_15));
-					LOGGER.debug("UncorrectedIncorporation" + incorporationMap.asTable());
+					LOGGER.info("UncorrectedIncorporation" + incorporationMap.asTable());
 					/*
 					 * recalculate the incorporation rates
 					 */
@@ -287,32 +287,32 @@ public class CorrectionUtilsTest extends TestCase {
 					elementFormula.put(Element.N, fragmentFormula.get(Element.N));
 					IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
 
-					LOGGER.debug("correctedMap " + correctedMap.asTable());
+					LOGGER.info("correctedMap " + correctedMap.asTable());
 
-					LOGGER.debug("Simulated incorporations");
-					LOGGER.debug("INC_C2 " + INC_C2);
-					LOGGER.debug("INC_N " + INC_N);
+					LOGGER.info("Simulated incorporations");
+					LOGGER.info("INC_C2 " + INC_C2);
+					LOGGER.info("INC_N " + INC_N);
 
-					LOGGER.debug("Check C incorporation...");
+					LOGGER.info("Check C incorporation...");
 					IsotopeFormula formulaC2 = new IsotopeFormula();
 					formulaC2.put(Isotope.C_13, 2);
 					formulaC2.put(Isotope.N_15, 0);
-					LOGGER.debug("calculatedIncC2 " + correctedMap.get(formulaC2));
-					LOGGER.debug("expectedIncC2 " + INC_C2);
+					LOGGER.info("calculatedIncC2 " + correctedMap.get(formulaC2));
+					LOGGER.info("expectedIncC2 " + INC_C2);
 
-					LOGGER.debug("Check N incorporation...");
+					LOGGER.info("Check N incorporation...");
 					IsotopeFormula formulaN = new IsotopeFormula();
 					formulaN.put(Isotope.C_13, 0);
 					formulaN.put(Isotope.N_15, 1);
-					LOGGER.debug("calculatedIncN " + correctedMap.get(formulaN));
-					LOGGER.debug("expectedIncN " + INC_N);
+					LOGGER.info("calculatedIncN " + correctedMap.get(formulaN));
+					LOGGER.info("expectedIncN " + INC_N);
 
-					LOGGER.debug("Check CN incorporation...");
+					LOGGER.info("Check CN incorporation...");
 					IsotopeFormula formulaCN = new IsotopeFormula();
 					formulaCN.put(Isotope.C_13, 2);
 					formulaCN.put(Isotope.N_15, 1);
-					LOGGER.debug("calculatedIncCN " + correctedMap.get(formulaCN));
-					LOGGER.debug("expectedIncCN " + 0.0);
+					LOGGER.info("calculatedIncCN " + correctedMap.get(formulaCN));
+					LOGGER.info("expectedIncCN " + 0.0);
 
 					Double actualCN = correctedMap.get(formulaCN) != null ? correctedMap.get(formulaCN) : 0.0;
 					Double actualC = correctedMap.get(formulaC2) != null ? correctedMap.get(formulaC2) : 0.0;
@@ -323,7 +323,7 @@ public class CorrectionUtilsTest extends TestCase {
 					assertTrue(MathUtils.approximatelyEquals(actualC, INC_C2, ALLOWED_INC_ERROR));
 					assertTrue(MathUtils.approximatelyEquals(actualN, INC_N, ALLOWED_INC_ERROR));
 					assertTrue(MathUtils.approximatelyEquals(actualCN, 0.0, ALLOWED_INC_ERROR));
-					LOGGER.debug("---------------------------- PASSED -----------------------------");
+					LOGGER.info("---------------------------- PASSED -----------------------------");
 				}
 			}
 		}
@@ -358,15 +358,15 @@ public class CorrectionUtilsTest extends TestCase {
 
 		IncorporationMap incorporationMap = new IncorporationMap(measured, shifts,
 				new IsotopeList(Isotope.C_13, Isotope.N_15));
-		LOGGER.debug("incorporationMap " + incorporationMap.asTable());
-		LOGGER.debug("incorporationMap.normalize() " + incorporationMap.normalize(4).asTable());
+		LOGGER.info("incorporationMap " + incorporationMap.asTable());
+		LOGGER.info("incorporationMap.normalize() " + incorporationMap.normalize(4).asTable());
 		ElementFormula fragmentFormula = ElementFormula.fromString("C7H14NOSi");
 		ElementFormula elementFormula = new ElementFormula();
 		elementFormula.put(Element.C, fragmentFormula.get(Element.C));
 		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
 		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
-		LOGGER.debug("correctedMap " + correctedMap.asTable());
-		LOGGER.debug("correctedMap.normalize() " + correctedMap.normalize(4).asTable());
+		LOGGER.info("correctedMap " + correctedMap.asTable());
+		LOGGER.info("correctedMap.normalize() " + correctedMap.normalize(4).asTable());
 
 		IncorporationMap normalizedCorrectedMap = correctedMap.normalize(4);
 		IsotopeFormula cn00 = new IsotopeFormula();
@@ -416,15 +416,15 @@ public class CorrectionUtilsTest extends TestCase {
 
 		IncorporationMap incorporationMap = new IncorporationMap(measured, shifts,
 				new IsotopeList(Isotope.C_13, Isotope.N_15));
-		LOGGER.debug("incorporationMap " + incorporationMap.asTable());
-		LOGGER.debug("incorporationMap.normalize() " + incorporationMap.normalize(4).asTable());
+		LOGGER.info("incorporationMap " + incorporationMap.asTable());
+		LOGGER.info("incorporationMap.normalize() " + incorporationMap.normalize(4).asTable());
 		ElementFormula fragmentFormula = ElementFormula.fromString("C7H14NOSi");
 		ElementFormula elementFormula = new ElementFormula();
 		elementFormula.put(Element.C, fragmentFormula.get(Element.C));
 		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
 		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
-		LOGGER.debug("correctedMap " + correctedMap.asTable());
-		LOGGER.debug("correctedMap.normalize() " + correctedMap.normalize(4).asTable());
+		LOGGER.info("correctedMap " + correctedMap.asTable());
+		LOGGER.info("correctedMap.normalize() " + correctedMap.normalize(4).asTable());
 
 		IncorporationMap normalizedCorrectedMap = correctedMap.normalize(4);
 		IsotopeFormula cn41 = new IsotopeFormula();
@@ -471,15 +471,15 @@ public class CorrectionUtilsTest extends TestCase {
 
 		IncorporationMap incorporationMap = new IncorporationMap(measured, shifts,
 				new IsotopeList(Isotope.C_13, Isotope.N_15));
-		LOGGER.debug("incorporationMap " + incorporationMap.asTable());
-		LOGGER.debug("incorporationMap.normalize() " + incorporationMap.normalize(4).asTable());
+		LOGGER.info("incorporationMap " + incorporationMap.asTable());
+		LOGGER.info("incorporationMap.normalize() " + incorporationMap.normalize(4).asTable());
 		ElementFormula fragmentFormula = ElementFormula.fromString("C7H14NOSi");
 		ElementFormula elementFormula = new ElementFormula();
 		elementFormula.put(Element.C, fragmentFormula.get(Element.C));
 		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
 		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
-		LOGGER.debug("correctedMap " + correctedMap.asTable());
-		LOGGER.debug("correctedMap.normalize() " + correctedMap.normalize(4).asTable());
+		LOGGER.info("correctedMap " + correctedMap.asTable());
+		LOGGER.info("correctedMap.normalize() " + correctedMap.normalize(4).asTable());
 
 		IncorporationMap normalizedCorrectedMap = correctedMap.normalize(4);
 		IsotopeFormula cn40 = new IsotopeFormula();
@@ -530,15 +530,15 @@ public class CorrectionUtilsTest extends TestCase {
 
 		IncorporationMap incorporationMap = new IncorporationMap(measured, shifts,
 				new IsotopeList(Isotope.C_13, Isotope.N_15));
-		LOGGER.debug("incorporationMap " + incorporationMap.asTable());
-		LOGGER.debug("incorporationMap.normalize() ", incorporationMap.normalize(4).asTable());
+		LOGGER.info("incorporationMap " + incorporationMap.asTable());
+		LOGGER.info("incorporationMap.normalize() ", incorporationMap.normalize(4).asTable());
 		ElementFormula fragmentFormula = ElementFormula.fromString("C7H14NOSi");
 		ElementFormula elementFormula = new ElementFormula();
 		elementFormula.put(Element.C, fragmentFormula.get(Element.C));
 		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
 		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
-		LOGGER.debug("correctedMap " + correctedMap.asTable());
-		LOGGER.debug("correctedMap.normalize() " + correctedMap.normalize(4).asTable());
+		LOGGER.info("correctedMap " + correctedMap.asTable());
+		LOGGER.info("correctedMap.normalize() " + correctedMap.normalize(4).asTable());
 
 		IncorporationMap normalizedCorrectedMap = correctedMap.normalize(4);
 		IsotopeFormula cn01 = new IsotopeFormula();
@@ -556,10 +556,8 @@ public class CorrectionUtilsTest extends TestCase {
 
 	}
 
-
-
 	public void test12CGLN() {
-		LOGGER.debug("12CGln");
+		LOGGER.info("12CGln");
 		IsotopeFormula cn00 = new IsotopeFormula();
 		cn00.put(Isotope.C_13, 0);
 		cn00.put(Isotope.N_15, 0);
@@ -575,15 +573,15 @@ public class CorrectionUtilsTest extends TestCase {
 		IsotopeFormula[] isotopeFormulas = { cn00, cn01, cn10, cn20 };
 		Double[] intensities = { 2358214736.0, 8732609.75, 175964918.5, 3685533.25 };
 		IncorporationMap incorporationMap = new IncorporationMap(isotopeFormulas, intensities);
-		LOGGER.debug("uncorrectedMap " + incorporationMap.asTable());
-		LOGGER.debug("uncorrectedMap normalized " + incorporationMap.normalize(4).asTable());
+		LOGGER.info("uncorrectedMap " + incorporationMap.asTable());
+		LOGGER.info("uncorrectedMap normalized " + incorporationMap.normalize(4).asTable());
 		ElementFormula fragmentFormula = ElementFormula.fromString("C7H14NOSi");
 		ElementFormula elementFormula = new ElementFormula();
 		elementFormula.put(Element.C, fragmentFormula.get(Element.C));
 		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
 		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
-		LOGGER.debug("correctedMap " + correctedMap.asTable());
-		LOGGER.debug("correctedMap normalized " + correctedMap.normalize(4).asTable());
+		LOGGER.info("correctedMap " + correctedMap.asTable());
+		LOGGER.info("correctedMap normalized " + correctedMap.normalize(4).asTable());
 		IncorporationMap normalizedCorrectedMap = correctedMap.normalize(4);
 		assertEquals(1.0, normalizedCorrectedMap.get(0, 0));
 		assertEquals(0.0, normalizedCorrectedMap.get(0, 1));
@@ -592,7 +590,7 @@ public class CorrectionUtilsTest extends TestCase {
 	}
 
 	public void test13C15NGLN() {
-		LOGGER.debug("13C15NGln");
+		LOGGER.info("13C15NGln");
 		IsotopeFormula cn41 = new IsotopeFormula();
 		cn41.put(Isotope.C_13, 4);
 		cn41.put(Isotope.N_15, 1);
@@ -602,22 +600,22 @@ public class CorrectionUtilsTest extends TestCase {
 		IsotopeFormula[] isotopeFormulas = { cn41, cn51 };
 		Double[] intensities = { 3664153240.500000, 103214054.5 };
 		IncorporationMap incorporationMap = new IncorporationMap(isotopeFormulas, intensities);
-		LOGGER.debug("uncorrectedMap " + incorporationMap.asTable());
-		LOGGER.debug("uncorrectedMap normalized " + incorporationMap.normalize(4).asTable());
+		LOGGER.info("uncorrectedMap " + incorporationMap.asTable());
+		LOGGER.info("uncorrectedMap normalized " + incorporationMap.normalize(4).asTable());
 		ElementFormula fragmentFormula = ElementFormula.fromString("C7H14NOSi");
 		ElementFormula elementFormula = new ElementFormula();
 		elementFormula.put(Element.C, fragmentFormula.get(Element.C));
 		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
 		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
-		LOGGER.debug("correctedMap " + correctedMap.asTable());
-		LOGGER.debug("correctedMap normalized " + correctedMap.normalize(4).asTable());
+		LOGGER.info("correctedMap " + correctedMap.asTable());
+		LOGGER.info("correctedMap normalized " + correctedMap.normalize(4).asTable());
 		IncorporationMap normalizedCorrectedMap = correctedMap.normalize(4);
 		assertEquals(1.0, normalizedCorrectedMap.get(4, 1));
 		assertEquals(0.0, normalizedCorrectedMap.get(5, 1));
 	}
 
 	public void test13CGLN() {
-		LOGGER.debug("13CGln");
+		LOGGER.info("13CGln");
 		IsotopeFormula cn40 = new IsotopeFormula();
 		cn40.put(Isotope.C_13, 4);
 		cn40.put(Isotope.N_15, 0);
@@ -630,19 +628,313 @@ public class CorrectionUtilsTest extends TestCase {
 		IsotopeFormula[] isotopeFormulas = { cn40, cn41, cn50 };
 		Double[] intensities = { 1717237531.0, 3858969.5, 44920384.0 };
 		IncorporationMap incorporationMap = new IncorporationMap(isotopeFormulas, intensities);
-		LOGGER.debug("uncorrectedMap " + incorporationMap.asTable());
-		LOGGER.debug("uncorrectedMap normalized " + incorporationMap.normalize(4).asTable());
+		LOGGER.info("uncorrectedMap " + incorporationMap.asTable());
+		LOGGER.info("uncorrectedMap normalized " + incorporationMap.normalize(4).asTable());
 		ElementFormula fragmentFormula = ElementFormula.fromString("C7H14NOSi");
 		ElementFormula elementFormula = new ElementFormula();
 		elementFormula.put(Element.C, fragmentFormula.get(Element.C));
 		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
 		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
-		LOGGER.debug("correctedMap " + correctedMap.asTable());
-		LOGGER.debug("correctedMap normalized " + correctedMap.normalize(4).asTable());
+		LOGGER.info("correctedMap " + correctedMap.asTable());
+		LOGGER.info("correctedMap normalized " + correctedMap.normalize(4).asTable());
 		IncorporationMap normalizedCorrectedMap = correctedMap.normalize(4);
 		assertEquals(1.0, normalizedCorrectedMap.get(4, 0));
 		assertEquals(0.0, normalizedCorrectedMap.get(4, 1));
 		assertEquals(0.0, normalizedCorrectedMap.get(5, 0));
+	}
+
+//		IsotopeFormula a = new IsotopeFormula();
+//		a.put(Isotope.C_13, 1);
+//		a.put(Isotope.N_15, 0);
+
+	public void testMixA() {
+		LOGGER.info("MixA");
+		IsotopeFormula _1 = new IsotopeFormula();
+		_1.put(Isotope.C_13, 0);
+		_1.put(Isotope.N_15, 0);
+
+		IsotopeFormula _2 = new IsotopeFormula();
+		_2.put(Isotope.C_13, 0);
+		_2.put(Isotope.N_15, 1);
+
+		IsotopeFormula _3 = new IsotopeFormula();
+		_3.put(Isotope.C_13, 1);
+		_3.put(Isotope.N_15, 0);
+
+		IsotopeFormula _4 = new IsotopeFormula();
+		_4.put(Isotope.C_13, 1);
+		_4.put(Isotope.N_15, 1);
+
+		IsotopeFormula _5 = new IsotopeFormula();
+		_5.put(Isotope.C_13, 2);
+		_5.put(Isotope.N_15, 0);
+
+		IsotopeFormula _6 = new IsotopeFormula();
+		_6.put(Isotope.C_13, 4);
+		_6.put(Isotope.N_15, 0);
+
+		IsotopeFormula _7 = new IsotopeFormula();
+		_7.put(Isotope.C_13, 4);
+		_7.put(Isotope.N_15, 1);
+
+		IsotopeFormula _8 = new IsotopeFormula();
+		_8.put(Isotope.C_13, 5);
+		_8.put(Isotope.N_15, 0);
+
+		IsotopeFormula[] isotopeFormulas = { _1, _2, _3, _4, _5, _6, _7, _8 };
+		Double[] intensities = { 2.14E+09 + 9.55E+07 + 3061416.25, 6358834 + 5.88E+07, 1.51E+08 + 5468670.5, 4384727.0,
+				4592408.5, 2.36E+09 + 1.21E+08 + 2262192, 5495782.0 + 8.08E+07, 7.14E+07 + 2812413 };
+		IncorporationMap incorporationMap = new IncorporationMap(isotopeFormulas, intensities);
+		LOGGER.info("uncorrectedMap " + incorporationMap.asTable());
+		LOGGER.info("uncorrectedMap normalized " + incorporationMap.normalize(4).asTable());
+		ElementFormula fragmentFormula = ElementFormula.fromString("C7H14NOSi");
+		ElementFormula elementFormula = new ElementFormula();
+		elementFormula.put(Element.C, fragmentFormula.get(Element.C));
+		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
+		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
+		LOGGER.info("correctedMap " + correctedMap.asTable());
+		LOGGER.info("correctedMap normalized " + correctedMap.normalize(4).asTable());
+		IncorporationMap normalizedCorrectedMap = correctedMap.normalize(4);
+//		assertEquals(1.0, normalizedCorrectedMap.get(4, 0));
+//		assertEquals(0.0, normalizedCorrectedMap.get(4, 1));
+//		assertEquals(0.0, normalizedCorrectedMap.get(5, 0));
+	}
+
+	public void testMixB() {
+		LOGGER.info("MixB");
+		IsotopeFormula _1 = new IsotopeFormula();
+		_1.put(Isotope.C_13, 0);
+		_1.put(Isotope.N_15, 0);
+
+		IsotopeFormula _2 = new IsotopeFormula();
+		_2.put(Isotope.C_13, 0);
+		_2.put(Isotope.N_15, 1);
+
+		IsotopeFormula _3 = new IsotopeFormula();
+		_3.put(Isotope.C_13, 1);
+		_3.put(Isotope.N_15, 0);
+
+		IsotopeFormula _4 = new IsotopeFormula();
+		_4.put(Isotope.C_13, 1);
+		_4.put(Isotope.N_15, 1);
+
+		IsotopeFormula _5 = new IsotopeFormula();
+		_5.put(Isotope.C_13, 2);
+		_5.put(Isotope.N_15, 0);
+
+		IsotopeFormula _6 = new IsotopeFormula();
+		_6.put(Isotope.C_13, 4);
+		_6.put(Isotope.N_15, 0);
+
+		IsotopeFormula _7 = new IsotopeFormula();
+		_7.put(Isotope.C_13, 4);
+		_7.put(Isotope.N_15, 1);
+
+		IsotopeFormula[] isotopeFormulas = { _1, _2, _3, _4, _5, _6, _7, };
+		Double[] intensities = { 2.29E+09 + 1.53E+07 + 1.86E+08, 2.75E+09 + 1.93E+08, 1.80E+08 + 6760809 + 5204173.5,
+				1.44E+07, 5719703.0, 2790484.75, 1173324.625 };
+		IncorporationMap incorporationMap = new IncorporationMap(isotopeFormulas, intensities);
+		LOGGER.info("uncorrectedMap " + incorporationMap.asTable());
+		LOGGER.info("uncorrectedMap normalized " + incorporationMap.normalize(4).asTable());
+		ElementFormula fragmentFormula = ElementFormula.fromString("C7H14NOSi");
+		ElementFormula elementFormula = new ElementFormula();
+		elementFormula.put(Element.C, fragmentFormula.get(Element.C));
+		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
+		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
+		LOGGER.info("correctedMap " + correctedMap.asTable());
+		LOGGER.info("correctedMap normalized " + correctedMap.normalize(4).asTable());
+		IncorporationMap normalizedCorrectedMap = correctedMap.normalize(4);
+//		assertEquals(1.0, normalizedCorrectedMap.get(4, 0));
+//		assertEquals(0.0, normalizedCorrectedMap.get(4, 1));
+//		assertEquals(0.0, normalizedCorrectedMap.get(5, 0));
+	}
+
+	public void testMixC() {
+		LOGGER.info("MixC");
+		IsotopeFormula _1 = new IsotopeFormula();
+		_1.put(Isotope.C_13, 0);
+		_1.put(Isotope.N_15, 0);
+
+		IsotopeFormula _2 = new IsotopeFormula();
+		_2.put(Isotope.C_13, 0);
+		_2.put(Isotope.N_15, 1);
+
+		IsotopeFormula _3 = new IsotopeFormula();
+		_3.put(Isotope.C_13, 1);
+		_3.put(Isotope.N_15, 0);
+
+		IsotopeFormula _4 = new IsotopeFormula();
+		_4.put(Isotope.C_13, 1);
+		_4.put(Isotope.N_15, 1);
+
+		IsotopeFormula _5 = new IsotopeFormula();
+		_5.put(Isotope.C_13, 2);
+		_5.put(Isotope.N_15, 0);
+
+		IsotopeFormula[] isotopeFormulas = { _1, _2, _3, _4, _5 };
+		Double[] intensities = { 3.77E+09 + 1.75E+08 + 3646758.5, 9576020 + 1.13E+08, 2.78E+08 + 1.15E+07, 8700155.0,
+				8158939.0 };
+		IncorporationMap incorporationMap = new IncorporationMap(isotopeFormulas, intensities);
+		LOGGER.info("uncorrectedMap " + incorporationMap.asTable());
+		LOGGER.info("uncorrectedMap normalized " + incorporationMap.normalize(4).asTable());
+		ElementFormula fragmentFormula = ElementFormula.fromString("C7H14NOSi");
+		ElementFormula elementFormula = new ElementFormula();
+		elementFormula.put(Element.C, fragmentFormula.get(Element.C));
+		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
+		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
+		LOGGER.info("correctedMap " + correctedMap.asTable());
+		LOGGER.info("correctedMap normalized " + correctedMap.normalize(4).asTable());
+		IncorporationMap normalizedCorrectedMap = correctedMap.normalize(4);
+//		assertEquals(1.0, normalizedCorrectedMap.get(4, 0));
+//		assertEquals(0.0, normalizedCorrectedMap.get(4, 1));
+//		assertEquals(0.0, normalizedCorrectedMap.get(5, 0));
+	}
+
+	public void testMixD() {
+		LOGGER.info("MixD");
+		IsotopeFormula _1 = new IsotopeFormula();
+		_1.put(Isotope.C_13, 0);
+		_1.put(Isotope.N_15, 0);
+
+		IsotopeFormula _2 = new IsotopeFormula();
+		_2.put(Isotope.C_13, 0);
+		_2.put(Isotope.N_15, 1);
+
+		IsotopeFormula _3 = new IsotopeFormula();
+		_3.put(Isotope.C_13, 1);
+		_3.put(Isotope.N_15, 0);
+
+		IsotopeFormula _4 = new IsotopeFormula();
+		_4.put(Isotope.C_13, 1);
+		_4.put(Isotope.N_15, 1);
+
+		IsotopeFormula _6 = new IsotopeFormula();
+		_6.put(Isotope.C_13, 4);
+		_6.put(Isotope.N_15, 0);
+
+		IsotopeFormula _7 = new IsotopeFormula();
+		_7.put(Isotope.C_13, 4);
+		_7.put(Isotope.N_15, 1);
+
+		IsotopeFormula _8 = new IsotopeFormula();
+		_8.put(Isotope.C_13, 5);
+		_8.put(Isotope.N_15, 0);
+
+		IsotopeFormula[] isotopeFormulas = { _1, _2, _3, _4, _6, _7, _8 };
+		Double[] intensities = { 1.09E+07 + 2.74E+08, 3.83E+09 + 1.74E+08 + 5680198, 4220880.5 + 8957809, 1.09E+07,
+				3.23E+09 + 1.49E+08 + 4651094, 1.11E+07 + 1.01E+08 + 5334199.5, 1.10E+08 + 4461271.5,
+
+		};
+		IncorporationMap incorporationMap = new IncorporationMap(isotopeFormulas, intensities);
+		LOGGER.info("uncorrectedMap " + incorporationMap.asTable());
+		LOGGER.info("uncorrectedMap normalized " + incorporationMap.normalize(4).asTable());
+		ElementFormula fragmentFormula = ElementFormula.fromString("C7H14NOSi");
+		ElementFormula elementFormula = new ElementFormula();
+		elementFormula.put(Element.C, fragmentFormula.get(Element.C));
+		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
+		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
+		LOGGER.info("correctedMap " + correctedMap.asTable());
+		LOGGER.info("correctedMap normalized " + correctedMap.normalize(4).asTable());
+		IncorporationMap normalizedCorrectedMap = correctedMap.normalize(4);
+//		assertEquals(1.0, normalizedCorrectedMap.get(4, 0));
+//		assertEquals(0.0, normalizedCorrectedMap.get(4, 1));
+//		assertEquals(0.0, normalizedCorrectedMap.get(5, 0));
+	}
+
+	public void testMixE() {
+		LOGGER.info("MixE");
+		IsotopeFormula _1 = new IsotopeFormula();
+		_1.put(Isotope.C_13, 0);
+		_1.put(Isotope.N_15, 0);
+
+		IsotopeFormula _2 = new IsotopeFormula();
+		_2.put(Isotope.C_13, 0);
+		_2.put(Isotope.N_15, 1);
+
+		IsotopeFormula _3 = new IsotopeFormula();
+		_3.put(Isotope.C_13, 1);
+		_3.put(Isotope.N_15, 0);
+
+		IsotopeFormula _6 = new IsotopeFormula();
+		_6.put(Isotope.C_13, 4);
+		_6.put(Isotope.N_15, 0);
+
+		IsotopeFormula _7 = new IsotopeFormula();
+		_7.put(Isotope.C_13, 4);
+		_7.put(Isotope.N_15, 1);
+
+		IsotopeFormula _8 = new IsotopeFormula();
+		_8.put(Isotope.C_13, 5);
+		_8.put(Isotope.N_15, 0);
+
+		IsotopeFormula[] isotopeFormulas = { _1, _2, _3, _6, _7, _8 };
+		Double[] intensities = { 3725457.5, 3385010.75, 2947243.75, 2.35E+09 + 9.98E+07,
+				3.33E+09 + 2.35E+08 + 4329975.5, 7.71E+07 + 5394337.5, };
+		IncorporationMap incorporationMap = new IncorporationMap(isotopeFormulas, intensities);
+		LOGGER.info("uncorrectedMap " + incorporationMap.asTable());
+		LOGGER.info("uncorrectedMap normalized " + incorporationMap.normalize(4).asTable());
+		ElementFormula fragmentFormula = ElementFormula.fromString("C7H14NOSi");
+		ElementFormula elementFormula = new ElementFormula();
+		elementFormula.put(Element.C, fragmentFormula.get(Element.C));
+		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
+		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
+		LOGGER.info("correctedMap " + correctedMap.asTable());
+		LOGGER.info("correctedMap normalized " + correctedMap.normalize(4).asTable());
+		IncorporationMap normalizedCorrectedMap = correctedMap.normalize(4);
+//		assertEquals(1.0, normalizedCorrectedMap.get(4, 0));
+//		assertEquals(0.0, normalizedCorrectedMap.get(4, 1));
+//		assertEquals(0.0, normalizedCorrectedMap.get(5, 0));
+	}
+
+	public void testMixF() {
+		LOGGER.info("MixF");
+		IsotopeFormula _1 = new IsotopeFormula();
+		_1.put(Isotope.C_13, 0);
+		_1.put(Isotope.N_15, 0);
+
+		IsotopeFormula _2 = new IsotopeFormula();
+		_2.put(Isotope.C_13, 0);
+		_2.put(Isotope.N_15, 1);
+
+		IsotopeFormula _3 = new IsotopeFormula();
+		_3.put(Isotope.C_13, 1);
+		_3.put(Isotope.N_15, 0);
+
+		IsotopeFormula _4 = new IsotopeFormula();
+		_4.put(Isotope.C_13, 1);
+		_4.put(Isotope.N_15, 1);
+
+		IsotopeFormula _6 = new IsotopeFormula();
+		_6.put(Isotope.C_13, 4);
+		_6.put(Isotope.N_15, 0);
+
+		IsotopeFormula _7 = new IsotopeFormula();
+		_7.put(Isotope.C_13, 4);
+		_7.put(Isotope.N_15, 1);
+
+		IsotopeFormula _8 = new IsotopeFormula();
+		_8.put(Isotope.C_13, 5);
+		_8.put(Isotope.N_15, 0);
+
+		IsotopeFormula[] isotopeFormulas = { _1, _2, _3, _4, _6, _7, _8 };
+		Double[] intensities = { 5698802 + 1.05E+08, 1.52E+09 + 6.68E+07 + 3231464.25, 7299979.5, 4369896.0,
+				1.63E+07 + 6.38E+07, 2.21E+09 + 1.01E+08 + 2971350.75, 3236815.75
+
+		};
+		IncorporationMap incorporationMap = new IncorporationMap(isotopeFormulas, intensities);
+		LOGGER.info("uncorrectedMap " + incorporationMap.asTable());
+		LOGGER.info("uncorrectedMap normalized " + incorporationMap.normalize(4).asTable());
+		ElementFormula fragmentFormula = ElementFormula.fromString("C7H14NOSi");
+		ElementFormula elementFormula = new ElementFormula();
+		elementFormula.put(Element.C, fragmentFormula.get(Element.C));
+		elementFormula.put(Element.N, fragmentFormula.get(Element.N));
+		IncorporationMap correctedMap = incorporationMap.correctForNaturalAbundance(elementFormula);
+		LOGGER.info("correctedMap " + correctedMap.asTable());
+		LOGGER.info("correctedMap normalized " + correctedMap.normalize(4).asTable());
+		IncorporationMap normalizedCorrectedMap = correctedMap.normalize(4);
+//		assertEquals(1.0, normalizedCorrectedMap.get(4, 0));
+//		assertEquals(0.0, normalizedCorrectedMap.get(4, 1));
+//		assertEquals(0.0, normalizedCorrectedMap.get(5, 0));
 	}
 
 }
