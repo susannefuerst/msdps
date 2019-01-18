@@ -6,11 +6,11 @@ import de.kempalab.msdps.IsotopeSet;
 import de.kempalab.msdps.MSShiftDatabase;
 import de.kempalab.msdps.MassSpectrum;
 import de.kempalab.msdps.constants.FragmentKey;
-import de.kempalab.msdps.constants.FrequencyType;
 import de.kempalab.msdps.constants.IncorporationType;
-import de.kempalab.msdps.constants.MSDatasetOption;
+import de.kempalab.msdps.constants.IntensityType;
+import de.kempalab.msdps.constants.MSBarChartType;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
-import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
+import de.kempalab.msdps.exception.IntensityTypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.visualisation.MSBarChartApplicationWindow;
@@ -25,11 +25,11 @@ public class SimulateMixedIncorporations {
 	public static final double NUMBER_OF_FRAGMENTS = 100000.0;
 	public static final Integer PRECISION = 4;
 	public static final double MIN_FREQUENCY = 0.1;
-	public static final FrequencyType FREQUENCY_TYPE = FrequencyType.RELATIVE;
+	public static final IntensityType FREQUENCY_TYPE = IntensityType.RELATIVE;
 	
 	public static final double INC = INC_C + INC_CN + INC_N;
 	
-	public static void main(String[] args) throws FragmentNotFoundException, FrequencyTypeMismatchException {
+	public static void main(String[] args) throws FragmentNotFoundException, IntensityTypeMismatchException {
 		Fragment fragmentCN = FragmentsDatabase.getFragment(FragmentKey.GLN_156);
 		fragmentCN.changeCapacity("C4N");
 		Fragment fragmentC = FragmentsDatabase.getFragment(FragmentKey.GLN_156);
@@ -70,12 +70,12 @@ public class SimulateMixedIncorporations {
 		msShiftDatabase.setNaturalSpectrum(naturalSpectrum);
 		msShiftDatabase.setMarkedSpectrum(markedSpectrumC);
 		msShiftDatabase.setMixedSpectrum(mixedSpectrum);
-		msShiftDatabase.setFragmentFormula(fragmentCN.getFormula());
+		msShiftDatabase.setFragmentFormula(fragmentCN.getFormula().toSimpleString());
 //		msShiftDatabase.analyseAllShifts();
 		
 		LOGGER.info(msShiftDatabase);
 		MSBarChartApplicationWindow demo = new MSBarChartApplicationWindow("Bar Demo 1", msShiftDatabase,
-				MSDatasetOption.ALL_SPECTRA);
+				MSBarChartType.ALL_SPECTRA);
 		demo.pack();
 		demo.setVisible(true);
 	}

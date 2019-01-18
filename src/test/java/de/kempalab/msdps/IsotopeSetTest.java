@@ -5,11 +5,11 @@ import java.util.Map.Entry;
 
 import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.FragmentKey;
-import de.kempalab.msdps.constants.FrequencyType;
 import de.kempalab.msdps.constants.IncorporationType;
+import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.Isotope;
 import de.kempalab.msdps.data.IncorporationRate;
-import de.kempalab.msdps.exception.FrequencyTypeMismatchException;
+import de.kempalab.msdps.exception.IntensityTypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorRequest;
@@ -47,7 +47,7 @@ public class IsotopeSetTest extends TestCase {
 		double numberOfFragmentsInTheSet = 100000;
 		IsotopeSet isotopeSet = new IsotopeSet(fragment, numberOfFragmentsInTheSet, IncorporationType.NATURAL);
 		int totalElementNumberInFragment = 0;
-		for (Entry<Element, Integer> entry : fragment.getComponents().entrySet()) {
+		for (Entry<Element, Integer> entry : fragment.getFormula().entrySet()) {
 			totalElementNumberInFragment = totalElementNumberInFragment + entry.getValue();
 		}
 		int expectedTotalElementNumberInSet = (int) (totalElementNumberInFragment * numberOfFragmentsInTheSet);
@@ -80,7 +80,7 @@ public class IsotopeSetTest extends TestCase {
 		double numberOfFragmentsInTheSet = 100000;
 		IsotopeSet isotopeSet = new IsotopeSet(fragment, numberOfFragmentsInTheSet, IncorporationType.EXPERIMENTAL);
 		int totalElementNumberInFragment = 0;
-		for (Entry<Element, Integer> entry : fragment.getComponents().entrySet()) {
+		for (Entry<Element, Integer> entry : fragment.getFormula().entrySet()) {
 			totalElementNumberInFragment = totalElementNumberInFragment + entry.getValue();
 		}
 		int expectedTotalElementNumberInSet = (int) (totalElementNumberInFragment * numberOfFragmentsInTheSet);
@@ -237,7 +237,7 @@ public class IsotopeSetTest extends TestCase {
 		for (int i = 0; i < 7; i++) {
 			fragmentMasses.add(massArray[i]);
 		}
-		MassSpectrum expectedMap = new MassSpectrum(FrequencyType.ABSOLUTE);
+		MassSpectrum expectedMap = new MassSpectrum(IntensityType.ABSOLUTE);
 		expectedMap.put(123.012, 3.0);
 		expectedMap.put(123.021, 1.0);
 		expectedMap.put(234.123, 1.0);
@@ -249,7 +249,7 @@ public class IsotopeSetTest extends TestCase {
 	/*
 	 * Check if the natural spectrum reflects the natural abundance of isotopes.
 	 */
-	public void testSpectraForOneElementaryFragments() throws FrequencyTypeMismatchException {
+	public void testSpectraForOneElementaryFragments() throws IntensityTypeMismatchException {
 		for (Element element : Element.values()) {
 			if (element.equals(Element.UNDEFINED) || element.equals(Element.NONE)) {
 				continue;
@@ -259,12 +259,12 @@ public class IsotopeSetTest extends TestCase {
 			IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 			Integer precision = 4;
 			simulatorRequest.setRoundedMassPrecision(precision);
-			simulatorRequest.setRoundedFrequenciesPrecision(precision);
-			simulatorRequest.setMinimalFrequency(0.0);
+			simulatorRequest.setRoundedIntensityPrecision(precision);
+			simulatorRequest.setMinimalIntensity(0.0);
 			simulatorRequest.setIncorporationRate(new IncorporationRate(0.1));
 			simulatorRequest.setFragments(new FragmentList(fragment));
 			simulatorRequest.setCharge(0);
-			simulatorRequest.setTargetFrequencyType(FrequencyType.MID);
+			simulatorRequest.setTargetIntensityType(IntensityType.MID);
 			IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 			MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 			MassSpectrum naturalSpectrum = msDatabase.getNaturalSpectrum();
@@ -285,7 +285,7 @@ public class IsotopeSetTest extends TestCase {
 	 * That means the expected spectra are created straight forward not using the simulation based on IsotopeSets
 	 * or the implementation based on partitions.
 	 */
-	public void testSpectraForTwoElementaryFragments() throws FrequencyTypeMismatchException {
+	public void testSpectraForTwoElementaryFragments() throws IntensityTypeMismatchException {
 		for (Element element : Element.values()) {
 			if (element.equals(Element.UNDEFINED) || element.equals(Element.NONE) || element.getIsotopes().size() != 2) {
 				continue;
@@ -294,15 +294,15 @@ public class IsotopeSetTest extends TestCase {
 			LOGGER.infoValue("Checking fragment", fragment.getFormula());
 			IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 			simulatorRequest.setFragments(new FragmentList(fragment));
-			simulatorRequest.setMinimalFrequency(0.0);
+			simulatorRequest.setMinimalIntensity(0.0);
 			simulatorRequest.setCharge(0);
-			simulatorRequest.setTargetFrequencyType(FrequencyType.MID);
+			simulatorRequest.setTargetIntensityType(IntensityType.MID);
 			IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 			MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 			MassSpectrum naturalSimulatedSpectrum = msDatabase.getNaturalSpectrum().sortAscendingByMass();
 			LOGGER.infoValue("naturalSimulatedSpectrum\n", naturalSimulatedSpectrum);
 			int numberOfIsotopes = element.getIsotopes().size();
-			MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(FrequencyType.MID);
+			MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(IntensityType.MID);
 			IsotopeList isotopes = element.getIsotopes();
 			Double mass0 = 2 * isotopes.get(0).getAtomicMass();
 			Double abundance0 = isotopes.get(0).getAbundance() * isotopes.get(0).getAbundance();
@@ -313,7 +313,7 @@ public class IsotopeSetTest extends TestCase {
 			Double mass2 = 2 * isotopes.get(1).getAtomicMass();
 			Double abundance2 = isotopes.get(1).getAbundance() * isotopes.get(1).getAbundance();
 			combinatoricallyExpectedSpectrum.put(mass2, abundance2);
-			combinatoricallyExpectedSpectrum  = combinatoricallyExpectedSpectrum.roundMasses(4).roundFrequencies(4).sortAscendingByMass();
+			combinatoricallyExpectedSpectrum  = combinatoricallyExpectedSpectrum.roundMasses(4).roundIntensities(4).sortAscendingByMass();
 			LOGGER.infoValue("combinatoricallyExpectedSpectrum\n", combinatoricallyExpectedSpectrum);
 			// possibleNumberOfMasses = binom(N+n-1,n), where N=numberOfIsotpes, n=numberOfElements
 			int possibleNumberOfMasses = MathUtils.binom(numberOfIsotopes + 1, 2); 
@@ -329,7 +329,7 @@ public class IsotopeSetTest extends TestCase {
 	 * compare simulated spectra for En fragments (where E is any element and n a natural number with range defined in the test)
 	 * using the implementations based on partitions/combinatorics.
 	 */
-	public void testSpectraForNElementaryFragments() throws FrequencyTypeMismatchException {
+	public void testSpectraForNElementaryFragments() throws IntensityTypeMismatchException {
 		for (Element element : Element.values()) {
 			if (element.equals(Element.UNDEFINED) || element.equals(Element.NONE)) {
 				continue;
@@ -339,20 +339,20 @@ public class IsotopeSetTest extends TestCase {
 				LOGGER.infoValue("Checking fragment", fragment.getFormula());
 				IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 				simulatorRequest.setFragments(new FragmentList(fragment));
-				simulatorRequest.setMinimalFrequency(0.0);
+				simulatorRequest.setMinimalIntensity(0.0);
 				simulatorRequest.setCharge(0);
-				simulatorRequest.setTargetFrequencyType(FrequencyType.MID);
+				simulatorRequest.setTargetIntensityType(IntensityType.MID);
 				IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 				MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 				MassSpectrum naturalSimulatedSpectrum = msDatabase.getNaturalSpectrum().sortAscendingByMass();
 				LOGGER.infoValue("naturalSimulatedSpectrum\n", naturalSimulatedSpectrum);
 				int numberOfIsotopes = element.getIsotopes().size();
 				MassSpectrum naturalCalculatedSpectrum = element.multiElementSpectrum(numberOfElements, 0.00);
-				naturalCalculatedSpectrum  = naturalCalculatedSpectrum.roundMasses(4).roundFrequencies(4).sortAscendingByMass();
+				naturalCalculatedSpectrum  = naturalCalculatedSpectrum.roundMasses(4).roundIntensities(4).sortAscendingByMass();
 				LOGGER.infoValue("naturalCalculatedSpectrum\n", naturalCalculatedSpectrum);
 				IsotopeList isotopes = element.getIsotopes();
 				if (numberOfElements == 2  && isotopes.size() == 2) {
-					MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(FrequencyType.MID);
+					MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(IntensityType.MID);
 					Double mass0 = 2 * isotopes.get(0).getAtomicMass();
 					Double abundance0 = isotopes.get(0).getAbundance() * isotopes.get(0).getAbundance();
 					combinatoricallyExpectedSpectrum.put(mass0, abundance0);
@@ -362,7 +362,7 @@ public class IsotopeSetTest extends TestCase {
 					Double mass2 = 2 * isotopes.get(1).getAtomicMass();
 					Double abundance2 = isotopes.get(1).getAbundance() * isotopes.get(1).getAbundance();
 					combinatoricallyExpectedSpectrum.put(mass2, abundance2);
-					combinatoricallyExpectedSpectrum  = combinatoricallyExpectedSpectrum.roundMasses(4).roundFrequencies(4).sortAscendingByMass();
+					combinatoricallyExpectedSpectrum  = combinatoricallyExpectedSpectrum.roundMasses(4).roundIntensities(4).sortAscendingByMass();
 					LOGGER.infoValue("combinatoricallyExpectedSpectrum\n", combinatoricallyExpectedSpectrum);
 				}
 				// possibleNumberOfMasses = binom(N+n-1,n), where N=numberOfIsotpes, n=numberOfElements
@@ -381,7 +381,7 @@ public class IsotopeSetTest extends TestCase {
 	 * That means the expected spectra are created straight forward not using the simulation based on IsotopeSets
 	 * or the implementation based on partitions.
 	 */
-	public void testSpectraForNElementaryFragments2() throws FrequencyTypeMismatchException {
+	public void testSpectraForNElementaryFragments2() throws IntensityTypeMismatchException {
 		for (Element element : Element.values()) {
 			if (element.equals(Element.UNDEFINED) || element.equals(Element.NONE)) {
 				continue;
@@ -391,22 +391,22 @@ public class IsotopeSetTest extends TestCase {
 				LOGGER.infoValue("Checking fragment", fragment.getFormula());
 				IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 				simulatorRequest.setFragments(new FragmentList(fragment));
-				simulatorRequest.setMinimalFrequency(0.0);
+				simulatorRequest.setMinimalIntensity(0.0);
 				simulatorRequest.setCharge(0);
-				simulatorRequest.setTargetFrequencyType(FrequencyType.MID);
+				simulatorRequest.setTargetIntensityType(IntensityType.MID);
 				IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 				MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 				MassSpectrum naturalSimulatedSpectrum = msDatabase.getNaturalSpectrum();
 				LOGGER.infoValue("naturalSimulatedSpectrum\n", naturalSimulatedSpectrum);
 				int numberOfIsotopes = element.getIsotopes().size();
 				MassSpectrum naturalCalculatedSpectrum = element.multiElementSpectrum(numberOfElements, 0.00);
-				naturalCalculatedSpectrum  = naturalCalculatedSpectrum.roundMasses(4).roundFrequencies(4).sortAscendingByMass();
+				naturalCalculatedSpectrum  = naturalCalculatedSpectrum.roundMasses(4).roundIntensities(4).sortAscendingByMass();
 				LOGGER.infoValue("naturalCalculatedSpectrum\n", naturalCalculatedSpectrum);
 				IsotopeList isotopes = element.getIsotopes();
 				if (isotopes.size() == 2) {
 					Isotope isotope1 = element.getIsotopes().get(0);
 					Isotope isotope2 = element.getIsotopes().get(1);
-					MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(FrequencyType.MID);
+					MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(IntensityType.MID);
 					/*
 					 * m_k = (n-k)*m_I1 + k*m_I2
 					 * a_k = binom(n,k) * a_I1^(n-k) * a_I2^(k)
@@ -418,7 +418,7 @@ public class IsotopeSetTest extends TestCase {
 						Double abundance = MathUtils.binom(numberOfElements, k) * abundance1 * abundance2;
 						combinatoricallyExpectedSpectrum.put(mass, abundance);
 					}
-					combinatoricallyExpectedSpectrum  = combinatoricallyExpectedSpectrum.roundMasses(4).roundFrequencies(4).sortAscendingByMass();
+					combinatoricallyExpectedSpectrum  = combinatoricallyExpectedSpectrum.roundMasses(4).roundIntensities(4).sortAscendingByMass();
 					LOGGER.infoValue("combinatoricallyExpectedSpectrum\n", combinatoricallyExpectedSpectrum);
 				}
 				// possibleNumberOfMasses = binom(N+n-1,n), where N=numberOfIsotpes, n=numberOfElements
@@ -432,26 +432,26 @@ public class IsotopeSetTest extends TestCase {
 		}
 	}
 	
-	public void testB2Spectrum() throws FrequencyTypeMismatchException {
+	public void testB2Spectrum() throws IntensityTypeMismatchException {
 		IsotopeSet.LOGGER.enableDebug();
 		Element element = Element.B;
 		Fragment fragment = new Fragment(FragmentKey.UNKNOWN, element.name() + 2, "");
 		LOGGER.infoValue("Checking fragment", fragment.getFormula());
 		IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 		simulatorRequest.setFragments(new FragmentList(fragment));
-		simulatorRequest.setMinimalFrequency(0.0);
+		simulatorRequest.setMinimalIntensity(0.0);
 		simulatorRequest.setIncorporationRate(new IncorporationRate(0.0));
 		simulatorRequest.setCharge(0);
-		simulatorRequest.setTargetFrequencyType(FrequencyType.MID);
+		simulatorRequest.setTargetIntensityType(IntensityType.MID);
 		IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 		MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 		MassSpectrum naturalSimulatedSpectrum = msDatabase.getNaturalSpectrum();
 		LOGGER.infoValue("naturalSimulatedSpectrum\n", naturalSimulatedSpectrum);
 		MassSpectrum naturalCalculatedSpectrum = element.multiElementSpectrum(2, 0.00);
-		naturalCalculatedSpectrum  = naturalCalculatedSpectrum.roundMasses(4).roundFrequencies(4).sortAscendingByMass();
+		naturalCalculatedSpectrum  = naturalCalculatedSpectrum.roundMasses(4).roundIntensities(4).sortAscendingByMass();
 		LOGGER.infoValue("naturalCalculatedSpectrum\n", naturalCalculatedSpectrum);
 		IsotopeList isotopes = element.getIsotopes();
-		MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(FrequencyType.MID);
+		MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(IntensityType.MID);
 		Double mass0 = 2 * isotopes.get(0).getAtomicMass();
 		Double abundance0 = isotopes.get(0).getAbundance() * isotopes.get(0).getAbundance();
 		combinatoricallyExpectedSpectrum.put(mass0, abundance0);
@@ -461,31 +461,31 @@ public class IsotopeSetTest extends TestCase {
 		Double mass2 = 2 * isotopes.get(1).getAtomicMass();
 		Double abundance2 = isotopes.get(1).getAbundance() * isotopes.get(1).getAbundance();
 		combinatoricallyExpectedSpectrum.put(mass2, abundance2);
-		combinatoricallyExpectedSpectrum  = combinatoricallyExpectedSpectrum.roundMasses(4).roundFrequencies(4).sortAscendingByMass();
+		combinatoricallyExpectedSpectrum  = combinatoricallyExpectedSpectrum.roundMasses(4).roundIntensities(4).sortAscendingByMass();
 		LOGGER.infoValue("combinatoricallyExpectedSpectrum\n", combinatoricallyExpectedSpectrum);
 		LOGGER.horizontalLine();
 		assertEqualsSpectra(naturalCalculatedSpectrum, naturalSimulatedSpectrum, 0.005);
 	}
 	
-	public void testCl2Spectrum() throws FrequencyTypeMismatchException {
+	public void testCl2Spectrum() throws IntensityTypeMismatchException {
 		Element element = Element.Cl;
 		Fragment fragment = new Fragment(FragmentKey.UNKNOWN, element.name() + 2, "");
 		LOGGER.infoValue("Checking fragment", fragment.getFormula());
 		IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 		simulatorRequest.setFragments(new FragmentList(fragment));
-		simulatorRequest.setMinimalFrequency(0.0);
+		simulatorRequest.setMinimalIntensity(0.0);
 		simulatorRequest.setIncorporationRate(new IncorporationRate(0.0));
 		simulatorRequest.setCharge(0);
-		simulatorRequest.setTargetFrequencyType(FrequencyType.MID);
+		simulatorRequest.setTargetIntensityType(IntensityType.MID);
 		IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 		MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 		MassSpectrum naturalSimulatedSpectrum = msDatabase.getNaturalSpectrum();
 		LOGGER.infoValue("naturalSimulatedSpectrum\n", naturalSimulatedSpectrum);
 		MassSpectrum naturalCalculatedSpectrum = element.multiElementSpectrum(2, 0.00);
-		naturalCalculatedSpectrum  = naturalCalculatedSpectrum.roundMasses(4).roundFrequencies(4).sortAscendingByMass();
+		naturalCalculatedSpectrum  = naturalCalculatedSpectrum.roundMasses(4).roundIntensities(4).sortAscendingByMass();
 		LOGGER.infoValue("naturalCalculatedSpectrum\n", naturalCalculatedSpectrum);
 		IsotopeList isotopes = element.getIsotopes();
-		MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(FrequencyType.MID);
+		MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(IntensityType.MID);
 		Double mass0 = 2 * isotopes.get(0).getAtomicMass();
 		Double abundance0 = isotopes.get(0).getAbundance() * isotopes.get(0).getAbundance();
 		combinatoricallyExpectedSpectrum.put(mass0, abundance0);
@@ -495,31 +495,31 @@ public class IsotopeSetTest extends TestCase {
 		Double mass2 = 2 * isotopes.get(1).getAtomicMass();
 		Double abundance2 = isotopes.get(1).getAbundance() * isotopes.get(1).getAbundance();
 		combinatoricallyExpectedSpectrum.put(mass2, abundance2);
-		combinatoricallyExpectedSpectrum  = combinatoricallyExpectedSpectrum.roundMasses(4).roundFrequencies(4).sortAscendingByMass();
+		combinatoricallyExpectedSpectrum  = combinatoricallyExpectedSpectrum.roundMasses(4).roundIntensities(4).sortAscendingByMass();
 		LOGGER.infoValue("combinatoricallyExpectedSpectrum\n", combinatoricallyExpectedSpectrum);
 		LOGGER.horizontalLine();
 		assertEqualsSpectra(naturalCalculatedSpectrum, naturalSimulatedSpectrum, 0.005);
 	}
 	
-	public void testH2Spectrum() throws FrequencyTypeMismatchException {
+	public void testH2Spectrum() throws IntensityTypeMismatchException {
 		Element element = Element.H;
 		Fragment fragment = new Fragment(FragmentKey.UNKNOWN, element.name() + 2, "");
 		LOGGER.infoValue("Checking fragment", fragment.getFormula());
 		IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 		simulatorRequest.setFragments(new FragmentList(fragment));
-		simulatorRequest.setMinimalFrequency(0.0);
+		simulatorRequest.setMinimalIntensity(0.0);
 		simulatorRequest.setIncorporationRate(new IncorporationRate(0.0));
 		simulatorRequest.setCharge(0);
-		simulatorRequest.setTargetFrequencyType(FrequencyType.MID);
+		simulatorRequest.setTargetIntensityType(IntensityType.MID);
 		IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 		MSDatabase msDatabase = response.getMsDatabaseList().get(0);
 		MassSpectrum naturalSimulatedSpectrum = msDatabase.getNaturalSpectrum();
 		LOGGER.infoValue("naturalSimulatedSpectrum\n", naturalSimulatedSpectrum);
 		MassSpectrum naturalCalculatedSpectrum = element.multiElementSpectrum(2, 0.00);
-		naturalCalculatedSpectrum  = naturalCalculatedSpectrum.roundMasses(4).roundFrequencies(4).sortAscendingByMass();
+		naturalCalculatedSpectrum  = naturalCalculatedSpectrum.roundMasses(4).roundIntensities(4).sortAscendingByMass();
 		LOGGER.infoValue("naturalCalculatedSpectrum\n", naturalCalculatedSpectrum);
 		IsotopeList isotopes = element.getIsotopes();
-		MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(FrequencyType.MID);
+		MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(IntensityType.MID);
 		Double mass0 = 2 * isotopes.get(0).getAtomicMass();
 		Double abundance0 = isotopes.get(0).getAbundance() * isotopes.get(0).getAbundance();
 		combinatoricallyExpectedSpectrum.put(mass0, abundance0);
@@ -529,7 +529,7 @@ public class IsotopeSetTest extends TestCase {
 		Double mass2 = 2 * isotopes.get(1).getAtomicMass();
 		Double abundance2 = isotopes.get(1).getAbundance() * isotopes.get(1).getAbundance();
 		combinatoricallyExpectedSpectrum.put(mass2, abundance2);
-		combinatoricallyExpectedSpectrum  = combinatoricallyExpectedSpectrum.roundMasses(4).roundFrequencies(4).sortAscendingByMass();
+		combinatoricallyExpectedSpectrum  = combinatoricallyExpectedSpectrum.roundMasses(4).roundIntensities(4).sortAscendingByMass();
 		LOGGER.infoValue("combinatoricallyExpectedSpectrum\n", combinatoricallyExpectedSpectrum);
 		LOGGER.horizontalLine();
 		assertEqualsSpectra(naturalCalculatedSpectrum, naturalSimulatedSpectrum, 0.005);

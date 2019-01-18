@@ -6,7 +6,7 @@ import de.kempalab.msdps.IsotopeList;
 import de.kempalab.msdps.MassSpectrum;
 import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.FragmentKey;
-import de.kempalab.msdps.constants.FrequencyType;
+import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.Isotope;
 import de.kempalab.msdps.log.MyLogger;
 
@@ -160,9 +160,9 @@ public class ElementTest extends TestCase {
 			Fragment fragment = new Fragment(FragmentKey.UNKNOWN, element.name() + 2, "");
 			LOGGER.infoValue("Checking fragment", fragment.getFormula());
 			MassSpectrum combinatoricallyCalculatedSpectrum = element.multiElementSpectrum(2, 0.0);
-			combinatoricallyCalculatedSpectrum = combinatoricallyCalculatedSpectrum.roundMasses(4).roundFrequencies(4).sortAscendingByMass();
+			combinatoricallyCalculatedSpectrum = combinatoricallyCalculatedSpectrum.roundMasses(4).roundIntensities(4).sortAscendingByMass();
 			LOGGER.infoValue("combinatoricallyCalculatedSpectrum\n", combinatoricallyCalculatedSpectrum);
-			MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(FrequencyType.MID);
+			MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(IntensityType.MID);
 			IsotopeList isotopes = element.getIsotopes();
 			Double mass0 = 2 * isotopes.get(0).getAtomicMass();
 			Double abundance0 = isotopes.get(0).getAbundance() * isotopes.get(0).getAbundance();
@@ -173,7 +173,7 @@ public class ElementTest extends TestCase {
 			Double mass2 = 2 * isotopes.get(1).getAtomicMass();
 			Double abundance2 = isotopes.get(1).getAbundance() * isotopes.get(1).getAbundance();
 			combinatoricallyExpectedSpectrum.put(mass2, abundance2);
-			combinatoricallyExpectedSpectrum  = combinatoricallyExpectedSpectrum.roundMasses(4).roundFrequencies(4).sortAscendingByMass();
+			combinatoricallyExpectedSpectrum  = combinatoricallyExpectedSpectrum.roundMasses(4).roundIntensities(4).sortAscendingByMass();
 			LOGGER.infoValue("combinatoricallyExpectedSpectrum\n", combinatoricallyExpectedSpectrum);
 			LOGGER.horizontalLine();
 		}

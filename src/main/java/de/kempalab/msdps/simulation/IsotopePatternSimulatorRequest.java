@@ -2,19 +2,19 @@ package de.kempalab.msdps.simulation;
 
 import de.kempalab.msdps.FragmentList;
 import de.kempalab.msdps.constants.Element;
-import de.kempalab.msdps.constants.FrequencyType;
+import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.data.IncorporationRate;
 
 /**
- * A request class to specify simulation options. A general {@link IsotopePatternSimulatorRequest} uses the following
- * standards:
- * <br>
+ * A request class to specify simulation options. A general
+ * {@link IsotopePatternSimulatorRequest} uses the following standards: <br>
  * incorporation rate: 0.1 <br>
  * total number of fragments: 100000 <br>
- * minimal relative mass frequencies: 0.003  <br> 
+ * minimal relative mass intensities: 0.003 <br>
  * mass precision: 4 <br>
- * mass frequency precision: 4 <br>
+ * mass intensity precision: 4 <br>
  * analyze mass shifts: false <br>
+ * 
  * @author sfuerst
  *
  */
@@ -22,12 +22,12 @@ public class IsotopePatternSimulatorRequest {
 	
 	private IncorporationRate incorporationRate = new IncorporationRate(0.1);
 	private Double totalNumberOfFragments = 100000.0;
-	private Double minimalFrequency = 0.1;
+	private Double minimalIntensity = 0.1;
 	private Integer roundedMassPrecision = 4;
-	private Integer roundedFrequenciesPrecision = 4;
+	private Integer roundedIntensityPrecision = 4;
 	private FragmentList fragments;
 	private Boolean analyzeMassShifts = false;
-	private FrequencyType targetFrequencyType = FrequencyType.RELATIVE;
+	private IntensityType targetIntensityType = IntensityType.RELATIVE;
 	private int charge = 1;
 	/*
 	 * only for independent tracer incorporation
@@ -43,11 +43,11 @@ public class IsotopePatternSimulatorRequest {
 	 * standards: <br>
 	 * incorporation rate: 1 <br>
 	 * total number of fragments: 100000 <br>
-	 * minimal relative mass frequencies: 0.003 <br>
+	 * minimal relative mass intensities: 0.003 <br>
 	 * mass precision: 4 <br>
-	 * mass frequency precision: 4 <br>
+	 * intensity precision: 4 <br>
 	 * analyze mass shifts: false <br>
-	 * frequency type: RELATIVE <br>
+	 * intensity type: RELATIVE <br>
 	 */
 	public IsotopePatternSimulatorRequest()  {
 		
@@ -58,24 +58,24 @@ public class IsotopePatternSimulatorRequest {
 	 * parameters. If a parameter is null the following standards will be used: <br>
 	 * incorporation rate: 1 <br>
 	 * total number of fragments: 100000 <br>
-	 * minimal relative mass frequencies: 0.003 <br>
+	 * minimal relative mass intensities: 0.003 <br>
 	 * mass precision: 4 <br>
-	 * mass frequency precision: 4 <br>
+	 * mass intensity precision: 4 <br>
 	 * analyze mass shifts: false <br>
-	 * target frequency type: RELATIVE <br>
+	 * target intensity type: RELATIVE <br>
 	 * <br>
 	 * 
 	 * @param incorporationRate
 	 * @param totalNumberOfFragments
-	 * @param minimalRelativeFrequency
+	 * @param minimalRelativeIntensity
 	 * @param roundedMassPrecision
-	 * @param roundedFrequenciesPrecision
+	 * @param roundedIntensitiesPrecision
 	 * @param fragments
 	 * @param analyzeMassShifts
 	 */
 	public IsotopePatternSimulatorRequest(IncorporationRate incorporationRate, Double totalNumberOfFragments,
-			FrequencyType targetFrequencyType, Double minimalRelativeFrequency, Integer roundedMassPrecision,
-			Integer roundedFrequenciesPrecision,
+			IntensityType targetIntensityType, Double minimalRelativeIntensity, Integer roundedMassPrecision,
+			Integer roundedIntensityPrecision,
 			FragmentList fragments, Boolean analyzeMassShifts) {
 		if (incorporationRate != null) {
 			this.incorporationRate = incorporationRate;
@@ -83,20 +83,20 @@ public class IsotopePatternSimulatorRequest {
 		if (totalNumberOfFragments != null) {
 			this.totalNumberOfFragments = totalNumberOfFragments;
 		}
-		if (minimalRelativeFrequency != null) {
-			this.minimalFrequency = minimalRelativeFrequency;
+		if (minimalRelativeIntensity != null) {
+			this.minimalIntensity = minimalRelativeIntensity;
 		}
 		if (roundedMassPrecision != null) {
 			this.roundedMassPrecision = roundedMassPrecision;
 		}
-		if (roundedFrequenciesPrecision != null) {
-			this.roundedFrequenciesPrecision = roundedFrequenciesPrecision;
+		if (roundedIntensityPrecision != null) {
+			this.roundedIntensityPrecision = roundedIntensityPrecision;
 		}
 		if (analyzeMassShifts != null) {
 			this.setAnalyzeMassShifts(analyzeMassShifts);
 		}
-		if (targetFrequencyType != null) {
-			this.targetFrequencyType = targetFrequencyType;
+		if (targetIntensityType != null) {
+			this.targetIntensityType = targetIntensityType;
 		}
 		this.fragments = fragments;
 	}
@@ -117,12 +117,12 @@ public class IsotopePatternSimulatorRequest {
 		this.totalNumberOfFragments = totalNumberOfFragments;
 	}
 
-	public Double getMinimalFrequency() {
-		return minimalFrequency;
+	public Double getMinimalIntensity() {
+		return minimalIntensity;
 	}
 
-	public void setMinimalFrequency(Double minimalFrequency) {
-		this.minimalFrequency = minimalFrequency;
+	public void setMinimalIntensity(Double minimalIntensity) {
+		this.minimalIntensity = minimalIntensity;
 	}
 
 	public Integer getRoundedMassPrecision() {
@@ -133,12 +133,12 @@ public class IsotopePatternSimulatorRequest {
 		this.roundedMassPrecision = roundedMassPrecision;
 	}
 
-	public Integer getRoundedFrequenciesPrecision() {
-		return roundedFrequenciesPrecision;
+	public Integer getRoundedIntensityPrecision() {
+		return roundedIntensityPrecision;
 	}
 
-	public void setRoundedFrequenciesPrecision(Integer roundedFrequenciesPrecision) {
-		this.roundedFrequenciesPrecision = roundedFrequenciesPrecision;
+	public void setRoundedIntensityPrecision(Integer roundedIntensityPrecision) {
+		this.roundedIntensityPrecision = roundedIntensityPrecision;
 	}
 
 	public FragmentList getFragments() {
@@ -163,12 +163,12 @@ public class IsotopePatternSimulatorRequest {
 		this.analyzeMassShifts = analyzeMassShifts;
 	}
 
-	public FrequencyType getTargetFrequencyType() {
-		return targetFrequencyType;
+	public IntensityType getTargetIntensityType() {
+		return targetIntensityType;
 	}
 
-	public void setTargetFrequencyType(FrequencyType targetFrequencyType) {
-		this.targetFrequencyType = targetFrequencyType;
+	public void setTargetIntensityType(IntensityType targetIntensityType) {
+		this.targetIntensityType = targetIntensityType;
 	}
 
 	public int getCharge() {

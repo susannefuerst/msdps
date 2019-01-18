@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.Isotope;
+import de.kempalab.msdps.constants.NaturalConstants;
 import de.kempalab.msdps.util.StringUtils;
 
 /**
@@ -103,6 +104,22 @@ public class IsotopeFormula extends LinkedHashMap<Isotope, Integer> {
 			}
 		}
 		return buffer.toString();
+	}
+
+	public Double calculateAbundanceForOneIsotopologue() {
+		Double abundance = 1.0;
+		for (Entry<Isotope, Integer> entry : this.entrySet()) {
+			abundance = abundance * Math.pow(entry.getKey().getAbundance(), entry.getValue());
+		}
+		return abundance;
+	}
+
+	public Double calculateMass(int charge) {
+		Double mass = 0.0;
+		for (Entry<Isotope, Integer> entry : this.entrySet()) {
+			mass = mass + entry.getKey().getAtomicMass() * entry.getValue();
+		}
+		return mass - charge * NaturalConstants.ELECTRON_MASS.getValue();
 	}
 
 }

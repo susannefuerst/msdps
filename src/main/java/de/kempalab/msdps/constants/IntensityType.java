@@ -5,7 +5,7 @@ package de.kempalab.msdps.constants;
  * @author sfuerst
  *
  */
-public enum FrequencyType {
+public enum IntensityType {
 	
 	ABSOLUTE(), MID(), RELATIVE();
 

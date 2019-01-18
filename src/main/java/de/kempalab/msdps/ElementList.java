@@ -26,13 +26,13 @@ public class ElementList extends ArrayList<Element> {
 		if (fragmentFormula.contains("(")) {
 			throw new InputMismatchException(ErrorMessage.INVALID_FORMULA.getMessage() + "[" + fragmentFormula + "]");
 		}
-		Matcher formulaMatcher = Pattern.compile(Fragment.FORMULA_REG_EX).matcher(fragmentFormula);
+		Matcher formulaMatcher = Pattern.compile(ElementFormula.FORMULA_REG_EX).matcher(fragmentFormula);
 		ArrayList<String> elementTokens = new ArrayList<String>();
 		while (formulaMatcher.find()) {
 			elementTokens.add(formulaMatcher.group());
 		}
 		for (String elementToken : elementTokens) {
-			Matcher elementMatcher = Pattern.compile(Fragment.FORMULA_REG_EX).matcher(elementToken);
+			Matcher elementMatcher = Pattern.compile(ElementFormula.FORMULA_REG_EX).matcher(elementToken);
 			if (elementMatcher.matches()) {
 				Element element = Element.valueOf(elementMatcher.group(1));
 				elements.add(element);

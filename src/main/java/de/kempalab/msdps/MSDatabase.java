@@ -12,8 +12,8 @@ import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 
 import de.kempalab.msdps.constants.FragmentKey;
-import de.kempalab.msdps.constants.FrequencyType;
-import de.kempalab.msdps.constants.MSDatasetOption;
+import de.kempalab.msdps.constants.IntensityType;
+import de.kempalab.msdps.constants.MSBarChartType;
 import de.kempalab.msdps.constants.MSDatabaseColKey;
 import de.kempalab.msdps.data.DataTable;
 import de.kempalab.msdps.util.FileWriterUtils;
@@ -36,9 +36,9 @@ public class MSDatabase {
 	public static final int JPEG_MIN_HEIGHT = 400;
 	
 	private Double incorporationRate;
-	private MassSpectrum naturalSpectrum = new MassSpectrum(FrequencyType.MID);
-	private MassSpectrum markedSpectrum = new MassSpectrum(FrequencyType.MID);
-	private MassSpectrum mixedSpectrum = new MassSpectrum(FrequencyType.MID);
+	private MassSpectrum naturalSpectrum = new MassSpectrum(IntensityType.MID);
+	private MassSpectrum markedSpectrum = new MassSpectrum(IntensityType.MID);
+	private MassSpectrum mixedSpectrum = new MassSpectrum(IntensityType.MID);
 	private FragmentKey fragmentKey;
 	private String incorporatedTracers;
 	private String fragmentFormula;
@@ -63,13 +63,13 @@ public class MSDatabase {
 			List<CSVRecord> records = parser.getRecords();
 			naturalSpectrum = ParserUtils.parseSpectrum(records,
 					MSDatabaseColKey.NATURAL_MASS.getColumnIndex(),
-					MSDatabaseColKey.NATURAL_FREQUENCY.getColumnIndex(), FrequencyType.MID, 1);
+					MSDatabaseColKey.NATURAL_FREQUENCY.getColumnIndex(), IntensityType.MID, 1);
 			markedSpectrum = ParserUtils.parseSpectrum(records,
 					MSDatabaseColKey.MARKED_MASS.getColumnIndex(),
-					MSDatabaseColKey.MARKED_FREQUENCY.getColumnIndex(), FrequencyType.MID, 1);
+					MSDatabaseColKey.MARKED_FREQUENCY.getColumnIndex(), IntensityType.MID, 1);
 			mixedSpectrum = ParserUtils.parseSpectrum(records,
 					MSDatabaseColKey.MIXED_MASS.getColumnIndex(),
-					MSDatabaseColKey.MIXED_FREQUENCY.getColumnIndex(), FrequencyType.MID, 1);
+					MSDatabaseColKey.MIXED_FREQUENCY.getColumnIndex(), IntensityType.MID, 1);
 			incorporationRate = Double.parseDouble(records.get(1).get(
 					MSDatabaseColKey.INC_RATE.getColumnIndex()));
 			fragmentKey = FragmentKey.byKeyName(records.get(1).get(
@@ -112,7 +112,7 @@ public class MSDatabase {
 	 * @param outputFolderPath
 	 * @throws IOException
 	 */
-	public void saveMSCategoryBarChartAsJPEG(String outputFolderPath, MSDatasetOption datasetOption) throws IOException {
+	public void saveMSCategoryBarChartAsJPEG(String outputFolderPath, MSBarChartType datasetOption) throws IOException {
 		File folder = new File(outputFolderPath);
 		if (!folder.exists()) {
 			folder.mkdir();
