@@ -257,20 +257,22 @@ public class DataTable extends ArrayList<ArrayList<String>> {
 			}
 			maximalCharacterLengthPerColumn[index] = maxCharLength;
 		}
-		for (String headline : header) {
-			int maxCharLength = maximalCharacterLengthPerColumn[header.indexOf(headline)];
-			tableStringBuffer.append(String.format("%" + maxCharLength + "s | ", headline));
-		}
-		tableStringBuffer.append("\n");
-		StringBuffer horizontalLineBuffer = new StringBuffer();
-		for (int column = 0; column < numberOfColumns; column++) {
-			for (int digit = 0; digit < maximalCharacterLengthPerColumn[column]; digit++) {
-				horizontalLineBuffer.append("_");
+		if (withHeader) {
+			for (String headline : header) {
+				int maxCharLength = maximalCharacterLengthPerColumn[header.indexOf(headline)];
+				tableStringBuffer.append(String.format("%" + maxCharLength + "s | ", headline));
 			}
-			horizontalLineBuffer.append("_|_");
+			tableStringBuffer.append("\n");
+			StringBuffer horizontalLineBuffer = new StringBuffer();
+			for (int column = 0; column < numberOfColumns; column++) {
+				for (int digit = 0; digit < maximalCharacterLengthPerColumn[column]; digit++) {
+					horizontalLineBuffer.append("_");
+				}
+				horizontalLineBuffer.append("_|_");
+			}
+			tableStringBuffer.append(horizontalLineBuffer.toString());
+			tableStringBuffer.append("\n");	
 		}
-		tableStringBuffer.append(horizontalLineBuffer.toString());
-		tableStringBuffer.append("\n");
 		for (int row = 0; row < numberOfRows; row++) {
 			for (int column = 0; column < numberOfColumns; column++) {
 				int maxCharLength = maximalCharacterLengthPerColumn[column];
@@ -280,6 +282,31 @@ public class DataTable extends ArrayList<ArrayList<String>> {
 					tableStringBuffer.append(String.format("%" + maxCharLength + "s | ", naValue));
 				}
 			}
+			tableStringBuffer.append("\n");
+		}
+		return tableStringBuffer.toString();
+	}
+	
+	public String toCsvString(String naValue, boolean withHeader) {
+		StringBuffer tableStringBuffer = new StringBuffer();
+		int numberOfRows = numberOfRows();
+		int numberOfColumns = this.size();
+		if (withHeader) {
+			for (int index = 0; index < numberOfColumns - 1; index++) {
+				tableStringBuffer.append(header.get(index) + ",");			
+			}
+			tableStringBuffer.append(header.get(numberOfColumns - 1 ));			
+			tableStringBuffer.append("\n");
+		}
+		for (int row = 0; row < numberOfRows; row++) {
+			for (int column = 0; column < numberOfColumns - 1; column++) {
+				try {
+					tableStringBuffer.append(this.get(column).get(row) + ",");
+				} catch (IndexOutOfBoundsException e) {
+					e.printStackTrace();
+				}
+			}
+			tableStringBuffer.append(this.get(numberOfColumns - 1).get(row));
 			tableStringBuffer.append("\n");
 		}
 		return tableStringBuffer.toString();

@@ -1,13 +1,17 @@
 package de.kempalab.msdps;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.apache.commons.csv.CSVRecord;
+
 import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.Isotope;
 import de.kempalab.msdps.data.DataTable;
+import de.kempalab.msdps.fileconversion.NACorrectionInputHeader;
 import de.kempalab.msdps.log.MyLogger;
 import de.kempalab.msdps.util.MathUtils;
 
@@ -32,7 +36,10 @@ import de.kempalab.msdps.util.MathUtils;
 public class IncorporationMap extends LinkedHashMap<IsotopeFormula, Double> {
 	
 	public static final MyLogger LOG = MyLogger.getLogger(IncorporationMap.class);
-	Isotope[] incorporatedIsotopes;
+	private Isotope[] incorporatedIsotopes;
+	private ElementFormula maxElementFormula;
+	private ElementFormula formula;
+	private String groupKey;
 
 	public IncorporationMap() {
 	
@@ -57,6 +64,41 @@ public class IncorporationMap extends LinkedHashMap<IsotopeFormula, Double> {
 			} else {
 				this.put(isotopeFormula, this.get(isotopeFormula) + intensity);
 			}
+		}
+	}
+	
+	/**
+	 * Creates an {@link IncorporationMap} from a list of records that represent the rows of a table according to {@link NACorrectionInputHeader}.
+	 * The headers may not be included in the records. Up to now this is only working for C, N tracing.
+	 * @param records, may not include header
+	 * @param tracer, elemnts corresponding to the used tracer
+	 */
+	public IncorporationMap(List<CSVRecord> records, Element... tracer) {
+		try {
+			ElementFormula maxElementsFormula = new ElementFormula();
+			int recordCounter = 0;
+			for (CSVRecord csvRecord : records) {
+				if (recordCounter == 0) {
+					ElementFormula formula = ElementFormula.fromString(csvRecord.get(NACorrectionInputHeader.FORMULA.getColumnValue()));
+					this.formula = formula;
+					for (Element element : tracer) {
+						maxElementsFormula.put(element, formula.get(element));
+					}
+					this.maxElementFormula = maxElementsFormula;
+					this.groupKey = csvRecord.get(NACorrectionInputHeader.GROPUP_KEY.getColumnValue());
+					recordCounter++;
+				}
+				//TODO: adapt to arbitrary tracer
+				Integer c = Integer.parseInt(csvRecord.get(NACorrectionInputHeader.C_13_COUNT.getColumnValue()));
+				Integer n = Integer.parseInt(csvRecord.get(NACorrectionInputHeader.N_15_COUNT.getColumnValue()));
+				Double intensity = Double.parseDouble(csvRecord.get(NACorrectionInputHeader.INTENSITY.getColumnValue()));
+				IsotopeFormula isotopeFormula = new IsotopeFormula();
+				isotopeFormula.put(Isotope.C_13, c);
+				isotopeFormula.put(Isotope.N_15, n);
+				this.put(isotopeFormula, intensity);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -108,6 +150,8 @@ public class IncorporationMap extends LinkedHashMap<IsotopeFormula, Double> {
 		}
 		LOG.debugValue("iterations", iterations);
 		LOG.debugValue("naAddedIncorporation", naAddedIncorporation.asTable());
+		naSubstractedIncorporation.formula = this.formula;
+		naSubstractedIncorporation.groupKey = this.groupKey;
 		return naSubstractedIncorporation;
 	}
 	
@@ -373,6 +417,8 @@ public class IncorporationMap extends LinkedHashMap<IsotopeFormula, Double> {
 		for (Entry<IsotopeFormula, Double> entry : this.entrySet()) {
 			normalized.put(entry.getKey(), entry.getValue() / sum);
 		}
+		normalized.formula = this.formula;
+		normalized.groupKey= this.groupKey;
 		return normalized;
 	}
 	
@@ -382,6 +428,8 @@ public class IncorporationMap extends LinkedHashMap<IsotopeFormula, Double> {
 		for (Entry<IsotopeFormula, Double> entry : this.entrySet()) {
 			normalized.put(entry.getKey(), MathUtils.round(entry.getValue() / sum, precision));
 		}
+		normalized.formula= this.formula;
+		normalized.groupKey= this.groupKey;
 		return normalized;
 	}
 
@@ -430,6 +478,45 @@ public class IncorporationMap extends LinkedHashMap<IsotopeFormula, Double> {
 			isotopeFormula.put(incorporatedIsotopes[i], combinationOfIsotopes[i]);
 		}
 		return get(isotopeFormula);
+	}
+	
+	public DataTable toDataTable() {
+		DataTable dataTable = new DataTable(
+				NACorrectionInputHeader.GROPUP_KEY.getHeaderValue(),
+				NACorrectionInputHeader.INTENSITY.getHeaderValue(),
+				NACorrectionInputHeader.C_13_COUNT.getHeaderValue(),
+				NACorrectionInputHeader.N_15_COUNT.getHeaderValue(),
+				NACorrectionInputHeader.FORMULA.getHeaderValue()
+				);
+		for (Entry<IsotopeFormula, Double> entry : this.entrySet()) {
+			String intensity = String.valueOf(entry.getValue());
+			String c = String.valueOf(entry.getKey().get(Isotope.C_13));
+			String n = String.valueOf(entry.getKey().get(Isotope.N_15));
+			String formula = this.formula.toSimpleString();
+			dataTable.addRow(this.groupKey, intensity, c, n, formula);
+		}
+		return dataTable;	
+	}
+	
+	public String toString() {
+		return toString(true);
+	}
+	
+	public String toString(boolean withHeader) {
+		return toDataTable().toString("N/A", withHeader);
+	}
+	
+	public String toCsvString(boolean withHeader) {
+		return toDataTable().toCsvString("N/A", withHeader);
+	}
+	
+	public void writeToCsv(String absolutOutputFilePath) throws IOException {
+		DataTable dataTable = toDataTable();
+		dataTable.writeToCsv("N/A", true, absolutOutputFilePath);
+	}
+
+	public ElementFormula getMaxElementFormula() {
+		return maxElementFormula;
 	}
 
 }
