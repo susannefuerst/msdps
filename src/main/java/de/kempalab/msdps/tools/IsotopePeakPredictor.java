@@ -62,7 +62,7 @@ public class IsotopePeakPredictor implements Runnable {
 
 	private static void addRows(MSDatabase msDatabase, DataTable table, Fragment fragment) {
 		String moleculeName = fragment.getFragmentKey().getMetaboliteKey().getMoleculeName();
-		String baseID = moleculeName + "_" + fragment.getDerivate() + "_" + fragment.baseMass();
+		String baseID = moleculeName + fragment.getDerivate() + fragment.baseMass();
 		String rt = "NA";
 		String identity = moleculeName + "_" + fragment.baseMass();
 		String formula = fragment.getFormula();
@@ -81,7 +81,7 @@ public class IsotopePeakPredictor implements Runnable {
 			String n = shiftInducingIsotopes.get(Isotope.N_15) != null
 					? shiftInducingIsotopes.get(Isotope.N_15).toString()
 					: "0";
-			table.addRow(id, mass, rt, identity, formula, mass, predictedIntensity, heavyIsotopes, c, n);
+			table.addRow(id, mass, rt, identity + "_" + c + "_" + n, formula, mass, predictedIntensity, heavyIsotopes, c, n);
 			entryCount++;
 		}
 	}
