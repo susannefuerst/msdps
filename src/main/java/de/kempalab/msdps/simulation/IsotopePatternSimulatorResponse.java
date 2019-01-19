@@ -56,8 +56,10 @@ public class IsotopePatternSimulatorResponse {
 		MassShiftDataSet mixedShifts = database.getMixedMassShifts();
 		ElementFormula compoundFormula = ElementFormula.fromString(database.getFragmentFormula());
 		ArrayList<IsotopeFormula> isotopeFormulas = new ArrayList<IsotopeFormula>();
+		ArrayList<IsotopeFormula> peakInducingHeavyIsotopes = new ArrayList<IsotopeFormula>();
 		for (Entry<MassShiftList, IsotopeListList> shiftEntry : mixedShifts.entrySet()) {
 			IsotopeFormula shiftInducingIsotopes = shiftEntry.getValue().toIsotopeFormula();
+			peakInducingHeavyIsotopes.add(shiftInducingIsotopes);
 			IsotopeFormula completeIsotopeFormula = new IsotopeFormula();
 			for (Entry<Element, Integer> compoundFormulaEntry : compoundFormula.entrySet()) {
 				Element element = compoundFormulaEntry.getKey();
@@ -76,36 +78,37 @@ public class IsotopePatternSimulatorResponse {
 			isotopeFormulas.add(completeIsotopeFormula);
 		}
 		IsotopePattern pattern = new IsotopePattern(mixedSpectrum.getIntensityType(), isotopeFormulas);
+		pattern.setPeakInducingHeavyIsotopes(peakInducingHeavyIsotopes);
 		for (Entry<Double, Double> entry : mixedSpectrum.entrySet()) {
 			pattern.put(entry.getKey(), entry.getValue());
 		}
 		return pattern;
 	}
 
-	/**
-	 * 
-	 * @param index index of the {@link Fragment} in the {@link FragmentList} of the
-	 *              {@link IsotopePatternSimulatorRequest} that corresponds to the
-	 *              spectrum you want to get.
-	 * @return Simulated spectrum with corresponding formulas. Formulas only
-	 *         represent the heavy isotopes that induced this peak. Attention! This
-	 *         only works if analyzeMassShifts was set to true in the request.
-	 */
-	public IsotopePattern getIsotopePatternWithReducedFormulas(int index) {
-		// TODO: Ensure that MassShifts have been analyzed.
-		MSShiftDatabase database = ((MSShiftDatabase) getMsDatabaseList().get(index));
-		MassSpectrum mixedSpectrum = database.getMixedSpectrum();
-		MassShiftDataSet mixedShifts = database.getMixedMassShifts();
-		ArrayList<IsotopeFormula> isotopeFormulas = new ArrayList<IsotopeFormula>();
-		for (Entry<MassShiftList, IsotopeListList> shiftEntry : mixedShifts.entrySet()) {
-			isotopeFormulas.add(shiftEntry.getValue().toIsotopeFormula());
-		}
-		IsotopePattern pattern = new IsotopePattern(mixedSpectrum.getIntensityType(), isotopeFormulas);
-		for (Entry<Double, Double> entry : mixedSpectrum.entrySet()) {
-			pattern.put(entry.getKey(), entry.getValue());
-		}
-		return pattern;
-	}
+//	/**
+//	 * 
+//	 * @param index index of the {@link Fragment} in the {@link FragmentList} of the
+//	 *              {@link IsotopePatternSimulatorRequest} that corresponds to the
+//	 *              spectrum you want to get.
+//	 * @return Simulated spectrum with corresponding formulas. Formulas only
+//	 *         represent the heavy isotopes that induced this peak. Attention! This
+//	 *         only works if analyzeMassShifts was set to true in the request.
+//	 */
+//	public IsotopePattern getIsotopePatternWithReducedFormulas(int index) {
+//		// TODO: Ensure that MassShifts have been analyzed.
+//		MSShiftDatabase database = ((MSShiftDatabase) getMsDatabaseList().get(index));
+//		MassSpectrum mixedSpectrum = database.getMixedSpectrum();
+//		MassShiftDataSet mixedShifts = database.getMixedMassShifts();
+//		ArrayList<IsotopeFormula> isotopeFormulas = new ArrayList<IsotopeFormula>();
+//		for (Entry<MassShiftList, IsotopeListList> shiftEntry : mixedShifts.entrySet()) {
+//			isotopeFormulas.add(shiftEntry.getValue().toIsotopeFormula());
+//		}
+//		IsotopePattern pattern = new IsotopePattern(mixedSpectrum.getIntensityType(), isotopeFormulas);
+//		for (Entry<Double, Double> entry : mixedSpectrum.entrySet()) {
+//			pattern.put(entry.getKey(), entry.getValue());
+//		}
+//		return pattern;
+//	}
 
 	/**
 	 * 

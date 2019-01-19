@@ -1,7 +1,6 @@
 package de.kempalab.msdps.simulation;
 
 import java.util.InputMismatchException;
-import java.util.Map.Entry;
 
 import de.kempalab.msdps.ElementFormula;
 import de.kempalab.msdps.Fragment;
@@ -176,10 +175,6 @@ public class IsotopePatternSimulator {
 		}
 		if (minimalFrequency != null) {
 			spectrum = spectrum.skipLowIntensity(minimalFrequency);
-		}
-		Double sumOfFrequencies = 0.0;
-		for (Entry<Double, Double> entry : spectrum.entrySet()) {
-			sumOfFrequencies = sumOfFrequencies + entry.getValue();
 		}
 		return spectrum.sortAscendingByMass();
 	}

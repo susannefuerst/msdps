@@ -182,5 +182,20 @@ public class Fragment {
 		setCapacity(formula);
 	}
 
+	public Fragment reduceByCapacity(Element tracer) {
+		Fragment newFragment = this.copy();
+		ElementFormula newFormula = formula.copy();
+		if (tracer == null) {
+			for (Entry<Element,Integer> entry : this.tracerCapacity.entrySet()) {
+				newFormula.put(entry.getKey(), formula.get(entry.getKey()) - entry.getValue());
+			}
+		} else {
+			newFormula.put(tracer, formula.get(tracer) - tracerCapacity.get(tracer));
+		}
+		newFragment.setFormula(newFormula);
+		newFragment.setCapacity("");
+		return newFragment;
+	}
+
 
 }

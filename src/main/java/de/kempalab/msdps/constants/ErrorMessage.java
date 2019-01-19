@@ -7,7 +7,7 @@ package de.kempalab.msdps.constants;
 public enum ErrorMessage {
 	INVALID_FORMULA("Cannot read formula. Please enter a valid format.", "A valid format does not contain any brackets."),
 	INVALID_MASS_SHIFT_PATTERN("Cannot read MassShift from string.", "The input string does not match the ecpected pattern."),
-	INTENSITY_TYPE_MISMATCH("Can only merge maps with IntensityType.ABSOLUTE", " "),
+	INTENSITY_TYPE_MISMATCH("Different intensity types", " "),
 	INVALID_ISOTOPE_NAME("No such isotope.", ""),
 	NO_TRACER("There is no tracer defined for this element.", "");
 	

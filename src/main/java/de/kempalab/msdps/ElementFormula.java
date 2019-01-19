@@ -55,8 +55,10 @@ public class ElementFormula extends LinkedHashMap<Element, Integer> {
 	public String toSimpleString() {
 		StringBuilder builder = new StringBuilder();
 		for (Entry<Element, Integer> entry : this.entrySet()) {
-			String number = entry.getValue() > 1 ? String.valueOf(entry.getValue()) : "";
-			builder.append(entry.getKey().name() + number);
+			if (entry.getValue() != 0) {
+				String number = entry.getValue() > 1 ? String.valueOf(entry.getValue()) : "";
+				builder.append(entry.getKey().name() + number);
+			}
 		}
 		return builder.toString();
 	}
@@ -83,6 +85,23 @@ public class ElementFormula extends LinkedHashMap<Element, Integer> {
 			mass = mass + entry.getKey().mostCommonIsotope().getAtomicMass() * entry.getValue();
 		}
 		return mass;
+	}
+
+	public ElementList toElementList() {
+		ElementList list = new ElementList();
+		for (Entry<Element,Integer> entry : this.entrySet()) {
+			list.add(entry.getKey());
+		}
+		return list;
+	}
+	
+	public ArrayList<MassSpectrum> multiElementSpectra() {
+		ArrayList<MassSpectrum> multiElementSpectra = new ArrayList<>();
+		for (Entry<Element,Integer> formulaEntry : this.entrySet()) {
+			Element element = formulaEntry.getKey();
+			multiElementSpectra.add(element.multiElementSpectrum(formulaEntry.getValue(), 0.0));
+		}
+		return multiElementSpectra;
 	}
 
 }

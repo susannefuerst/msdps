@@ -14,6 +14,7 @@ import org.apache.commons.csv.CSVRecord;
 
 import com.google.common.collect.Range;
 
+import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.ErrorMessage;
 import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.Isotope;
@@ -58,7 +59,7 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 	 * @throws IntensityTypeMismatchException
 	 */
 	public MassSpectrum merge(MassSpectrum otherSpectrum) throws IntensityTypeMismatchException {
-		if (this.intensityType.equals(IntensityType.MID) || otherSpectrum.intensityType.equals(IntensityType.MID)) {
+		if (!this.intensityType.equals(otherSpectrum.getIntensityType())) {
 			throw new IntensityTypeMismatchException(ErrorMessage.INTENSITY_TYPE_MISMATCH.getMessage());
 		}
 		if (this.isEmpty()) {
@@ -79,6 +80,12 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 			Double otherIntensity = otherEntry.getValue();
 			double otherOldIntensity = newSpectrum.get(otherMass) != null ? newSpectrum.get(otherMass) : 0;
 			newSpectrum.put(otherMass, otherOldIntensity + otherIntensity);
+		}
+		if (this.getIntensityType().equals(IntensityType.MID)) {
+			newSpectrum = newSpectrum.toMID();
+		}
+		if (this.getIntensityType().equals(IntensityType.RELATIVE)) {
+			newSpectrum = newSpectrum.toRelativeIntensity();
 		}
 		return newSpectrum;
 	}
@@ -473,4 +480,66 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 		rawDataFile.addScan(scan);
 		return rawDataFile;
 	}
+	
+	public MassSpectrum modifyWithRespectToCharge(int charge) {
+		MassSpectrum newSpectrum = new MassSpectrum(this.getIntensityType());
+		for (Entry<Double,Double> entry : this.entrySet()) {
+			newSpectrum.put(entry.getKey() - charge * NaturalConstants.ELECTRON_MASS.getValue(), entry.getValue());
+		}
+		return newSpectrum;
+	}
+	
+	public IsotopePattern analyseCompositions(ElementFormula formula) {
+		MassShiftDataSet massShiftDataset = this.analyseMassShifts(formula.toElementList());
+		ArrayList<IsotopeFormula> isotopeFormulas = new ArrayList<IsotopeFormula>();
+		ArrayList<IsotopeFormula> peakInducingHeavyIsotopes = new ArrayList<IsotopeFormula>();
+		for (Entry<MassShiftList, IsotopeListList> shiftEntry : massShiftDataset.entrySet()) {
+			IsotopeFormula shiftInducingIsotopes = shiftEntry.getValue().toIsotopeFormula();
+			peakInducingHeavyIsotopes.add(shiftInducingIsotopes);
+			IsotopeFormula completeIsotopeFormula = new IsotopeFormula();
+			for (Entry<Element, Integer> compoundFormulaEntry : formula.entrySet()) {
+				Element element = compoundFormulaEntry.getKey();
+				for (Isotope isotope : element.getIsotopes()) {
+					int totalElementNumber = formula.get(element);
+					if (shiftInducingIsotopes.get(isotope) != null) {
+						int numberOfHeavyIsotopes = shiftInducingIsotopes.get(isotope);
+						completeIsotopeFormula.put(element.lightestIsotope(),
+								totalElementNumber - numberOfHeavyIsotopes);
+						completeIsotopeFormula.put(isotope, numberOfHeavyIsotopes);
+					} else {
+						completeIsotopeFormula.put(element.lightestIsotope(), totalElementNumber);
+					}
+				}
+			}
+			isotopeFormulas.add(completeIsotopeFormula);
+		}
+		IsotopePattern pattern = new IsotopePattern(this.getIntensityType(), isotopeFormulas);
+		pattern.setPeakInducingHeavyIsotopes(peakInducingHeavyIsotopes);
+		for (Entry<Double, Double> entry : this.entrySet()) {
+			pattern.put(entry.getKey(), entry.getValue());
+		}
+		return pattern;
+	}
+
+	public MassSpectrum addLabel(ElementFormula elementFormula) {
+		MassSpectrum labeledSpectrum = new MassSpectrum(this.getIntensityType());
+		IsotopeFormula tracer = new IsotopeFormula();
+		for (Entry<Element,Integer> elementEntry : elementFormula.entrySet()) {
+			tracer.put(elementEntry.getKey().getTracer(), elementEntry.getValue());
+		}
+		Double tracerMass = tracer.calculateMass(0);
+		for (Entry<Double,Double> entry : this.entrySet()) {
+			labeledSpectrum.put(entry.getKey() + tracerMass, entry.getValue());
+		}
+		return labeledSpectrum;
+	}
+	
+	public MassSpectrum scale(Double scaleFactor) {
+		MassSpectrum scaledSpectrum = new MassSpectrum(this.getIntensityType());
+		for (Entry<Double,Double> entry : this.entrySet()) {
+			scaledSpectrum.put(entry.getKey(), entry.getValue() * scaleFactor);
+		}
+		return scaledSpectrum;
+	}
+
 }
