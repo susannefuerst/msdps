@@ -38,7 +38,12 @@ public class FragmentsDatabase {
 				String fragmentCapacity = csvRecord.get(FragmentDatabaseColKey.FRAGMENT_CAPACITY.getColumnIndex());
 				String derivate = csvRecord.get(FragmentDatabaseColKey.DERIVATE.getColumnIndex());
 				String retentionTimeStr = csvRecord.get(FragmentDatabaseColKey.RETENTION_TIME.getColumnIndex());
-				Double rt = retentionTimeStr != null && retentionTimeStr != "NA" ? Double.parseDouble(retentionTimeStr) : null; 
+				Double rt = null;
+				try {
+					rt = Double.parseDouble(retentionTimeStr);
+				} catch (Exception e) {
+					// rt remains null;
+				}
 				int baseMass = Integer.parseInt(csvRecord.get(FragmentDatabaseColKey.FRAGMENT_BASE_INT_MASS.getColumnIndex()));
 				FragmentKey key = FragmentKey.byMassAndAbbreviation(baseMass, shortMoleculeName);
 				Fragment fragment = new Fragment(key, fragmentFormula, fragmentCapacity);
