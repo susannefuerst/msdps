@@ -34,6 +34,7 @@ public class Fragment {
 	private ElementFormula tracerCapacity = new ElementFormula();
 	private FragmentKey fragmentKey;
 	private String derivate;
+	private Double retentionTime;
 
 	public Fragment() {
 
@@ -50,10 +51,13 @@ public class Fragment {
 	}
 
 	public Fragment(FragmentKey fragmentKey, String fragmentFormula, String capacityFormula) {
-		this.setFragmentKey(fragmentKey);
-		this.formula = ElementFormula.fromString(fragmentFormula);
-		this.tracerCapacity = ElementFormula.fromString(capacityFormula);
+		this(fragmentFormula, capacityFormula);
 		this.fragmentKey = fragmentKey;
+	}
+
+	public Fragment(FragmentKey fragmentKey, String fragmentFormula, String capacityFormula, Double retentionTime) {
+		this(fragmentKey, fragmentFormula, capacityFormula);
+		this.retentionTime = retentionTime;
 	}
 
 	public double relativeMass() {
@@ -168,6 +172,14 @@ public class Fragment {
 
 	public int baseMass() {
 		return getFragmentKey().getBaseMass();
+	}
+
+	public Double getRetentionTime() {
+		return retentionTime;
+	}
+
+	public void setRetentionTime(Double retentionTime) {
+		this.retentionTime = retentionTime;
 	}
 
 	public String metaboliteAbbreviation() {

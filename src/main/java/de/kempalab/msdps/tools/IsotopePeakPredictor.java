@@ -63,7 +63,8 @@ public class IsotopePeakPredictor implements Runnable {
 	private static void addRows(MSDatabase msDatabase, DataTable table, Fragment fragment) {
 		String moleculeName = fragment.getFragmentKey().getMetaboliteKey().getMoleculeName();
 		String baseID = moleculeName + fragment.getDerivate() + fragment.baseMass();
-		String rt = "NA";
+		Double retentionTime = fragment.getRetentionTime();
+		String rt = retentionTime != null ? String.valueOf(retentionTime) : "NA";
 		String identity = moleculeName + "_" + fragment.baseMass();
 		String formula = fragment.getFormula().toSimpleString();
 		int entryCount = 0;

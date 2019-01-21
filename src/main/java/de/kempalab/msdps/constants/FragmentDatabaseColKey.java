@@ -5,11 +5,13 @@ package de.kempalab.msdps.constants;
  *
  */
 public enum FragmentDatabaseColKey {
-	FRAGMENT_FORMULA("fragmentFormula", 0),
-	MOLECULE_NAME("moleculeName", 1),
-	SHORT_MOLECULE_NAME("shortMoleculeName", 2),
-	FRAGMENT_CAPACITY("fragmentCapacity", 3),
-	FRAGMENT_BASE_INT_MASS("fragmentFormula", 4), DERIVATE("derivate", 5);
+	FRAGMENT_FORMULA("fragmentFormula", 0), //
+	MOLECULE_NAME("moleculeName", 1), //
+	SHORT_MOLECULE_NAME("shortMoleculeName", 2), //
+	FRAGMENT_CAPACITY("fragmentCapacity", 3), //
+	FRAGMENT_BASE_INT_MASS("fragmentFormula", 4), //
+	DERIVATE("derivate", 5), //
+	RETENTION_TIME("retentionTime", 7);
 	
 	private String header;
 	private int columnIndex;
