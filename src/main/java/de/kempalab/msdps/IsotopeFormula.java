@@ -121,5 +121,16 @@ public class IsotopeFormula extends LinkedHashMap<Isotope, Integer> {
 		}
 		return mass - charge * NaturalConstants.ELECTRON_MASS.getValue();
 	}
+	
+	
+	public IsotopeFormula getHeavyIsotopes() {
+		IsotopeFormula heavyIsotopes = new IsotopeFormula();
+		for (Entry<Isotope, Integer> entry : this.entrySet()) {
+			if (!(entry.getKey().getElement().lightestIsotope().equals(entry.getKey()))) {
+				heavyIsotopes.put(entry.getKey(), entry.getValue());
+			}
+		}
+		return heavyIsotopes;
+	}
 
 }

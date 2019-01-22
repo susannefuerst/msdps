@@ -30,12 +30,26 @@ public class IsotopePattern extends MassSpectrum {
 	/*
 	 * ordered as the entries in the MassSpectrum
 	 */
-	private ArrayList<IsotopeFormula> formulas;
-	private ArrayList<IsotopeFormula> peakInducingHeavyIsotopes;
+	private ArrayList<IsotopeFormula> formulas = new ArrayList<>();
+	private ArrayList<IsotopeFormula> peakInducingHeavyIsotopes = new ArrayList<>();
 
 	public IsotopePattern(IntensityType intensityType, ArrayList<IsotopeFormula> formulas) {
 		super(intensityType);
 		this.formulas = formulas;
+	}
+
+	public IsotopePattern(MassSpectrum massSpectrum) {
+		super(massSpectrum.getIntensityType());
+		for (Entry<Double, Double> entry : massSpectrum.entrySet()) {
+			put(entry.getKey(), entry.getValue());
+		}
+		if (!massSpectrum.getCompositions().isEmpty()) {
+			for (Entry<Double,IsotopeFormula> entry : massSpectrum.getCompositions().entrySet()) {
+				formulas.add(entry.getValue());
+				IsotopeFormula heavyIsotopes = entry.getValue().getHeavyIsotopes();
+				this.peakInducingHeavyIsotopes.add(heavyIsotopes);
+			}
+		}
 	}
 
 	public ArrayList<IsotopeFormula> getFormulas() {

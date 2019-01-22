@@ -159,6 +159,7 @@ public class Fragment {
 		fragment.setTracerCapacity(tracerCapacity.copy());
 		fragment.setFragmentKey(getFragmentKey());
 		fragment.setDerivate(getDerivate());
+		fragment.setRetentionTime(getRetentionTime());
 		return fragment;
 	}
 

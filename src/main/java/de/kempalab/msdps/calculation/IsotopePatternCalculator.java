@@ -39,7 +39,7 @@ public class IsotopePatternCalculator {
 				calculatedSpectrum = combinedSpectra.get(combinedSpectra.size() - 1);
 			}
 			if (charge > 0) {
-				calculatedSpectrum = calculatedSpectrum.modifyWithRespectToCharge(charge);
+				calculatedSpectrum = calculatedSpectrum.adjustToCharge(charge);
 			}
 			MassSpectrum modifiedSpectrum = IsotopePatternSimulator.prepareSpectrum(calculatedSpectrum, roundedMassPrecision, roundedIntensityPrecision, minimalIntensity, targetIntensityType);
 			if (!analyseComposition) {
@@ -106,7 +106,7 @@ public class IsotopePatternCalculator {
 			finalSpectrum = finalSpectrum.merge(tracer2Spectrum);
 			finalSpectrum = finalSpectrum.merge(tracerAllSpectrum);
 			if (charge > 0) {
-				finalSpectrum = finalSpectrum.modifyWithRespectToCharge(charge);
+				finalSpectrum = finalSpectrum.adjustToCharge(charge);
 			}
 			MassSpectrum modifiedSpectrum = IsotopePatternSimulator.prepareSpectrum(finalSpectrum, roundedMassPrecision, roundedIntensityPrecision, minimalIntensity, targetIntensityType);
 			if (!analyseComposition) {
