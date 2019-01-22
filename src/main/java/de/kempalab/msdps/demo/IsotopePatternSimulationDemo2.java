@@ -15,7 +15,7 @@ import de.kempalab.msdps.simulation.IsotopePatternSimulatorResponse;
 public class IsotopePatternSimulationDemo2 {
 	public static void main(String[] args) throws FragmentNotFoundException, IntensityTypeMismatchException {
 		IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
-		Fragment fragment = FragmentsDatabase.getFragment(FragmentKey.GLN_156);
+		Fragment fragment = FragmentsDatabase.getFragment(FragmentKey.PYR_174);
 		simulatorRequest.setFragments(new FragmentList(fragment));
 		simulatorRequest.setAnalyzeMassShifts(false);
 		simulatorRequest.setCharge(1);
@@ -26,6 +26,6 @@ public class IsotopePatternSimulationDemo2 {
 		simulatorRequest.setMinimalIntensity(0.1);
 		simulatorRequest.setAnalyzeMassShifts(true);
 		IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
-		System.out.println(response.getMsDatabaseList().get(0).getMixedSpectrum().toString());
+		System.out.println(response.getMsDatabaseList().get(0).getMixedSpectrum().analyseCompositions(null).toString());
 	}
 }

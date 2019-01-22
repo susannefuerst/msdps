@@ -73,7 +73,7 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 		for (Entry<Double, Double> entry : this.entrySet()) {
 			Double thisMass = entry.getKey();
 			Double thisIntensity = entry.getValue();
-			IsotopeFormula thisComposition = newSpectrum.getComposition(thisMass);
+			IsotopeFormula thisComposition = this.getComposition(thisMass);
 			double thisOldIntensity = newSpectrum.get(thisMass) != null ? newSpectrum.get(thisMass) : 0;
 			newSpectrum.put(thisMass, thisOldIntensity + thisIntensity);
 			newSpectrum.putComposition(thisMass, thisComposition);
@@ -81,7 +81,7 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 		for (Entry<Double,Double> otherEntry : otherSpectrum.entrySet()) {
 			Double otherMass = otherEntry.getKey();
 			Double otherIntensity = otherEntry.getValue();
-			IsotopeFormula otherComposition = newSpectrum.getComposition(otherMass);
+			IsotopeFormula otherComposition = otherSpectrum.getComposition(otherMass);
 			double otherOldIntensity = newSpectrum.get(otherMass) != null ? newSpectrum.get(otherMass) : 0;
 			newSpectrum.put(otherMass, otherOldIntensity + otherIntensity);
 			newSpectrum.putComposition(otherMass, otherComposition);
@@ -95,8 +95,8 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 		return newSpectrum;
 	}
 	
-	private IsotopeFormula getComposition(Double thisMass) {
-		return getCompositions().get(thisMass);
+	public IsotopeFormula getComposition(Double mass) {
+		return getCompositions().get(mass);
 	}
 
 	/**
@@ -192,7 +192,7 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 			} else {
 				newSpectrum.put(roundedMass, currentEntry.getValue());
 			}
-			newSpectrum.putComposition(currentEntry.getKey(), getComposition(currentEntry.getKey()));
+			newSpectrum.putComposition(roundedMass, getComposition(currentEntry.getKey()));
 		}
 		return newSpectrum;
 	}
@@ -208,8 +208,9 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 		for (Entry<Double,Double> currentEntry : this.entrySet()) {
 			Double roundedIntensity = MathUtils.round(currentEntry.getValue(), precision);
 			newSpectrum.put(currentEntry.getKey(), roundedIntensity);
-			newSpectrum.putComposition(currentEntry.getKey(), getComposition(currentEntry.getKey()));
+//			newSpectrum.putComposition(currentEntry.getKey(), getComposition(currentEntry.getKey()));
 		}
+		newSpectrum.setCompositions(compositions);
 		return newSpectrum;
 		
 	}
@@ -272,6 +273,8 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 		for (Entry<Double, Double> entry : entryList) {
 			sortedList.put(entry.getKey(), entry.getValue());
         }
+		IsotopeComposition newComposition = this.getCompositions().sortAscendingByMass();
+		sortedList.setCompositions(newComposition);
         return sortedList;
 	}
 	
@@ -443,7 +446,11 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 		for (Entry<Double, Double> entry : this.entrySet()) {
 			adjusted.put(entry.getKey() - charge * NaturalConstants.ELECTRON_MASS.getValue(), entry.getValue());
 		}
-		adjusted.setCompositions(getCompositions());
+		IsotopeComposition newComposition = new IsotopeComposition();
+		for (Entry<Double, IsotopeFormula> entry : getCompositions().entrySet()) {
+			newComposition.put(entry.getKey() - charge * NaturalConstants.ELECTRON_MASS.getValue(), entry.getValue());
+		}
+		adjusted.setCompositions(newComposition);
 		return adjusted;
 	}
 
