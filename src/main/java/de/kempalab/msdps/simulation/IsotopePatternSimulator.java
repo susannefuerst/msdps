@@ -52,7 +52,7 @@ public class IsotopePatternSimulator {
 				msShiftDatabase.setMixedSpectrum(mixedSpectrum);
 				msShiftDatabase.setFragmentFormula(fragment.getFormula().toSimpleString());
 				msShiftDatabase.analyseAllShifts();
-				LOGGER.debug("\n" + msShiftDatabase);
+//				LOGGER.debug("\n" + msShiftDatabase);
 				msDatabaseList.add(msShiftDatabase);
 			} else {
 				MSDatabase msDatabase = new MSDatabase();
@@ -63,7 +63,7 @@ public class IsotopePatternSimulator {
 				msDatabase.setMarkedSpectrum(markedSpectrum);
 				msDatabase.setMixedSpectrum(mixedSpectrum);
 				msDatabase.setFragmentFormula(fragment.getFormula().toSimpleString());
-				LOGGER.debug("\n" + msDatabase);
+//				LOGGER.debug("\n" + msDatabase);
 				msDatabaseList.add(msDatabase);
 			}
 		}

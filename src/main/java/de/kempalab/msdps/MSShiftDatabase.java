@@ -221,19 +221,19 @@ public class MSShiftDatabase extends MSDatabase {
 		ElementList elements = ElementList.fromFormula(getFragmentFormula());
 		if (getNaturalSpectrum() != null) {
 			naturalMassShifts = getNaturalSpectrum().analyseMassShifts(elements);
-			LOGGER.debug("Analysed naturalMassShifts");
+//			LOGGER.debug("Analysed naturalMassShifts");
 		} else {
 			LOGGER.warn("Missing naturalSpectrum to determine naturalMassShifts");
 		}
 		if (getMarkedSpectrum() != null) {
 			markedMassShifts = getMarkedSpectrum().analyseMassShifts(elements);
-			LOGGER.debug("Analysed markedMassShifts");
+//			LOGGER.debug("Analysed markedMassShifts");
 		} else {
 			LOGGER.warn("Missing markedSpectrum to determine markedMassShifts");
 		}
 		if (getMixedSpectrum() != null) {
 			mixedMassShifts = getMixedSpectrum().analyseMassShifts(elements);
-			LOGGER.debug("Analysed mixedMassShifts");
+//			LOGGER.debug("Analysed mixedMassShifts");
 		} else {
 			LOGGER.warn("Missing mixedSpectrum to determine mixedMassShifts");
 		}
