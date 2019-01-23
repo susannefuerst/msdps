@@ -96,6 +96,9 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 	}
 	
 	public IsotopeFormula getComposition(Double mass) {
+		if (getCompositions().get(mass) == null) {
+			LOGGER.info("No composition for mass " + mass);
+		}
 		return getCompositions().get(mass);
 	}
 

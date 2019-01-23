@@ -143,9 +143,9 @@ public class IsotopeSet extends HashMap<Isotope, Integer> {
 			if (massOfFragment > 0.0) {
 				if (spectrum.get(massOfFragment) == null /*count each mass only once*/) {
 					spectrum.put(massOfFragment, 1.0);
+					spectrum.putComposition(massOfFragment, composition);
 				} else {
 					spectrum.put(massOfFragment, spectrum.get(massOfFragment) + 1);
-					spectrum.putComposition(massOfFragment, composition);
 				}
 			}
 		}
