@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.Isotope;
@@ -17,7 +19,9 @@ import de.kempalab.msdps.util.StringUtils;
  */
 @SuppressWarnings("serial")
 public class IsotopeFormula extends LinkedHashMap<Isotope, Integer> {
-	
+
+	public static final Pattern MULTI_ISOTOPE_PATTERN = Pattern.compile("\\(([0-9]+)([A-Z][a-z]?)\\)([0-9]*)");
+
 	/**
 	 * An {@link IsotopeFormula} with string representation {C_13=2, C_12=3} will be converted to an {@link ElementFormula} with string representation
 	 * {C=5}
@@ -37,12 +41,12 @@ public class IsotopeFormula extends LinkedHashMap<Isotope, Integer> {
 		}
 		return elementFormula;
 	}
-	
+
 	public List<Entry<Isotope, Integer>> toEntryList() {
 		List<Entry<Isotope, Integer>> entryList = new ArrayList<>(this.entrySet());
 		return entryList;
 	}
-	
+
 	/**
 	 * Collects only the keys (isotopes) of this {@link IsotopeFormula} in an {@link IsotopeList}
 	 * @return An {@link IsotopeList} that contains all the keys (isotopes) of this {@link IsotopeFormula}.
@@ -122,4 +126,30 @@ public class IsotopeFormula extends LinkedHashMap<Isotope, Integer> {
 		return mass - charge * NaturalConstants.ELECTRON_MASS.getValue();
 	}
 
+	/**
+	 * 
+	 * @param formula expected format (12C)3(1H)7(15N)2
+	 * @return
+	 */
+	public static IsotopeFormula fromSimpleString(String formulaStr)  {
+		IsotopeFormula isotopeFormula = new IsotopeFormula();
+		Matcher multiIsotopeMatcher = MULTI_ISOTOPE_PATTERN.matcher(formulaStr);
+		ArrayList<String> isotopeTokens = new ArrayList<String>();
+		while (multiIsotopeMatcher.find()) {
+			isotopeTokens.add(multiIsotopeMatcher.group());
+		}
+		for (String isotopeToken : isotopeTokens) {
+			Matcher isotopeMatcher = MULTI_ISOTOPE_PATTERN.matcher(isotopeToken);
+			if (isotopeMatcher.matches()) {
+				Integer massNumber = Integer.parseInt(isotopeMatcher.group(1));
+				Element element = Element.valueOf(isotopeMatcher.group(2));
+				Isotope isotope = Isotope.byElementAndMassNumber(element, massNumber);
+				Integer quantity = isotopeMatcher.group(3).equals("") ? Integer.valueOf(1)
+						: Integer.valueOf(isotopeMatcher.group(3));
+				isotopeFormula.put(isotope, quantity);
+			}
+		}
+		return isotopeFormula;
+
+	}
 }

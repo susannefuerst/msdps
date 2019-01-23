@@ -211,4 +211,15 @@ public enum Isotope implements Comparable<Isotope> {
 		return "(" + getMassNumber() + getElement().toString() + ")";
 	}
 
+	public static Isotope byElementAndMassNumber(Element element, Integer massNumber) {
+		for (Isotope isotope : values()) {
+			Element thisElement = isotope.getElement();
+			Integer thisMassNumber = isotope.getMassNumber();
+			if (thisElement.equals(element) && thisMassNumber.equals(massNumber)) {
+				return isotope;
+			}
+		}
+		return Isotope.UNDEFINED;
+	}
+
 }
