@@ -100,9 +100,10 @@ public class IsotopeSet extends HashMap<Isotope, Integer> {
 					// isotope.
 					Isotope heaviestIsotope = elementInFragment.heaviestIsotope();
 					if (composition.get(heaviestIsotope) != null) {
-						composition.put(heaviestIsotope, composition.get(heaviestIsotope) + 1);
+						composition.put(heaviestIsotope,
+								composition.get(heaviestIsotope) + numberOfExperimentallyIncorporatedElements);
 					} else {
-						composition.put(heaviestIsotope, 1);
+						composition.put(heaviestIsotope, numberOfExperimentallyIncorporatedElements);
 					}
 					Integer remainingNumberOfIsotopesInTheSet = Integer.valueOf(get(heaviestIsotope) - numberOfExperimentallyIncorporatedElements);
 					put(heaviestIsotope,remainingNumberOfIsotopesInTheSet);

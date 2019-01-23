@@ -195,6 +195,8 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 			} else {
 				newSpectrum.put(roundedMass, currentEntry.getValue());
 			}
+			// TODO: this overwrites existing entries, check how to decide for the
+			// composition with the highest intensity
 			newSpectrum.putComposition(roundedMass, getComposition(currentEntry.getKey()));
 		}
 		return newSpectrum;
