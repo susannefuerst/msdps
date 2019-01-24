@@ -49,6 +49,7 @@ public enum FragmentKey {
 	GLU_186(MetaboliteKey.GLU, 186), //
 	GLU_276(MetaboliteKey.GLU, 276), //
 	GLN_83(MetaboliteKey.GLN, 83),//
+	GLN_100(MetaboliteKey.GLN, 100), //
 	GLN_156(MetaboliteKey.GLN, 156), //
 	GLN_245(MetaboliteKey.GLN, 245), //
 	HG2_231(MetaboliteKey.HG2, 231), //

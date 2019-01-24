@@ -5,23 +5,23 @@ import de.kempalab.msdps.fileconversion.NACorrectorFileConverter;
 
 public class NACorrectionDemo2 {
 	public static void main(String[] args) {
-		String mzMineOutpuFilePath1 = "Z:\\MZmine-2.37\\projects\\gln\\gln\\peaks\\Gln12CPeaks.csv";
-		String mzMineOutpuFilePath2 = "Z:\\MZmine-2.37\\projects\\gln\\gln\\peaks\\Gln13CPeaks.csv";
-		String mzMineOutpuFilePath3 = "Z:\\MZmine-2.37\\projects\\gln\\gln\\peaks\\Gln15NPeaks.csv";
-		String mzMineOutpuFilePath4 = "Z:\\MZmine-2.37\\projects\\gln\\gln\\peaks\\Gln13C15NPeaks.csv";
+		String mzMineOutpuFilePath1 = "K:\\MZmine-2.37\\MZmine-2.37\\gln_peaks_new\\12c.csv";
+		String mzMineOutpuFilePath2 = "K:\\MZmine-2.37\\MZmine-2.37\\gln_peaks_new\\13c.csv";
+		String mzMineOutpuFilePath3 = "K:\\MZmine-2.37\\MZmine-2.37\\gln_peaks_new\\15n.csv";
+		String mzMineOutpuFilePath4 = "K:\\MZmine-2.37\\MZmine-2.37\\gln_peaks_new\\13c15n.csv";
 
-		String mzMineOutpuFilePatha = "Z:\\MZmine-2.37\\projects\\gln\\gln\\peaks\\MixAPeaks.csv";
-		String mzMineOutpuFilePathb = "Z:\\MZmine-2.37\\projects\\gln\\gln\\peaks\\MixBPeaks.csv";
-		String mzMineOutpuFilePathc = "Z:\\MZmine-2.37\\projects\\gln\\gln\\peaks\\MixCPeaks.csv";
-		String mzMineOutpuFilePathd = "Z:\\MZmine-2.37\\projects\\gln\\gln\\peaks\\MixDPeaks.csv";
-		String mzMineOutpuFilePathe = "Z:\\MZmine-2.37\\projects\\gln\\gln\\peaks\\MixEPeaks.csv";
-		String mzMineOutpuFilePathf = "Z:\\MZmine-2.37\\projects\\gln\\gln\\peaks\\MixFPeaks.csv";
+		String mzMineOutpuFilePatha = "K:\\MZmine-2.37\\MZmine-2.37\\gln_peaks_new\\a.csv";
+		String mzMineOutpuFilePathb = "K:\\MZmine-2.37\\MZmine-2.37\\gln_peaks_new\\b.csv";
+		String mzMineOutpuFilePathc = "K:\\MZmine-2.37\\MZmine-2.37\\gln_peaks_new\\c.csv";
+		String mzMineOutpuFilePathd = "K:\\MZmine-2.37\\MZmine-2.37\\gln_peaks_new\\d.csv";
+		String mzMineOutpuFilePathe = "K:\\MZmine-2.37\\MZmine-2.37\\gln_peaks_new\\e.csv";
+		String mzMineOutpuFilePathf = "K:\\MZmine-2.37\\MZmine-2.37\\gln_peaks_new\\f.csv";
 
 		String[] mzMineOutpuFilePaths = { mzMineOutpuFilePath1, mzMineOutpuFilePath2, mzMineOutpuFilePath3,
 				mzMineOutpuFilePath4, mzMineOutpuFilePatha, mzMineOutpuFilePathb, mzMineOutpuFilePathc,
 				mzMineOutpuFilePathd, mzMineOutpuFilePathe, mzMineOutpuFilePathf };
-		String naCorrectionInputFilePath = "Z:\\MZmine-2.37\\projects\\gln\\gln\\peaks\\GlnCorrectionInput.csv";
-		String naCorrectionOutputFilePath = "Z:\\MZmine-2.37\\projects\\gln\\gln\\peaks\\GlnCorrectionOutput.csv";
+		String naCorrectionInputFilePath = "K:\\\\MZmine-2.37\\\\MZmine-2.37\\\\gln_peaks_new\\GlnCorrectionInputNew.csv";
+		String naCorrectionOutputFilePath = "K:\\\\MZmine-2.37\\\\MZmine-2.37\\\\gln_peaks_new\\GlnCorrectionOutputNew.csv";
 		NACorrectorFileConverter.convert(mzMineOutpuFilePaths, naCorrectionInputFilePath);
 		NACorrector.correct(naCorrectionInputFilePath, naCorrectionOutputFilePath);
 	}
