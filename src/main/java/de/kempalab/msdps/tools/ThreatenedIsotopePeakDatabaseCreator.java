@@ -8,7 +8,6 @@ import de.kempalab.msdps.Fragment;
 import de.kempalab.msdps.FragmentList;
 import de.kempalab.msdps.FragmentsDatabase;
 import de.kempalab.msdps.constants.Element;
-import de.kempalab.msdps.constants.FragmentKey;
 import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.MetaboliteKey;
 import de.kempalab.msdps.data.DataTable;
@@ -19,8 +18,8 @@ import de.kempalab.msdps.simulation.IsotopePatternSimulatorRequest;
 public class ThreatenedIsotopePeakDatabaseCreator {
 
 	public static final MetaboliteKey[] METABOLITES = { MetaboliteKey.GLN };
-	public static final FragmentList FRAGMENTS = FragmentsDatabase.getAllFregments();
-//	public static final FragmentList FRAGMENTS = FragmentsDatabase.getFragments(METABOLITES); 
+//	public static final FragmentList FRAGMENTS = FragmentsDatabase.getAllFregments();
+	public static final FragmentList FRAGMENTS = FragmentsDatabase.getFragments(METABOLITES);
 	public static final double INC_CN = 0.2;
 	public static final double INC_C = 0.2;
 	public static final double INC_N = 0.2;
@@ -31,7 +30,7 @@ public class ThreatenedIsotopePeakDatabaseCreator {
 	public static final double INC = INC_C + INC_CN + INC_N;
 
 	public static void main(String[] args) throws InterruptedException, IOException, FragmentNotFoundException {
-		FragmentList FRAGMENTS = new FragmentList(FragmentsDatabase.getFragment(FragmentKey.GLN_83));
+//		FragmentList FRAGMENTS = new FragmentList(FragmentsDatabase.getFragment(FragmentKey.PYR_189));
 		ArrayList<Thread> threads = new ArrayList<>();
 		DataTable table = new DataTable("ID", "exactMass", "RT", "identity", "formula", "predictedMass",
 				"predictedIntensity", "heavyIsotopes", "incorporatedC", "incorporatedN");
@@ -44,7 +43,7 @@ public class ThreatenedIsotopePeakDatabaseCreator {
 			simulatorRequest.setFragments(new FragmentList(fragment));
 			simulatorRequest.setIncorporationRate(new IncorporationRate(0.5));
 			simulatorRequest.setMinimalIntensity(MIN_FREQUENCY);
-			simulatorRequest.setAnalyzeMassShifts(true);
+			simulatorRequest.setAnalyzeMassShifts(false);
 			simulatorRequest.setTotalNumberOfFragments(NUMBER_OF_FRAGMENTS);
 			simulatorRequest.setRoundedMassPrecision(PRECISION);
 			simulatorRequest.setTargetIntensityType(FREQUENCY_TYPE);
@@ -62,6 +61,6 @@ public class ThreatenedIsotopePeakDatabaseCreator {
 		for (Thread thread : threads) {
 			thread.join();
 		}
-		table.writeToCsv("N/A", true, "C:\\Users\\sufuers\\tmp\\predicted_masses_gln_83.csv");
+		table.writeToCsv("N/A", true, "C:\\Users\\sufuers\\tmp\\gln_new_masses_saved_compositions.csv");
 	}
 }

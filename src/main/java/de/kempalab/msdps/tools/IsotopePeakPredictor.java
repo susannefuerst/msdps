@@ -7,6 +7,7 @@ import de.kempalab.msdps.Fragment;
 import de.kempalab.msdps.IsotopeFormula;
 import de.kempalab.msdps.MSDatabase;
 import de.kempalab.msdps.MSShiftDatabase;
+import de.kempalab.msdps.MassSpectrum;
 import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.IncorporationType;
 import de.kempalab.msdps.constants.Isotope;
@@ -68,13 +69,19 @@ public class IsotopePeakPredictor implements Runnable {
 		String identity = moleculeName + "_" + fragment.baseMass();
 		String formula = fragment.getFormula().toSimpleString();
 		int entryCount = 0;
+		MassSpectrum spectrum = msDatabase.getMixedSpectrum();
 		for (Entry<Double, Double> entry : msDatabase.getMixedSpectrum().entrySet()) {
 			String id = baseID + "_" + format(entryCount);
 			Double exactMass = entry.getKey();
 			String mass = exactMass.toString();
 			String predictedIntensity = entry.getValue().toString();
-			IsotopeFormula shiftInducingIsotopes = ((MSShiftDatabase) msDatabase)
+			IsotopeFormula shiftInducingIsotopes;
+			if(spectrum.getCompositions().isEmpty()) {
+				shiftInducingIsotopes = ((MSShiftDatabase) msDatabase)
 					.shiftInducingIsotopes(IncorporationType.MIXED, exactMass);
+			} else {
+				shiftInducingIsotopes = spectrum.getComposition(exactMass).getHeavyIsotopes();
+			}
 			String heavyIsotopes = shiftInducingIsotopes.toSimpleString();
 			String c = shiftInducingIsotopes.get(Isotope.C_13) != null
 					? shiftInducingIsotopes.get(Isotope.C_13).toString()

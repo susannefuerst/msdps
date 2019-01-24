@@ -85,6 +85,7 @@ public class IsotopeSet extends HashMap<Isotope, Integer> {
 		ElementFormula fragmentComponents = fragmentAssociatedWithTheSet.getFormula();
 		MassSpectrum spectrum = new MassSpectrum(IntensityType.ABSOLUTE);
 		for (int i = 1; i <= numberOfFragmentsInTheSet; i++) {
+			IsotopeFormula composition = new IsotopeFormula();
 			double massOfFragment = 0.0;
 			for (Entry<Element, Integer> componentEntry : fragmentComponents.entrySet()) {
 				// select randomly isotopes of the current element from this set to compose the fragment
@@ -98,6 +99,12 @@ public class IsotopeSet extends HashMap<Isotope, Integer> {
 					// TODO: improve! This could cause problems if the tracer is not the heaviest
 					// isotope.
 					Isotope heaviestIsotope = elementInFragment.heaviestIsotope();
+					if (composition.get(heaviestIsotope) != null) {
+						composition.put(heaviestIsotope,
+								composition.get(heaviestIsotope) + numberOfExperimentallyIncorporatedElements);
+					} else {
+						composition.put(heaviestIsotope, numberOfExperimentallyIncorporatedElements);
+					}
 					Integer remainingNumberOfIsotopesInTheSet = Integer.valueOf(get(heaviestIsotope) - numberOfExperimentallyIncorporatedElements);
 					put(heaviestIsotope,remainingNumberOfIsotopesInTheSet);
 					massOfFragment = massOfFragment + heaviestIsotope.getAtomicMass() * numberOfExperimentallyIncorporatedElements;
@@ -122,6 +129,11 @@ public class IsotopeSet extends HashMap<Isotope, Integer> {
 						// TODO: Check if the isotopeToChoose can be used to create a formula associated
 						// to the mass.
 						Isotope isotopeToChoose = chooseIsotopeWeightedByAbundance(availableIsotopes);
+						if (composition.get(isotopeToChoose) != null) {
+							composition.put(isotopeToChoose, composition.get(isotopeToChoose) + 1);
+						} else {
+							composition.put(isotopeToChoose, 1);
+						}
 //						Isotope isotopeToChoose = chooseIsotopeRandomly(availableIsotopes);
 						Integer remainingNumberOfIsotopesInTheSet = Integer.valueOf(get(isotopeToChoose) - 1);
 						put(isotopeToChoose,remainingNumberOfIsotopesInTheSet);
@@ -132,6 +144,7 @@ public class IsotopeSet extends HashMap<Isotope, Integer> {
 			if (massOfFragment > 0.0) {
 				if (spectrum.get(massOfFragment) == null /*count each mass only once*/) {
 					spectrum.put(massOfFragment, 1.0);
+					spectrum.putComposition(massOfFragment, composition);
 				} else {
 					spectrum.put(massOfFragment, spectrum.get(massOfFragment) + 1);
 				}
