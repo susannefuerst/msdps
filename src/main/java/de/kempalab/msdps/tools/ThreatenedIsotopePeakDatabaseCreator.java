@@ -18,8 +18,8 @@ import de.kempalab.msdps.simulation.IsotopePatternSimulatorRequest;
 public class ThreatenedIsotopePeakDatabaseCreator {
 
 	public static final MetaboliteKey[] METABOLITES = { MetaboliteKey.GLN };
-	public static final FragmentList FRAGMENTS = FragmentsDatabase.getAllFregments();
-//	public static final FragmentList FRAGMENTS = FragmentsDatabase.getFragments(METABOLITES); 
+//	public static final FragmentList FRAGMENTS = FragmentsDatabase.getAllFregments();
+	public static final FragmentList FRAGMENTS = FragmentsDatabase.getFragments(METABOLITES);
 	public static final double INC_CN = 0.2;
 	public static final double INC_C = 0.2;
 	public static final double INC_N = 0.2;
@@ -61,6 +61,6 @@ public class ThreatenedIsotopePeakDatabaseCreator {
 		for (Thread thread : threads) {
 			thread.join();
 		}
-		table.writeToCsv("N/A", true, "C:\\Users\\sufuers\\tmp\\predicted_masses_saved_compositions.csv");
+		table.writeToCsv("N/A", true, "C:\\Users\\sufuers\\tmp\\gln_new_masses_saved_compositions.csv");
 	}
 }
