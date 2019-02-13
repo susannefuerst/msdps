@@ -66,7 +66,7 @@ public class IsotopePeakPredictor implements Runnable {
 		String baseID = moleculeName + fragment.getDerivate() + fragment.baseMass();
 		Double retentionTime = fragment.getRetentionTime();
 		String rt = retentionTime != null ? String.valueOf(retentionTime) : "NA";
-		String identity = moleculeName + "_" + fragment.baseMass();
+		String identity = moleculeName + fragment.getDerivate() + "_" + fragment.baseMass();
 		String formula = fragment.getFormula().toSimpleString();
 		int entryCount = 0;
 		MassSpectrum spectrum = msDatabase.getMixedSpectrum();
