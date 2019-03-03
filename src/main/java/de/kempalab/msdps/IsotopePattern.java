@@ -95,9 +95,8 @@ public class IsotopePattern extends MassSpectrum {
 	public void setPeakInducingHeavyIsotopes(ArrayList<IsotopeFormula> peakInducingHeavyIsotopes) {
 		this.peakInducingHeavyIsotopes = peakInducingHeavyIsotopes;
 	}
-
-	@Override
-	public String toString() {
+	
+	public DataTable toDataTable() {
 		DataTable dataTable = new DataTable("Mass", "Frequency", "Formula", "HeavyIsotopes");
 		dataTable.addColumn(this);
 		ArrayList<String> formulaStr = new ArrayList<>();
@@ -110,6 +109,11 @@ public class IsotopePattern extends MassSpectrum {
 			heavyIsotopesStr.add(heavyIsotope.toSimpleString());
 		}
 		dataTable.addColumn(heavyIsotopesStr);
-		return dataTable.toString("NA", true);
+		return dataTable;
+	}
+	
+	@Override
+	public String toString() {
+		return toDataTable().toString("NA", true);
 	}
 }

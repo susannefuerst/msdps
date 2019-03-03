@@ -1,6 +1,7 @@
 package de.kempalab.msdps.data;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -95,6 +96,10 @@ public class DataTable extends ArrayList<ArrayList<String>> {
 			throw new IOException("Header " + header + " do not fit to the number of columns [" + numberOfColumns + "] in this Table.");
 		}
 		pathToFile = FileWriterUtils.checkFilePath(pathToFile, FileWriterUtils.CSV_EXTENSION);
+		File folder = new File(pathToFile).getParentFile();
+		if (!folder.exists()) {
+			folder.mkdir();
+		}
 		BufferedWriter writer = Files.newBufferedWriter(Paths.get(pathToFile));
 		CSVFormat csvFormat = withHeader ? CSVFormat.DEFAULT.withHeader(header.toArray(new String[header.size()])) : CSVFormat.DEFAULT;
 		CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
@@ -310,5 +315,9 @@ public class DataTable extends ArrayList<ArrayList<String>> {
 			tableStringBuffer.append("\n");
 		}
 		return tableStringBuffer.toString();
+	}
+	
+	public void addHeader(String header) {
+		this.header.add(header);
 	}
 }
