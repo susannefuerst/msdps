@@ -112,9 +112,9 @@ public class IsotopePatternSimulator {
 					IncorporationType.EXPERIMENTAL);
 
 			MassSpectrum naturalSpectrum = naturalSet.simulateSpectrum(1);
-			MassSpectrum markedSpectrumTracerAll = markedSetTracerALL.simulateSpectrum(1);
-			MassSpectrum markedSpectrumTracer1 = markedSetTracer1.simulateSpectrum(1);
-			MassSpectrum markedSpectrumTracer2 = markedSetTracer2.simulateSpectrum(1);
+			MassSpectrum markedSpectrumTracerAll = markedSetTracerALL.simulateSpectrum(charge);
+			MassSpectrum markedSpectrumTracer1 = markedSetTracer1.simulateSpectrum(charge);
+			MassSpectrum markedSpectrumTracer2 = markedSetTracer2.simulateSpectrum(charge);
 			MassSpectrum mixedSpectrum = naturalSpectrum.merge(markedSpectrumTracerAll);
 			mixedSpectrum = mixedSpectrum.merge(markedSpectrumTracer1);
 			mixedSpectrum = mixedSpectrum.merge(markedSpectrumTracer2);
