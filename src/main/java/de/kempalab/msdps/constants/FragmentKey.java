@@ -10,6 +10,9 @@ public enum FragmentKey {
 	ALA_190(MetaboliteKey.ALA, 190), //
 	ALA_188(MetaboliteKey.ALA, 188), //
 	ALA_262(MetaboliteKey.ALA, 262), //
+	ASN_188(MetaboliteKey.ASN, 188), //
+	ASN_419(MetaboliteKey.ASN, 419), //
+	ASN_243(MetaboliteKey.ASN, 243), //
 	ASP_130(MetaboliteKey.ASP, 130), //
 	ASP_160(MetaboliteKey.ASP, 160), //
 	ASP_218(MetaboliteKey.ASP, 218), //

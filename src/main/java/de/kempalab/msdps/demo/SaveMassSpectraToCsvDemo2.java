@@ -29,11 +29,11 @@ public class SaveMassSpectraToCsvDemo2 {
 		fragment.changeCapacity("C4");
 		simulatorRequest.setFragments(new FragmentList(fragment));
 		simulatorRequest.setIncorporationRate(new IncorporationRate(0.5));
-		simulatorRequest.setMinimalIntensity(0.003);
+		simulatorRequest.setMinimalIntensity(0.03);
 		simulatorRequest.setAnalyzeMassShifts(false);
 		simulatorRequest.setTotalNumberOfFragments(10000.0);
 		simulatorRequest.setRoundedMassPrecision(4);
-		simulatorRequest.setTargetIntensityType(IntensityType.MID);
+		simulatorRequest.setTargetIntensityType(IntensityType.RELATIVE);
 		simulatorRequest.setCharge(1);
 		IsotopePatternSimulatorResponse response = IsotopePatternSimulator.simulate(simulatorRequest);
 		for (MSDatabase msDatabase : response.getMsDatabaseList()) {
@@ -48,7 +48,8 @@ public class SaveMassSpectraToCsvDemo2 {
 			dataTable.addHeader("IncRate");
 			dataTable.addConstantValueColumn(msDatabase.getIncorporationRate());
 			dataTable.writeToCsv("N/A", true, PathConstants.FILE_OUTPUT_FOLDER
-					.toAbsolutePath(msDatabase.getFragmentKey().getMetaboliteKey().getAbbreviation() + "\\gln_156_inc_50c4"));
+					.toAbsolutePath(
+							msDatabase.getFragmentKey().getMetaboliteKey().getAbbreviation() + "\\gln_156_inc_50c4_2"));
 		}
 	}
 

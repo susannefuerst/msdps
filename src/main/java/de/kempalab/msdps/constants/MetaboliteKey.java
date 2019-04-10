@@ -3,6 +3,7 @@ package de.kempalab.msdps.constants;
 public enum MetaboliteKey {
 	
 	ALA("Alanine", "Ala"), //
+	ASN("Asparagine", "Asn"), //
 	ASP("Aspartic acid", "Asp"), //
 	CIT("Citric acid", "Cit"), //
 	DHAP("Dihydroxyacetone phosphate", "DHAP"), //
