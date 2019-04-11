@@ -43,7 +43,7 @@ public class IsotopePattern extends MassSpectrum {
 		for (Entry<Double, Double> entry : massSpectrum.entrySet()) {
 			put(entry.getKey(), entry.getValue());
 		}
-		if (!massSpectrum.getCompositions().isEmpty()) {
+		if (!massSpectrum.getCompositions().removeNullValues().isEmpty()) {
 			for (Entry<Double,IsotopeFormula> entry : massSpectrum.getCompositions().entrySet()) {
 				formulas.add(entry.getValue());
 				IsotopeFormula heavyIsotopes = entry.getValue().getHeavyIsotopes();
