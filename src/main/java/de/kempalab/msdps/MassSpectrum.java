@@ -97,7 +97,7 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 	
 	public IsotopeFormula getComposition(Double mass) {
 		if (getCompositions().get(mass) == null) {
-			LOGGER.info("No composition for mass " + mass);
+//			LOGGER.info("No composition for mass " + mass);
 		}
 		return getCompositions().get(mass);
 	}
@@ -572,6 +572,7 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 		for (Entry<Double,Double> entry : this.entrySet()) {
 			scaledSpectrum.put(entry.getKey(), entry.getValue() * scaleFactor);
 		}
+		scaledSpectrum.setCompositions(getCompositions());
 		return scaledSpectrum;
 	}
 
