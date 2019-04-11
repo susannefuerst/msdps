@@ -21,15 +21,15 @@ import de.kempalab.msdps.simulation.IsotopePatternSimulatorRequest;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorResponse;
 
 public class SaveMassSpectraToCsvDemo2 {
-	public static final MyLogger LOGGER = MyLogger.getLogger(MSBarChartApplicationWindowDemo2.class);
+	public static final MyLogger LOGGER = MyLogger.getLogger(SaveMassSpectraToCsvDemo2.class);
 
 	public static void main(String[] args) throws IntensityTypeMismatchException, IOException, FragmentNotFoundException {
 		IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
-		Fragment fragment = FragmentsDatabase.getFragment(FragmentKey.GLN_156);
-		fragment.changeCapacity("C4");
+		Fragment fragment = FragmentsDatabase.getFragment(FragmentKey.ASN_188);
+//		fragment.changeCapacity("N");
 		simulatorRequest.setFragments(new FragmentList(fragment));
 		simulatorRequest.setIncorporationRate(new IncorporationRate(0.5));
-		simulatorRequest.setMinimalIntensity(0.03);
+		simulatorRequest.setMinimalIntensity(0.1);
 		simulatorRequest.setAnalyzeMassShifts(false);
 		simulatorRequest.setTotalNumberOfFragments(10000.0);
 		simulatorRequest.setRoundedMassPrecision(4);
@@ -49,7 +49,7 @@ public class SaveMassSpectraToCsvDemo2 {
 			dataTable.addConstantValueColumn(msDatabase.getIncorporationRate());
 			dataTable.writeToCsv("N/A", true, PathConstants.FILE_OUTPUT_FOLDER
 					.toAbsolutePath(
-							msDatabase.getFragmentKey().getMetaboliteKey().getAbbreviation() + "\\gln_156_inc_50c4_2"));
+							msDatabase.getFragmentKey().getMetaboliteKey().getAbbreviation() + "\\asn_188_mixB"));
 		}
 	}
 
