@@ -28,4 +28,14 @@ public class IsotopeComposition extends LinkedHashMap<Double, IsotopeFormula> {
         return sortedList;
 	}
 
+	public IsotopeComposition removeNullValues() {
+		IsotopeComposition withoutNull = new IsotopeComposition();
+		for (Entry<Double, IsotopeFormula> entry : this.entrySet()) {
+			if (entry.getValue() != null) {
+				withoutNull.put(entry.getKey(), entry.getValue());
+			}
+		}
+		return withoutNull;
+	}
+
 }
