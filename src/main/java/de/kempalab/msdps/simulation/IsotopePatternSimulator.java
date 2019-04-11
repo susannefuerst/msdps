@@ -94,8 +94,8 @@ public class IsotopePatternSimulator {
 
 		for (Fragment fragment : request.getFragments()) {
 			ElementFormula capacity = fragment.getTracerCapacity();
-			String capacity1 = tracer1.name() + capacity.get(tracer1);
-			String capacity2 = tracer2.name() + capacity.get(tracer2);
+			String capacity1 = tracer1.name() + (capacity.get(tracer1) != null ? capacity.get(tracer1) : "");
+			String capacity2 = tracer2.name() + (capacity.get(tracer2) != null ? capacity.get(tracer2) : "");
 			Fragment fragmentAll = fragment.copy();
 			Fragment fragment1 = fragment.copy();
 			fragment1.changeCapacity(capacity1);
