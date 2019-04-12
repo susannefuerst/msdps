@@ -38,4 +38,12 @@ public class IsotopeComposition extends LinkedHashMap<Double, IsotopeFormula> {
 		return withoutNull;
 	}
 
+	public IsotopeComposition copy() {
+		IsotopeComposition copy = new IsotopeComposition();
+		for (Entry<Double,IsotopeFormula> entry : this.entrySet()) {
+			copy.put(entry.getKey(), entry.getValue());
+		}
+		return copy;
+	}
+
 }

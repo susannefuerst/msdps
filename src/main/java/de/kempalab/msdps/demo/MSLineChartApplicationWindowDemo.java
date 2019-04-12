@@ -1,7 +1,5 @@
 package de.kempalab.msdps.demo;
 
-import java.io.IOException;
-
 import org.jfree.ui.RefineryUtilities;
 
 import de.kempalab.msdps.Fragment;
@@ -14,20 +12,16 @@ import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.data.IncorporationRate;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
 import de.kempalab.msdps.exception.TypeMismatchException;
-import de.kempalab.msdps.log.MyLogger;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorRequest;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorResponse;
 import de.kempalab.msdps.visualisation.MSLineChartApplicationWindow;
 
-public class SaveMassSpectraToCsvDemo5 {
-
-	public static final MyLogger LOGGER = MyLogger.getLogger(SaveMassSpectraToCsvDemo5.class);
-
-	public static void main(String[] args)
-			throws TypeMismatchException, IOException, FragmentNotFoundException {
+public class MSLineChartApplicationWindowDemo {
+	
+	public static void main(String[] args) throws FragmentNotFoundException, TypeMismatchException {
 		IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
-		Fragment fragment = FragmentsDatabase.getFragment(FragmentKey.ASN_419);
+		Fragment fragment = FragmentsDatabase.getFragment(FragmentKey.ASN_243);
 		simulatorRequest.setFragments(new FragmentList(fragment));
 		simulatorRequest.setTracer1(Element.C);
 		simulatorRequest.setTracer2(Element.N);
@@ -87,11 +81,11 @@ public class SaveMassSpectraToCsvDemo5 {
 		spectrum = spectrum.merge(spectrum3);
 		spectrum = IsotopePatternSimulator.prepareSpectrum(spectrum, simulatorRequest.getRoundedMassPrecision(),
 				simulatorRequest.getRoundedIntensityPrecision(), 0.1, IntensityType.RELATIVE);
-
-//		IsotopePattern pattern = new IsotopePattern(spectrum, true);
-		
-		MSLineChartApplicationWindow demo = new MSLineChartApplicationWindow("Bar Demo 1", spectrum.simulateContinuousHighRes(120000, 100));
+		MassSpectrum continuous = spectrum.simulateContinuousHighRes(120000, 100);
+//		continuous = continuous.roundMasses(3);
+		MSLineChartApplicationWindow demo = new MSLineChartApplicationWindow("Bar Demo 1", continuous);
 		demo.pack();
+		demo.setSize(1300, 750);
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
 	}

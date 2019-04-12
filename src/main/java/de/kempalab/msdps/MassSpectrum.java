@@ -616,5 +616,41 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 		List<Entry<Double, Double>> list = this.toEntryList();
 		return list.get(index).getKey();
 	}
+	
+	public MassSpectrum simulateContinuousHighRes(int resolution, int additionalDataPointsPerPeak) {
+		MassSpectrum continuous = this.copy();
+		continuous.setSpectrumType(SpectrumType.CONTINUOUS);
+		for (Entry<Double,Double> entry : this.entrySet()) {
+			Double deltaM = entry.getKey() / resolution;
+			ArrayList<Double> additionalMasses = new ArrayList<>();
+			double stepWidth = (2 * deltaM)/additionalDataPointsPerPeak;
+			Double intensity = entry.getValue();
+			for (int i = 0; i < additionalDataPointsPerPeak/2; i++) {
+				Double newMassLeft = entry.getKey() - deltaM + i * stepWidth;
+				Double newMassRight = entry.getKey() + deltaM - i * stepWidth;
+				Double newIntensity = intensity / 2 * Math.cos((Math.PI/deltaM) * (newMassLeft - entry.getKey())) + intensity / 2;
+				if (continuous.containsKey(newMassRight)) {
+					continuous.put(newMassRight, continuous.get(newMassRight) + newIntensity);
+				} else {
+					continuous.put(newMassRight, newIntensity);
+				}
+				if (continuous.containsKey(newMassLeft)) {
+					continuous.put(newMassLeft, continuous.get(newMassLeft) + newIntensity);
+				} else {
+					continuous.put(newMassLeft, newIntensity);
+				}
+			}
+		}
+		return continuous;
+	}
+	
+	public MassSpectrum copy() {
+		MassSpectrum copy = new MassSpectrum(intensityType, spectrumType);
+		for (Entry<Double,Double> entry : this.entrySet()) {
+			copy.put(entry.getKey(), entry.getValue());
+		}
+		copy.setCompositions(compositions.copy());
+		return copy;
+	}
 
 }
