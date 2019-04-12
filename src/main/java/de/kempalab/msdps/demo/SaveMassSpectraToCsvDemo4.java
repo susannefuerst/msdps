@@ -14,7 +14,7 @@ import de.kempalab.msdps.constants.PathConstants;
 import de.kempalab.msdps.data.DataTable;
 import de.kempalab.msdps.data.IncorporationRate;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
-import de.kempalab.msdps.exception.IntensityTypeMismatchException;
+import de.kempalab.msdps.exception.TypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorRequest;
@@ -24,7 +24,7 @@ public class SaveMassSpectraToCsvDemo4 {
 	public static final MyLogger LOGGER = MyLogger.getLogger(SaveMassSpectraToCsvDemo4.class);
 
 	public static void main(String[] args)
-			throws IntensityTypeMismatchException, IOException, FragmentNotFoundException {
+			throws TypeMismatchException, IOException, FragmentNotFoundException {
 		IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 		Fragment fragment = FragmentsDatabase.getFragment(FragmentKey.ASN_419);
 		simulatorRequest.setFragments(new FragmentList(fragment));
@@ -67,7 +67,7 @@ public class SaveMassSpectraToCsvDemo4 {
 				simulatorRequest.getRoundedIntensityPrecision(), simulatorRequest.getMinimalIntensity(),
 				simulatorRequest.getTargetIntensityType());
 
-		IsotopePattern pattern = new IsotopePattern(spectrum);
+		IsotopePattern pattern = new IsotopePattern(spectrum, true);
 		DataTable dataTable = pattern.toDataTable();
 		dataTable.addHeader("Compound");
 		dataTable.addConstantValueColumn(fragment.getFragmentKey().name());

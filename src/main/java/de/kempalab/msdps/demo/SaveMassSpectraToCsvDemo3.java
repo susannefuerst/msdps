@@ -15,7 +15,7 @@ import de.kempalab.msdps.constants.PathConstants;
 import de.kempalab.msdps.data.DataTable;
 import de.kempalab.msdps.data.IncorporationRate;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
-import de.kempalab.msdps.exception.IntensityTypeMismatchException;
+import de.kempalab.msdps.exception.TypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorRequest;
@@ -24,7 +24,7 @@ import de.kempalab.msdps.simulation.IsotopePatternSimulatorResponse;
 public class SaveMassSpectraToCsvDemo3 {
 	public static final MyLogger LOGGER = MyLogger.getLogger(SaveMassSpectraToCsvDemo3.class);
 
-	public static void main(String[] args) throws IntensityTypeMismatchException, IOException, FragmentNotFoundException {
+	public static void main(String[] args) throws TypeMismatchException, IOException, FragmentNotFoundException {
 		IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 		Fragment fragment = FragmentsDatabase.getFragment(FragmentKey.ASN_243);
 //		fragment.changeCapacity("C4N");
@@ -44,7 +44,7 @@ public class SaveMassSpectraToCsvDemo3 {
 		for (MSDatabase msDatabase : response.getMsDatabaseList()) {
 			LOGGER.info(msDatabase);
 			MassSpectrum spectrum = msDatabase.getMixedSpectrum();
-			IsotopePattern pattern = new IsotopePattern(spectrum);
+			IsotopePattern pattern = new IsotopePattern(spectrum, true);
 			DataTable dataTable = pattern.toDataTable();
 			dataTable.addHeader("Compound");
 			dataTable.addConstantValueColumn(msDatabase.getFragmentKey().name());

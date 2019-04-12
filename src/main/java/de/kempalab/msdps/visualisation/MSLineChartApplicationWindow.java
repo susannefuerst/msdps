@@ -12,6 +12,7 @@ import org.jfree.ui.RefineryUtilities;
 import de.kempalab.msdps.MSShiftDatabase;
 import de.kempalab.msdps.MassSpectrum;
 import de.kempalab.msdps.constants.PathConstants;
+import de.kempalab.msdps.constants.SpectrumType;
 
 @SuppressWarnings("serial")
 public class MSLineChartApplicationWindow extends ApplicationFrame {
@@ -26,7 +27,7 @@ public class MSLineChartApplicationWindow extends ApplicationFrame {
 	
 	public static void main(String[] args) throws IOException {
 		File file = new File(PathConstants.TEST_RESOURCES.toAbsolutePath("MSShiftDatabaseTest01.csv"));
-		MSShiftDatabase msDatabase = new MSShiftDatabase(file.getAbsolutePath());
+		MSShiftDatabase msDatabase = new MSShiftDatabase(file.getAbsolutePath(), SpectrumType.CENTROIDED);
 		MSLineChartApplicationWindow demo = new MSLineChartApplicationWindow("Bar Demo 1", msDatabase.getNaturalSpectrum());
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);

@@ -2,16 +2,15 @@ package de.kempalab.msdps;
 
 import java.io.IOException;
 
-import junit.framework.TestCase;
-import de.kempalab.msdps.MSDatabase;
-import de.kempalab.msdps.MassSpectrum;
 import de.kempalab.msdps.constants.PathConstants;
+import de.kempalab.msdps.constants.SpectrumType;
+import junit.framework.TestCase;
 
 public class MSDatabaseTest extends TestCase {
 	
 	public void testParseCsv() {
 		String filePath = PathConstants.TEST_RESOURCES.toAbsolutePath("MSDatabaseTest01.csv");
-		MSDatabase msDatabase = new MSDatabase(filePath);
+		MSDatabase msDatabase = new MSDatabase(filePath, SpectrumType.CENTROIDED);
 		assertEquals(0.8, msDatabase.getIncorporationRate());
 		assertEquals("ASP_130", msDatabase.getFragmentKey().name());
 		assertEquals("C2N", msDatabase.getIncorporatedTracers());
@@ -47,7 +46,7 @@ public class MSDatabaseTest extends TestCase {
 	
 	public void testWriteCsv() throws IOException {
 		String filePath = PathConstants.TEST_RESOURCES.toAbsolutePath("MSDatabaseTest01.csv");
-		MSDatabase msDatabase = new MSDatabase(filePath);
+		MSDatabase msDatabase = new MSDatabase(filePath, SpectrumType.CENTROIDED);
 		msDatabase.writeCsv(PathConstants.TMP_FOLDER.toAbsolutePath());
 	}
 

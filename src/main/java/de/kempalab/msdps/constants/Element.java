@@ -95,7 +95,7 @@ public enum Element {
 	 * @return mass spectrum/isotope pattern of E_n
 	 */
 	public MassSpectrum multiElementSpectrum(int numberOfElements, Double treshFaktor) {
-		MassSpectrum spectrum = new MassSpectrum(IntensityType.MID);
+		MassSpectrum spectrum = new MassSpectrum(IntensityType.MID, SpectrumType.CENTROIDED);
 		IsotopeList isotopes = this.getIsotopes();
 		ArrayList<PermutationSet> permutationSets = PermutationSet.allIsotopeCombinations(isotopes.size(),
 				numberOfElements);

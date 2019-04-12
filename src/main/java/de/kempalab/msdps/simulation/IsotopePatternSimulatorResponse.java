@@ -1,10 +1,10 @@
 package de.kempalab.msdps.simulation;
 
-import java.util.ArrayList;
 import java.util.Map.Entry;
 
 import de.kempalab.msdps.ElementFormula;
 import de.kempalab.msdps.FragmentList;
+import de.kempalab.msdps.IsotopeComposition;
 import de.kempalab.msdps.IsotopeFormula;
 import de.kempalab.msdps.IsotopeListList;
 import de.kempalab.msdps.IsotopePattern;
@@ -55,11 +55,12 @@ public class IsotopePatternSimulatorResponse {
 		MassSpectrum mixedSpectrum = database.getMixedSpectrum();
 		MassShiftDataSet mixedShifts = database.getMixedMassShifts();
 		ElementFormula compoundFormula = ElementFormula.fromString(database.getFragmentFormula());
-		ArrayList<IsotopeFormula> isotopeFormulas = new ArrayList<IsotopeFormula>();
-		ArrayList<IsotopeFormula> peakInducingHeavyIsotopes = new ArrayList<IsotopeFormula>();
+		IsotopeComposition isotopeComposition = new IsotopeComposition();
+		IsotopeComposition peakInducingHeavyIsotopes = new IsotopeComposition();
+		int massIndex = 0;
 		for (Entry<MassShiftList, IsotopeListList> shiftEntry : mixedShifts.entrySet()) {
 			IsotopeFormula shiftInducingIsotopes = shiftEntry.getValue().toIsotopeFormula();
-			peakInducingHeavyIsotopes.add(shiftInducingIsotopes);
+			peakInducingHeavyIsotopes.put(mixedSpectrum.getMass(massIndex), shiftInducingIsotopes);
 			IsotopeFormula completeIsotopeFormula = new IsotopeFormula();
 			for (Entry<Element, Integer> compoundFormulaEntry : compoundFormula.entrySet()) {
 				Element element = compoundFormulaEntry.getKey();
@@ -75,13 +76,12 @@ public class IsotopePatternSimulatorResponse {
 					}
 				}
 			}
-			isotopeFormulas.add(completeIsotopeFormula);
+			isotopeComposition.put(mixedSpectrum.getMass(massIndex), completeIsotopeFormula);
+			massIndex++;
 		}
-		IsotopePattern pattern = new IsotopePattern(mixedSpectrum.getIntensityType(), isotopeFormulas);
+		mixedSpectrum.setCompositions(isotopeComposition);
+		IsotopePattern pattern = new IsotopePattern(mixedSpectrum, false);
 		pattern.setPeakInducingHeavyIsotopes(peakInducingHeavyIsotopes);
-		for (Entry<Double, Double> entry : mixedSpectrum.entrySet()) {
-			pattern.put(entry.getKey(), entry.getValue());
-		}
 		return pattern;
 	}
 

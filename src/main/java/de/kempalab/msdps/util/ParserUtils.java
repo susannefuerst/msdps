@@ -3,12 +3,14 @@ package de.kempalab.msdps.util;
 import java.util.List;
 
 import org.apache.commons.csv.CSVRecord;
+
 import de.kempalab.msdps.IsotopeListList;
 import de.kempalab.msdps.MSDatabase;
 import de.kempalab.msdps.MassShiftDataSet;
 import de.kempalab.msdps.MassShiftList;
 import de.kempalab.msdps.MassSpectrum;
 import de.kempalab.msdps.constants.IntensityType;
+import de.kempalab.msdps.constants.SpectrumType;
 
 public class ParserUtils {
 	
@@ -20,8 +22,8 @@ public class ParserUtils {
 	 * @param frequencyColumnIndex
 	 * @return A MassSpectrum from the csv records with 0.0 entries removed.
 	 */
-	public static MassSpectrum parseSpectrum(List<CSVRecord> records, int massColumnIndex, int frequencyColumnIndex, IntensityType frequencyType, int headerRow) {
-		MassSpectrum massSpectrum = new MassSpectrum(frequencyType);
+	public static MassSpectrum parseSpectrum(List<CSVRecord> records, int massColumnIndex, int frequencyColumnIndex, IntensityType frequencyType, int headerRow, SpectrumType spectrumType) {
+		MassSpectrum massSpectrum = new MassSpectrum(frequencyType, spectrumType);
 		for (CSVRecord csvRecord : records) {
 			try {
 				if (csvRecord.getRecordNumber() <= headerRow) {

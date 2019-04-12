@@ -17,7 +17,7 @@ import de.kempalab.msdps.constants.Isotope;
 import de.kempalab.msdps.constants.MetaboliteKey;
 import de.kempalab.msdps.data.DataTable;
 import de.kempalab.msdps.data.IncorporationRate;
-import de.kempalab.msdps.exception.IntensityTypeMismatchException;
+import de.kempalab.msdps.exception.TypeMismatchException;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorRequest;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorResponse;
@@ -36,7 +36,7 @@ public class IsotopePeakDatabaseCreator {
 
 	public static final double INC = INC_C + INC_CN + INC_N;
 
-	public static void main(String[] args) throws IntensityTypeMismatchException, IOException {
+	public static void main(String[] args) throws TypeMismatchException, IOException {
 		DataTable table = new DataTable("ID", "exactMass", "RT", "identity", "formula", "predictedMass", "predictedIntensity", 
 				"heavyIsotopes", "incorporatedC", "incorporatedN");
 		for (Fragment fragment : FRAGMENTS) {
