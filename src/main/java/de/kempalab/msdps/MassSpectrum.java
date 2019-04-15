@@ -207,7 +207,9 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 			}
 			// TODO: this overwrites existing entries, check how to decide for the
 			// composition with the highest intensity
-			newSpectrum.putComposition(roundedMass, getComposition(currentEntry.getKey()));
+			if (getComposition(currentEntry.getKey()) != null) {
+				newSpectrum.putComposition(roundedMass, getComposition(currentEntry.getKey()));
+			}
 		}
 		return newSpectrum;
 	}
@@ -617,7 +619,8 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 		return list.get(index).getKey();
 	}
 	
-	public MassSpectrum simulateContinuousHighRes(int resolution, int additionalDataPointsPerPeak) {
+	public MassSpectrum simulateContinuousHighRes(int resolution, int additionalDataPointsPerPeak,
+			boolean mergeOverlay) {
 		MassSpectrum continuous = this.copy();
 		continuous.setSpectrumType(SpectrumType.CONTINUOUS);
 		for (Entry<Double,Double> entry : this.entrySet()) {
@@ -640,7 +643,40 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 				}
 			}
 		}
+		continuous = continuous.sortAscendingByMass();
+		if (mergeOverlay) {
+			continuous = continuous.mergeOverlay(0.0001);
+		}
 		return continuous;
+	}
+
+	public MassSpectrum mergeOverlay(double mergeWidth) {
+		MassSpectrum spectrum = new MassSpectrum(this.getIntensityType(), this.getSpectrumType());
+		IsotopeComposition composition = this.getCompositions();
+		IsotopeComposition newComposition = new IsotopeComposition();
+		List<Entry<Double, Double>> entryList = this.toEntryList();
+		int lastIndex = entryList.size() - 1;
+		int index = 0;
+		while (index < lastIndex) {
+			int counter = 1;
+			Double currentMass = entryList.get(index).getKey();
+			Double newIntensity = entryList.get(index).getValue();
+			Double nextMass = entryList.get(index + counter).getKey();
+			IsotopeFormula formula = composition.get(currentMass);
+			while (nextMass - currentMass < mergeWidth && index + counter < lastIndex) {
+				newIntensity = newIntensity + entryList.get(index + counter).getValue();
+				if (composition.get(nextMass) != null) {
+					formula = composition.get(nextMass);
+				}
+				counter++;
+				nextMass = entryList.get(index + counter).getKey();
+			}
+			index = index + counter + 1;
+			spectrum.put(currentMass, newIntensity);
+			newComposition.put(currentMass, formula);
+		}
+		spectrum.setCompositions(newComposition);
+		return spectrum;
 	}
 
 	public MassSpectrum copy() {

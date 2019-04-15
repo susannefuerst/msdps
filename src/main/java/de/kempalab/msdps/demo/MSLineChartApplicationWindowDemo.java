@@ -81,7 +81,7 @@ public class MSLineChartApplicationWindowDemo {
 		spectrum = spectrum.merge(spectrum3);
 		spectrum = IsotopePatternSimulator.prepareSpectrum(spectrum, simulatorRequest.getRoundedMassPrecision(),
 				simulatorRequest.getRoundedIntensityPrecision(), 0.1, IntensityType.RELATIVE);
-		MassSpectrum continuous = spectrum.simulateContinuousHighRes(120000, 100);
+		MassSpectrum continuous = spectrum.simulateContinuousHighRes(120000, 100, false);
 //		continuous = continuous.roundMasses(3);
 		MSLineChartApplicationWindow demo = new MSLineChartApplicationWindow("Bar Demo 1", "", "", continuous);
 		demo.pack();
