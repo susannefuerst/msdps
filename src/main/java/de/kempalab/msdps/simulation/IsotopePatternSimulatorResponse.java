@@ -118,10 +118,7 @@ public class IsotopePatternSimulatorResponse {
 	 * @return Simulated spectrum.
 	 */
 	public MassSpectrum getSpectrum(int index) {
-		// TODO: Ensure that MassShifts have been analyzed.
-		MSShiftDatabase database = ((MSShiftDatabase) getMsDatabaseList().get(index));
-		MassSpectrum mixedSpectrum = database.getMixedSpectrum();
-		return mixedSpectrum;
+		return getMsDatabaseList().get(index).getMixedSpectrum();
 	}
 
 }
