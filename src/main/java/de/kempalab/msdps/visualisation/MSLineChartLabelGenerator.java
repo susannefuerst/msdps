@@ -23,7 +23,7 @@ public class MSLineChartLabelGenerator extends StandardXYItemLabelGenerator {
 		}
 		IsotopeFormula formula = composition.get(msLineChartDataset.getXValue(series, item));
 		if (formula != null) {
-			return formula.toSimpleString();
+			return msLineChartDataset.getXValue(series, item) + " - " + formula.toSimpleString();
 		}
 		return "";
 	}
