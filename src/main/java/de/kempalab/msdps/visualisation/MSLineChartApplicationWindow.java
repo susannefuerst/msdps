@@ -17,9 +17,10 @@ import de.kempalab.msdps.constants.SpectrumType;
 @SuppressWarnings("serial")
 public class MSLineChartApplicationWindow extends ApplicationFrame {
 	
-	public MSLineChartApplicationWindow(String title, MassSpectrum massSpectrum) {
-		super(title);
-		JFreeChart chart = MSLineChartCreator.createMsLineChart(massSpectrum);
+	public MSLineChartApplicationWindow(String windowTitle, String chartTitle, String chartSubTitle,
+			MassSpectrum massSpectrum) {
+		super(windowTitle);
+		JFreeChart chart = MSLineChartCreator.createMsLineChart(massSpectrum, chartTitle, chartSubTitle);
 		ChartPanel chartPanel = new ChartPanel(chart, false);
 		chartPanel.setPreferredSize(new Dimension(1700, 850));
 		setContentPane(chartPanel);
@@ -28,7 +29,8 @@ public class MSLineChartApplicationWindow extends ApplicationFrame {
 	public static void main(String[] args) throws IOException {
 		File file = new File(PathConstants.TEST_RESOURCES.toAbsolutePath("MSShiftDatabaseTest01.csv"));
 		MSShiftDatabase msDatabase = new MSShiftDatabase(file.getAbsolutePath(), SpectrumType.CENTROIDED);
-		MSLineChartApplicationWindow demo = new MSLineChartApplicationWindow("Bar Demo 1", msDatabase.getNaturalSpectrum());
+		MSLineChartApplicationWindow demo = new MSLineChartApplicationWindow("Bar Demo 1", "Title", "Subtitle",
+				msDatabase.getNaturalSpectrum());
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
