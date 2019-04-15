@@ -622,7 +622,6 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 		continuous.setSpectrumType(SpectrumType.CONTINUOUS);
 		for (Entry<Double,Double> entry : this.entrySet()) {
 			Double deltaM = entry.getKey() / resolution;
-			ArrayList<Double> additionalMasses = new ArrayList<>();
 			double stepWidth = (2 * deltaM)/additionalDataPointsPerPeak;
 			Double intensity = entry.getValue();
 			for (int i = 0; i < additionalDataPointsPerPeak/2; i++) {
@@ -643,7 +642,7 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 		}
 		return continuous;
 	}
-	
+
 	public MassSpectrum copy() {
 		MassSpectrum copy = new MassSpectrum(intensityType, spectrumType);
 		for (Entry<Double,Double> entry : this.entrySet()) {
