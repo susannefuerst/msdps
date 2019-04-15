@@ -90,7 +90,8 @@ public class SaveMassSpectraToCsvDemo5 {
 
 //		IsotopePattern pattern = new IsotopePattern(spectrum, true);
 		
-		MSLineChartApplicationWindow demo = new MSLineChartApplicationWindow("Bar Demo 1", spectrum.simulateContinuousHighRes(120000, 100));
+		MSLineChartApplicationWindow demo = new MSLineChartApplicationWindow("Bar Demo 1", "", "",
+				spectrum.simulateContinuousHighRes(120000, 100));
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
