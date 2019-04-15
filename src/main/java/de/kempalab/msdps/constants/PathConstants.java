@@ -1,6 +1,5 @@
 package de.kempalab.msdps.constants;
 
-import java.io.File;
 /**
  * Important folders to read and write for the isotopeincorporation project
  * @author sfuerst
@@ -35,7 +34,8 @@ public enum PathConstants {
 	 * @return the absolute path to the isotopeincorporation project
 	 */
 	public static String getProjectPath() {
-		return new File("").getAbsolutePath();
+		return "C:\\Users\\sufuers\\local-eclipse-workspace\\msdps";
+//		return new File("").getAbsolutePath();
 	}
 	
 	/**
