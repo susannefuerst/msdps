@@ -11,13 +11,14 @@ import de.kempalab.msdps.MassSpectrum;
 import de.kempalab.msdps.MassSpectrumList;
 import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.IntensityType;
+import de.kempalab.msdps.constants.SpectrumType;
 import de.kempalab.msdps.data.IncorporationRate;
-import de.kempalab.msdps.exception.IntensityTypeMismatchException;
+import de.kempalab.msdps.exception.TypeMismatchException;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 
 public class IsotopePatternCalculator {
 	
-	public static IsotopePatternCalculatorResponse calculateNaturalPattern(IsotopePatternCalculatorRequest request) {
+	public static IsotopePatternCalculatorResponse calculateNaturalPattern(IsotopePatternCalculatorRequest request) throws TypeMismatchException {
 		Double minimalIntensity = request.getMinimalIntensity();
 		Integer roundedMassPrecision = request.getRoundedMassPrecision();
 		Integer roundedIntensityPrecision = request.getRoundedMassPrecision();
@@ -52,7 +53,7 @@ public class IsotopePatternCalculator {
 		return response;
 	}
 	
-	public static IsotopePatternCalculatorResponse calculateTracedPattern(IsotopePatternCalculatorRequest request) throws IntensityTypeMismatchException {
+	public static IsotopePatternCalculatorResponse calculateTracedPattern(IsotopePatternCalculatorRequest request) throws TypeMismatchException {
 		Double minimalIntensity = request.getMinimalIntensity();
 		Integer roundedMassPrecision = request.getRoundedMassPrecision();
 		Integer roundedIntensityPrecision = request.getRoundedMassPrecision();
@@ -134,7 +135,7 @@ public class IsotopePatternCalculator {
 		for (int i = 0; i < multiElementSpectra.size() - 1; i++) {
 			MassSpectrum firstSpectrum = combinedSpectra.get(i);
 			MassSpectrum secondSpectrum = multiElementSpectra.get(i+1);
-			MassSpectrum newCombinedSpectrum = new MassSpectrum(IntensityType.MID);
+			MassSpectrum newCombinedSpectrum = new MassSpectrum(IntensityType.MID, SpectrumType.CENTROIDED);
 			for (Entry<Double,Double> firstEntry : firstSpectrum.entrySet()) {
 				for (Entry<Double,Double> secondEntry : secondSpectrum.entrySet()) {
 					Double newMass = firstEntry.getKey() + secondEntry.getKey();

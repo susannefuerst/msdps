@@ -8,6 +8,7 @@ import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.IncorporationType;
 import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.Isotope;
+import de.kempalab.msdps.constants.SpectrumType;
 import de.kempalab.msdps.log.MyLogger;
 
 /**
@@ -83,7 +84,7 @@ public class IsotopeSet extends HashMap<Isotope, Integer> {
 	 */
 	public MassSpectrum simulateSpectrum(int charge) {
 		ElementFormula fragmentComponents = fragmentAssociatedWithTheSet.getFormula();
-		MassSpectrum spectrum = new MassSpectrum(IntensityType.ABSOLUTE);
+		MassSpectrum spectrum = new MassSpectrum(IntensityType.ABSOLUTE, SpectrumType.CENTROIDED);
 		for (int i = 1; i <= numberOfFragmentsInTheSet; i++) {
 			IsotopeFormula composition = new IsotopeFormula();
 			double massOfFragment = 0.0;

@@ -7,13 +7,13 @@ import de.kempalab.msdps.constants.FragmentKey;
 import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.data.IncorporationRate;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
-import de.kempalab.msdps.exception.IntensityTypeMismatchException;
+import de.kempalab.msdps.exception.TypeMismatchException;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorRequest;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorResponse;
 
 public class IsotopePatternSimulationDemo2 {
-	public static void main(String[] args) throws FragmentNotFoundException, IntensityTypeMismatchException {
+	public static void main(String[] args) throws FragmentNotFoundException, TypeMismatchException {
 		IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 		Fragment fragment = FragmentsDatabase.getFragment(FragmentKey.PYR_174);
 		simulatorRequest.setFragments(new FragmentList(fragment));

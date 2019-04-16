@@ -13,6 +13,7 @@ import de.kempalab.msdps.MSDatabase;
 import de.kempalab.msdps.MSShiftDatabase;
 import de.kempalab.msdps.constants.MSBarChartType;
 import de.kempalab.msdps.constants.PathConstants;
+import de.kempalab.msdps.constants.SpectrumType;
 
 /**
  * A simple application window to visualize the mass spectra of an {@link MSDatabase}.
@@ -44,7 +45,7 @@ public class MSBarChartApplicationWindow extends ApplicationFrame {
 	 */
 	public static void main(String[] args) throws IOException {
 		File file = new File(PathConstants.TEST_RESOURCES.toAbsolutePath("MSShiftDatabaseTest01.csv"));
-		MSShiftDatabase msDatabase = new MSShiftDatabase(file.getAbsolutePath());
+		MSShiftDatabase msDatabase = new MSShiftDatabase(file.getAbsolutePath(), SpectrumType.CENTROIDED);
 		MSBarChartApplicationWindow demo = new MSBarChartApplicationWindow("Bar Demo 1", msDatabase, MSBarChartType.NATURAL_SPECTRUM_ONLY);
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);

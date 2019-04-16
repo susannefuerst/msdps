@@ -32,7 +32,7 @@ public enum Isotope implements Comparable<Isotope> {
 	Na_23(Element.Na, 22.989770, 1.00000, false, 0.0, 23), //
 	Si_28(Element.Si, 27.976928, 0.92230, false, 0.0, 28), //
 	Si_29(Element.Si, 28.976496, 0.04670, false, 0.999568, 29), //
-	Si_30(Element.Si, 29.976928, 0.03100, false, 2.0, 30), //
+	Si_30(Element.Si, 29.97377, 0.03100, false, 1.996842, 30), //
 	P_31(Element.P, 30.973763, 1.00000, false, 0.0, 31), //
 	S_32(Element.S, 31.972072, 0.95020, false, 0.0, 32), //
 	S_33(Element.S, 32.971459, 0.00750, false, 0.999387, 33), //

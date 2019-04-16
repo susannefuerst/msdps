@@ -9,7 +9,7 @@ import de.kempalab.msdps.constants.IncorporationType;
 import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.MSBarChartType;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
-import de.kempalab.msdps.exception.IntensityTypeMismatchException;
+import de.kempalab.msdps.exception.TypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.visualisation.MSBarChartApplicationWindow;
@@ -26,7 +26,7 @@ public class SimulateMixedIncorporations2 {
 	
 	public static final double INC = INC_C;
 	
-	public static void main(String[] args) throws FragmentNotFoundException, IntensityTypeMismatchException {
+	public static void main(String[] args) throws FragmentNotFoundException, TypeMismatchException {
 		Fragment fragmentC = new Fragment(FragmentKey.UNKNOWN, "C2", "C");
 
 		IsotopeSet naturalSet = new IsotopeSet(fragmentC, NUMBER_OF_FRAGMENTS * (1 - INC), IncorporationType.NATURAL);

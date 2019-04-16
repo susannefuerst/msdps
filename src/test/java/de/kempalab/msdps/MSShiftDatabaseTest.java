@@ -3,10 +3,10 @@ package de.kempalab.msdps;
 import java.io.File;
 import java.io.IOException;
 
-import junit.framework.TestCase;
-import de.kempalab.msdps.MSShiftDatabase;
 import de.kempalab.msdps.constants.PathConstants;
+import de.kempalab.msdps.constants.SpectrumType;
 import de.kempalab.msdps.log.MyLogger;
+import junit.framework.TestCase;
 
 public class MSShiftDatabaseTest extends TestCase {
 	
@@ -19,7 +19,7 @@ public class MSShiftDatabaseTest extends TestCase {
 			if (file.getName().contains("MSShiftDatabaseTest")) {
 				filePath = file.getAbsolutePath();
 				LOGGER.infoValue("Test file", file.getName());
-				MSShiftDatabase msDatabase = new MSShiftDatabase(filePath);
+				MSShiftDatabase msDatabase = new MSShiftDatabase(filePath, SpectrumType.CENTROIDED);
 				LOGGER.infoValue("msDatabase\n", msDatabase);
 				msDatabase.writeCsv(PathConstants.TMP_FOLDER.toAbsolutePath());
 			}

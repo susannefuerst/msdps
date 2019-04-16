@@ -15,6 +15,7 @@ import de.kempalab.msdps.constants.FragmentKey;
 import de.kempalab.msdps.constants.IncorporationType;
 import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.MSShiftDatabaseColKey;
+import de.kempalab.msdps.constants.SpectrumType;
 import de.kempalab.msdps.data.DataTable;
 import de.kempalab.msdps.log.MyLogger;
 import de.kempalab.msdps.util.FileWriterUtils;
@@ -56,8 +57,8 @@ public class MSShiftDatabase extends MSDatabase {
 	 * 
 	 * @param absoluteFilePath
 	 */
-	public MSShiftDatabase(String absoluteFilePath) {
-		this.parseCsv(absoluteFilePath);
+	public MSShiftDatabase(String absoluteFilePath, SpectrumType spectrumType) {
+		this.parseCsv(absoluteFilePath, spectrumType);
 	}
 
 	/**
@@ -77,18 +78,18 @@ public class MSShiftDatabase extends MSDatabase {
 	 * @param absoluteFilePath
 	 */
 	@Override
-	public void parseCsv(String absoluteFilePath) {
+	public void parseCsv(String absoluteFilePath, SpectrumType spectrumType) {
 		File csvData = new File(absoluteFilePath);
 		CSVParser parser;
 		try {
 			parser = CSVParser.parse(csvData, Charset.defaultCharset(), CSVFormat.RFC4180);
 			List<CSVRecord> records = parser.getRecords();
 			setNaturalSpectrum(ParserUtils.parseSpectrum(records, MSShiftDatabaseColKey.NATURAL_MASS.getColumnIndex(),
-					MSShiftDatabaseColKey.NATURAL_FREQUENCY.getColumnIndex(), IntensityType.MID, 1));
+					MSShiftDatabaseColKey.NATURAL_FREQUENCY.getColumnIndex(), IntensityType.MID, 1, spectrumType));
 			setMarkedSpectrum(ParserUtils.parseSpectrum(records, MSShiftDatabaseColKey.MARKED_MASS.getColumnIndex(),
-					MSShiftDatabaseColKey.MARKED_FREQUENCY.getColumnIndex(), IntensityType.MID, 1));
+					MSShiftDatabaseColKey.MARKED_FREQUENCY.getColumnIndex(), IntensityType.MID, 1, spectrumType));
 			setMixedSpectrum(ParserUtils.parseSpectrum(records, MSShiftDatabaseColKey.MIXED_MASS.getColumnIndex(),
-					MSShiftDatabaseColKey.MIXED_FREQUENCY.getColumnIndex(), IntensityType.MID, 1));
+					MSShiftDatabaseColKey.MIXED_FREQUENCY.getColumnIndex(), IntensityType.MID, 1, spectrumType));
 			setIncorporationRate(
 					Double.parseDouble(records.get(1).get(MSShiftDatabaseColKey.INC_RATE.getColumnIndex())));
 			setFragmentKey(

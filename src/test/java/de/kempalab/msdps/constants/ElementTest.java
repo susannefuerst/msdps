@@ -1,14 +1,10 @@
 package de.kempalab.msdps.constants;
 
-import junit.framework.TestCase;
 import de.kempalab.msdps.Fragment;
 import de.kempalab.msdps.IsotopeList;
 import de.kempalab.msdps.MassSpectrum;
-import de.kempalab.msdps.constants.Element;
-import de.kempalab.msdps.constants.FragmentKey;
-import de.kempalab.msdps.constants.IntensityType;
-import de.kempalab.msdps.constants.Isotope;
 import de.kempalab.msdps.log.MyLogger;
+import junit.framework.TestCase;
 
 public class ElementTest extends TestCase {
 	
@@ -162,7 +158,7 @@ public class ElementTest extends TestCase {
 			MassSpectrum combinatoricallyCalculatedSpectrum = element.multiElementSpectrum(2, 0.0);
 			combinatoricallyCalculatedSpectrum = combinatoricallyCalculatedSpectrum.roundMasses(4).roundIntensities(4).sortAscendingByMass();
 			LOGGER.infoValue("combinatoricallyCalculatedSpectrum\n", combinatoricallyCalculatedSpectrum);
-			MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(IntensityType.MID);
+			MassSpectrum combinatoricallyExpectedSpectrum = new MassSpectrum(IntensityType.MID, SpectrumType.CENTROIDED);
 			IsotopeList isotopes = element.getIsotopes();
 			Double mass0 = 2 * isotopes.get(0).getAtomicMass();
 			Double abundance0 = isotopes.get(0).getAbundance() * isotopes.get(0).getAbundance();

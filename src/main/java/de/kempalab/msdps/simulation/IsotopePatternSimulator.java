@@ -12,14 +12,14 @@ import de.kempalab.msdps.MassSpectrum;
 import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.IncorporationType;
 import de.kempalab.msdps.constants.IntensityType;
-import de.kempalab.msdps.exception.IntensityTypeMismatchException;
+import de.kempalab.msdps.exception.TypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
 
 public class IsotopePatternSimulator {
 	
 	public static final MyLogger LOGGER = MyLogger.getLogger(IsotopePatternSimulator.class);
 	
-	public static IsotopePatternSimulatorResponse simulate(IsotopePatternSimulatorRequest request) throws IntensityTypeMismatchException {
+	public static IsotopePatternSimulatorResponse simulate(IsotopePatternSimulatorRequest request) throws TypeMismatchException {
 		final double incRate = request.getIncorporationRate().getRateValue();
 		final double naturalFragments = request.getTotalNumberOfFragments() * (1 - incRate);
 		final double experimentalFragments = request.getTotalNumberOfFragments() * incRate;
@@ -73,7 +73,7 @@ public class IsotopePatternSimulator {
 	}
 	
 	public static IsotopePatternSimulatorResponse simulateIndependentTracerIncorporation(
-			IsotopePatternSimulatorRequest request) throws IntensityTypeMismatchException {
+			IsotopePatternSimulatorRequest request) throws TypeMismatchException {
 		final double tracer1Inc = request.getTracer1Inc().getRateValue();
 		final double tracer2Inc = request.getTracer2Inc().getRateValue();
 		final double tracerAllInc = request.getTracerAllInc().getRateValue();
@@ -94,8 +94,8 @@ public class IsotopePatternSimulator {
 
 		for (Fragment fragment : request.getFragments()) {
 			ElementFormula capacity = fragment.getTracerCapacity();
-			String capacity1 = tracer1.name() + capacity.get(tracer1);
-			String capacity2 = tracer2.name() + capacity.get(tracer2);
+			String capacity1 = tracer1.name() + (capacity.get(tracer1) != null ? capacity.get(tracer1) : "");
+			String capacity2 = tracer2.name() + (capacity.get(tracer2) != null ? capacity.get(tracer2) : "");
 			Fragment fragmentAll = fragment.copy();
 			Fragment fragment1 = fragment.copy();
 			fragment1.changeCapacity(capacity1);
@@ -159,9 +159,10 @@ public class IsotopePatternSimulator {
 	 * @param minimaFrequency,
 	 * @param frequencyType,
 	 * @return
+	 * @throws TypeMismatchException 
 	 */
 	public static MassSpectrum prepareSpectrum(MassSpectrum spectrum, Integer roundMassesPrecision,
-			Integer roundFrequenciesPrecision, Double minimalFrequency, IntensityType frequencyType) {
+			Integer roundFrequenciesPrecision, Double minimalFrequency, IntensityType frequencyType) throws TypeMismatchException {
 		if (frequencyType.equals(IntensityType.MID)) {
 			spectrum = spectrum.toMID();
 		} else if (frequencyType.equals(IntensityType.RELATIVE)) {

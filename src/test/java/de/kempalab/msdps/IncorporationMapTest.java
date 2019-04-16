@@ -6,7 +6,7 @@ import de.kempalab.msdps.constants.IncorporationType;
 import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.Isotope;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
-import de.kempalab.msdps.exception.IntensityTypeMismatchException;
+import de.kempalab.msdps.exception.TypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.util.MathUtils;
@@ -16,7 +16,7 @@ public class IncorporationMapTest extends TestCase {
 	
 	public static final MyLogger LOG = MyLogger.getLogger(IncorporationMapTest.class);
 	
-	public void testConstructor() throws IntensityTypeMismatchException, FragmentNotFoundException {
+	public void testConstructor() throws TypeMismatchException, FragmentNotFoundException {
 		final double INC_CN = 0.1;
 		final double INC_C = 0.5;
 		final double INC_N = 0.2;

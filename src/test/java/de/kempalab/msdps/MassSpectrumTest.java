@@ -9,7 +9,8 @@ import de.kempalab.msdps.constants.ErrorMessage;
 import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.Isotope;
 import de.kempalab.msdps.constants.PathConstants;
-import de.kempalab.msdps.exception.IntensityTypeMismatchException;
+import de.kempalab.msdps.constants.SpectrumType;
+import de.kempalab.msdps.exception.TypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
 import junit.framework.TestCase;
 
@@ -18,16 +19,16 @@ public class MassSpectrumTest extends TestCase {
 	public static final MyLogger LOGGER = MyLogger.getLogger(MassSpectrumTest.class);
 	
 	public void testMerge() throws Exception {
-		MassSpectrum firstSpectrum = new MassSpectrum(IntensityType.ABSOLUTE);
+		MassSpectrum firstSpectrum = new MassSpectrum(IntensityType.ABSOLUTE, SpectrumType.CENTROIDED);
 		firstSpectrum.put(123.000, 10.0);
 		firstSpectrum.put(123.010, 11.0);
 		firstSpectrum.put(124.000, 5.0);
 		firstSpectrum.put(125.000, 5.0);
-		MassSpectrum otherSpectrum = new MassSpectrum(IntensityType.ABSOLUTE);
+		MassSpectrum otherSpectrum = new MassSpectrum(IntensityType.ABSOLUTE, SpectrumType.CENTROIDED);
 		otherSpectrum.put(123.010, 4.0);
 		otherSpectrum.put(124.010, 8.0);
 		otherSpectrum.put(125.000, 10.0);
-		MassSpectrum expectedMergedSpectrum = new MassSpectrum(IntensityType.ABSOLUTE);
+		MassSpectrum expectedMergedSpectrum = new MassSpectrum(IntensityType.ABSOLUTE, SpectrumType.CENTROIDED);
 		expectedMergedSpectrum.put(123.000, 10.0);
 		expectedMergedSpectrum.put(123.010, 15.0);
 		expectedMergedSpectrum.put(124.000, 5.0);
@@ -40,26 +41,26 @@ public class MassSpectrumTest extends TestCase {
 	}
 	
 	public void testMergeFail() {
-		MassSpectrum firstSpectrum = new MassSpectrum(IntensityType.MID);
+		MassSpectrum firstSpectrum = new MassSpectrum(IntensityType.MID, SpectrumType.CENTROIDED);
 		firstSpectrum.put(123.000, 10.0);
-		MassSpectrum otherSpectrum = new MassSpectrum(IntensityType.ABSOLUTE);
+		MassSpectrum otherSpectrum = new MassSpectrum(IntensityType.ABSOLUTE, SpectrumType.CENTROIDED);
 		otherSpectrum.put(123.010, 4.0);
 		try {
 			firstSpectrum.merge(otherSpectrum);
 			fail("This should throw an exception becaus of frequency type mismatch");
-		} catch (IntensityTypeMismatchException e) {
+		} catch (TypeMismatchException e) {
 			assertEquals(e.getMessage(), ErrorMessage.INTENSITY_TYPE_MISMATCH.getMessage());
 		}
 	}
 	
-	public void testToMIDFrequency() {
-		MassSpectrum map = new MassSpectrum(IntensityType.ABSOLUTE);
+	public void testToMIDFrequency() throws TypeMismatchException {
+		MassSpectrum map = new MassSpectrum(IntensityType.ABSOLUTE, SpectrumType.CENTROIDED);
 		map.put(123.000, 10.0);
 		map.put(123.010, 11.0);
 		map.put(124.000, 5.0);
 		map.put(125.000, 5.0);
 		MassSpectrum convertedSpectrum = map.toMID();
-		MassSpectrum expectedConvertedSpectrum = new MassSpectrum(IntensityType.MID);
+		MassSpectrum expectedConvertedSpectrum = new MassSpectrum(IntensityType.MID, SpectrumType.CENTROIDED);
 		expectedConvertedSpectrum.put(123.000, 10.0 / 31.0);
 		expectedConvertedSpectrum.put(123.010, 11.0 / 31.0);
 		expectedConvertedSpectrum.put(124.000, 5.0 / 31.0);
@@ -71,12 +72,12 @@ public class MassSpectrumTest extends TestCase {
 	}
 	
 	public void testSkipLowMIDs() {
-		MassSpectrum map = new MassSpectrum(IntensityType.MID);
+		MassSpectrum map = new MassSpectrum(IntensityType.MID, SpectrumType.CENTROIDED);
 		map.put(123.000, 0.001);
 		map.put(123.010, 0.009);
 		map.put(124.000, 0.09);
 		map.put(125.000, 0.9);
-		MassSpectrum expectedSpectrum = new MassSpectrum(IntensityType.MID);
+		MassSpectrum expectedSpectrum = new MassSpectrum(IntensityType.MID, SpectrumType.CENTROIDED);
 		expectedSpectrum.put(124.000, 0.09);
 		expectedSpectrum.put(125.000, 0.9);
 		MassSpectrum newSpectrum = map.skipLowIntensity(0.01);
@@ -86,14 +87,14 @@ public class MassSpectrumTest extends TestCase {
 	}
 	
 	public void testSkipHighMassses() {
-		MassSpectrum map = new MassSpectrum(IntensityType.ABSOLUTE);
+		MassSpectrum map = new MassSpectrum(IntensityType.ABSOLUTE, SpectrumType.CENTROIDED);
 		map.put(123.000, 1.0);
 		map.put(123.010, 9.0);
 		map.put(124.000, 90.0);
 		map.put(124.010, 90.0);
 		map.put(125.000, 900.0);
 		MassSpectrum newSpectrum = map.skipHighMasses(124.010);
-		MassSpectrum expectedSpectrum = new MassSpectrum(IntensityType.ABSOLUTE);
+		MassSpectrum expectedSpectrum = new MassSpectrum(IntensityType.ABSOLUTE, SpectrumType.CENTROIDED);
 		expectedSpectrum.put(123.000, 1.0);
 		expectedSpectrum.put(123.010, 9.0);
 		expectedSpectrum.put(124.000, 90.0);
@@ -104,7 +105,7 @@ public class MassSpectrumTest extends TestCase {
 	}
 	
 	public void testRoundMassses() {
-		MassSpectrum map = new MassSpectrum(IntensityType.ABSOLUTE);
+		MassSpectrum map = new MassSpectrum(IntensityType.ABSOLUTE, SpectrumType.CENTROIDED);
 		map.put(123.00019, 1.0);
 		map.put(123.01015, 9.0);
 		map.put(124.00014, 90.0);
@@ -116,7 +117,7 @@ public class MassSpectrumTest extends TestCase {
 		map.put(124.01011, 90.0);
 		map.put(125.00001, 900.0);
 		MassSpectrum newSpectrum = map.roundMasses(4);
-		MassSpectrum expectedSpectrum = new MassSpectrum(IntensityType.ABSOLUTE);
+		MassSpectrum expectedSpectrum = new MassSpectrum(IntensityType.ABSOLUTE, SpectrumType.CENTROIDED);
 		expectedSpectrum.put(123.0002, 2.0);
 		expectedSpectrum.put(123.0102, 18.0);
 		expectedSpectrum.put(124.0001, 180.0);
@@ -128,7 +129,7 @@ public class MassSpectrumTest extends TestCase {
 	}
 	
 	public void roundFrequenciesTest() {
-		MassSpectrum map = new MassSpectrum(IntensityType.MID);
+		MassSpectrum map = new MassSpectrum(IntensityType.MID, SpectrumType.CENTROIDED);
 		map.put(123.00019, 0.01234567);
 		map.put(123.01015, 0.62837565);
 		map.put(124.00014, 0.00013245);
@@ -137,7 +138,7 @@ public class MassSpectrumTest extends TestCase {
 		map.put(123.00018, 0.17283745);
 		map.put(123.01016, 0.14253647);
 		MassSpectrum newSpectrum = map.roundIntensities(4);
-		MassSpectrum expectedSpectrum = new MassSpectrum(IntensityType.MID);
+		MassSpectrum expectedSpectrum = new MassSpectrum(IntensityType.MID, SpectrumType.CENTROIDED);
 		expectedSpectrum.put(123.00019, 0.0123);
 		expectedSpectrum.put(123.01015, 0.6284);
 		expectedSpectrum.put(124.00014, 0.0001);
@@ -151,7 +152,7 @@ public class MassSpectrumTest extends TestCase {
 	}
 	
 	public void testSortDescendingByMass() {
-		MassSpectrum map = new MassSpectrum(IntensityType.MID);
+		MassSpectrum map = new MassSpectrum(IntensityType.MID, SpectrumType.CENTROIDED);
 		map.put(123.01015, 0.6284);
 		map.put(123.00019, 0.0123);
 		map.put(125.00000, 0.0129);
@@ -160,7 +161,7 @@ public class MassSpectrumTest extends TestCase {
 		map.put(123.00018, 0.1728);
 		map.put(123.01016, 0.1425);
 		MassSpectrum newSpectrum = map.sortAscendingByMass();
-		MassSpectrum expectedSpectrum = new MassSpectrum(IntensityType.MID);
+		MassSpectrum expectedSpectrum = new MassSpectrum(IntensityType.MID, SpectrumType.CENTROIDED);
 		expectedSpectrum.put(123.00018, 0.1728);
 		expectedSpectrum.put(123.00019, 0.0123);
 		expectedSpectrum.put(123.01015, 0.6284);
@@ -174,7 +175,7 @@ public class MassSpectrumTest extends TestCase {
 	}
 	
 	public void testSortAscendingByMass() {
-		MassSpectrum map = new MassSpectrum(IntensityType.MID);
+		MassSpectrum map = new MassSpectrum(IntensityType.MID, SpectrumType.CENTROIDED);
 		map.put(123.01015, 0.6284);
 		map.put(123.00019, 0.0123);
 		map.put(125.00000, 0.0129);
@@ -183,7 +184,7 @@ public class MassSpectrumTest extends TestCase {
 		map.put(123.00018, 0.1728);
 		map.put(123.01016, 0.1425);
 		MassSpectrum newSpectrum = map.sortAscendingByMass();
-		MassSpectrum expectedSpectrum = new MassSpectrum(IntensityType.MID);
+		MassSpectrum expectedSpectrum = new MassSpectrum(IntensityType.MID, SpectrumType.CENTROIDED);
 		expectedSpectrum.put(125.00000, 0.0129);
 		expectedSpectrum.put(124.01010, 0.0005);
 		expectedSpectrum.put(124.00014, 0.0001);
@@ -197,7 +198,7 @@ public class MassSpectrumTest extends TestCase {
 	}
 	
 	public void testSortAscendingByFrequency() {
-		MassSpectrum map = new MassSpectrum(IntensityType.MID);
+		MassSpectrum map = new MassSpectrum(IntensityType.MID, SpectrumType.CENTROIDED);
 		map.put(123.01015, 0.6284);
 		map.put(123.00019, 0.0123);
 		map.put(125.00000, 0.0129);
@@ -206,7 +207,7 @@ public class MassSpectrumTest extends TestCase {
 		map.put(123.00018, 0.1728);
 		map.put(123.01016, 0.1425);
 		MassSpectrum newSpectrum = map.sortAscendingByIntensity();
-		MassSpectrum expectedSpectrum = new MassSpectrum(IntensityType.MID);
+		MassSpectrum expectedSpectrum = new MassSpectrum(IntensityType.MID, SpectrumType.CENTROIDED);
 		expectedSpectrum.put(123.01015, 0.6284);
 		expectedSpectrum.put(123.00018, 0.1728);
 		expectedSpectrum.put(123.01016, 0.1425);
@@ -220,7 +221,7 @@ public class MassSpectrumTest extends TestCase {
 	}
 	
 	public void testSortDescendingByFrequency() {
-		MassSpectrum map = new MassSpectrum(IntensityType.MID);
+		MassSpectrum map = new MassSpectrum(IntensityType.MID, SpectrumType.CENTROIDED);
 		map.put(123.01015, 0.6284);
 		map.put(123.00019, 0.0123);
 		map.put(125.00000, 0.0129);
@@ -229,7 +230,7 @@ public class MassSpectrumTest extends TestCase {
 		map.put(123.00018, 0.1728);
 		map.put(123.01016, 0.1425);
 		MassSpectrum newSpectrum = map.sortDescendingByIntensity();
-		MassSpectrum expectedSpectrum = new MassSpectrum(IntensityType.MID);
+		MassSpectrum expectedSpectrum = new MassSpectrum(IntensityType.MID, SpectrumType.CENTROIDED);
 		expectedSpectrum.put(124.00014, 0.0001);
 		expectedSpectrum.put(124.01010, 0.0005);
 		expectedSpectrum.put(123.00019, 0.0123);
@@ -243,7 +244,7 @@ public class MassSpectrumTest extends TestCase {
 	}
 	
 	public void testAnalyseMassShifts() {
-		MassSpectrum spectrum = new MassSpectrum(IntensityType.ABSOLUTE);
+		MassSpectrum spectrum = new MassSpectrum(IntensityType.ABSOLUTE, SpectrumType.CENTROIDED);
 		spectrum.put(130.0324, 12.0);
 		spectrum.put(131.032, 12.0);
 		spectrum.put(132.0324, 12.0);
@@ -265,7 +266,7 @@ public class MassSpectrumTest extends TestCase {
 	}
 	
 	public void testAnalyseMassShifts2() {
-		MassSpectrum spectrum = new MassSpectrum(IntensityType.ABSOLUTE);
+		MassSpectrum spectrum = new MassSpectrum(IntensityType.ABSOLUTE, SpectrumType.CENTROIDED);
 		spectrum.put(133.0362, 12.0);
 		spectrum.put(134.0395, 12.0);
 		spectrum.put(135.0391, 12.0);
@@ -313,7 +314,7 @@ public class MassSpectrumTest extends TestCase {
 	}
 	
 	public void testFromRawFileExportCsv() {
-		MassSpectrum spectrum = MassSpectrum.fromRawFileExportCsv(PathConstants.TEST_RESOURCES.toAbsolutePath("fromRawFileExport.csv"));
+		MassSpectrum spectrum = MassSpectrum.fromRawFileExportCsv(PathConstants.TEST_RESOURCES.toAbsolutePath("fromRawFileExport.csv"), SpectrumType.CENTROIDED);
 		LOGGER.info(spectrum.toString());
 	}
 

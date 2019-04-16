@@ -8,7 +8,7 @@ import de.kempalab.msdps.constants.FragmentKey;
 import de.kempalab.msdps.constants.MSBarChartType;
 import de.kempalab.msdps.data.IncorporationRate;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
-import de.kempalab.msdps.exception.IntensityTypeMismatchException;
+import de.kempalab.msdps.exception.TypeMismatchException;
 import de.kempalab.msdps.log.MyLogger;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorRequest;
@@ -19,7 +19,7 @@ public class MSBarChartApplicationWindowDemo2 {
 
 public static final MyLogger LOGGER = MyLogger.getLogger(MSBarChartApplicationWindowDemo2.class);
 	
-	public static void main(String[] args) throws IntensityTypeMismatchException, FragmentNotFoundException {
+	public static void main(String[] args) throws TypeMismatchException, FragmentNotFoundException {
 		IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
 		Fragment fragment1 = FragmentsDatabase.getFragment(FragmentKey.ALA_116);
 		Fragment fragment2 = FragmentsDatabase.getFragment(FragmentKey.ALA_116);

@@ -19,8 +19,9 @@ import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.FragmentKey;
 import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.Isotope;
+import de.kempalab.msdps.constants.SpectrumType;
 import de.kempalab.msdps.data.IncorporationRate;
-import de.kempalab.msdps.exception.IntensityTypeMismatchException;
+import de.kempalab.msdps.exception.TypeMismatchException;
 import de.kempalab.msdps.simulation.IsotopePatternSimulator;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorRequest;
 import de.kempalab.msdps.simulation.IsotopePatternSimulatorResponse;
@@ -39,7 +40,7 @@ public class CorrectionUtilsTest extends TestCase {
 	// some of these tests take a lot of time so do not run them automatically
 	private static final boolean TEST_INCS = false;
 
-	public void testIncorporationRate01() throws IntensityTypeMismatchException {
+	public void testIncorporationRate01() throws TypeMismatchException {
 		if (TEST_INCS) {
 			for (int c = 0; c < 10; c++) {
 				for (int n = 0; n < 10; n++) {
@@ -128,7 +129,7 @@ public class CorrectionUtilsTest extends TestCase {
 		}
 	}
 
-	public void testIncorporationRate02() throws IntensityTypeMismatchException {
+	public void testIncorporationRate02() throws TypeMismatchException {
 		double maxError = 0.0;
 		for (int c = 0; c < 10; c++) {
 			final double INC_C = 0.0 + c * 0.1;
@@ -182,7 +183,7 @@ public class CorrectionUtilsTest extends TestCase {
 		LOGGER.info("maxError " + maxError);
 	}
 
-	public void testIncorporationRate03() throws IntensityTypeMismatchException {
+	public void testIncorporationRate03() throws TypeMismatchException {
 		Double maxError = 0.0;
 		for (int n = 0; n < 10; n++) {
 			final double INC_N = 0.0 + n * 0.1;
@@ -240,7 +241,7 @@ public class CorrectionUtilsTest extends TestCase {
 		LOGGER.info("maxError " + maxError);
 	}
 
-	public void testIncorporationRate04() throws IntensityTypeMismatchException {
+	public void testIncorporationRate04() throws TypeMismatchException {
 		if (TEST_INCS) {
 			for (int c2 = 0; c2 < 10; c2++) {
 				for (int n = 0; n < 10; n++) {
@@ -330,7 +331,7 @@ public class CorrectionUtilsTest extends TestCase {
 	}
 
 	public void correctionGlnUnlabeledTest() {
-		MassSpectrum measured = new MassSpectrum(IntensityType.ABSOLUTE);
+		MassSpectrum measured = new MassSpectrum(IntensityType.ABSOLUTE, SpectrumType.CENTROIDED);
 		measured.put(156.083871, 2177824768.0);
 		measured.put(157.081106, 3256251.75);
 		measured.put(157.083466, 105339544.0);
@@ -388,7 +389,7 @@ public class CorrectionUtilsTest extends TestCase {
 	}
 
 	public void correctionGlnTotallyCNLabeledTest() {
-		MassSpectrum measured = new MassSpectrum(IntensityType.ABSOLUTE);
+		MassSpectrum measured = new MassSpectrum(IntensityType.ABSOLUTE, SpectrumType.CENTROIDED);
 		measured.put(161.094388, 3383957504.000000);
 		measured.put(162.093845, 167757680.000000);
 		measured.put(162.097430, 96693112.000000);
@@ -439,7 +440,7 @@ public class CorrectionUtilsTest extends TestCase {
 	}
 
 	public void correctionGlnTotallyCLabeledTest() {
-		MassSpectrum measured = new MassSpectrum(IntensityType.ABSOLUTE);
+		MassSpectrum measured = new MassSpectrum(IntensityType.ABSOLUTE, SpectrumType.CENTROIDED);
 		measured.put(160.097400, 1584645632.000000);
 		measured.put(161.094435, 3858969.500000);
 		measured.put(161.096895, 75836104.000000);
@@ -498,7 +499,7 @@ public class CorrectionUtilsTest extends TestCase {
 	}
 
 	public void correctionGlnTotallyNLabeledTest() {
-		MassSpectrum measured = new MassSpectrum(IntensityType.ABSOLUTE);
+		MassSpectrum measured = new MassSpectrum(IntensityType.ABSOLUTE, SpectrumType.CENTROIDED);
 		measured.put(157.081106, 4505609216.000000);
 		measured.put(158.080438, 203910720.000000);
 		measured.put(158.084197, 329013920.000000);

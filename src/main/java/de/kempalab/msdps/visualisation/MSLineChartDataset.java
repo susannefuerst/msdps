@@ -85,5 +85,13 @@ public class MSLineChartDataset extends AbstractXYDataset implements IntervalXYD
 	public Comparable getSeriesKey(int series) {
 		return 1;
 	}
+	
+	public MassSpectrum getSpectrum() {
+		return spectrum;
+	}
+
+	public void setSpectrum(MassSpectrum spectrum) {
+		this.spectrum = spectrum;
+	}
 
 }

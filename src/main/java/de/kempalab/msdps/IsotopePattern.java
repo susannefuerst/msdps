@@ -15,7 +15,6 @@ package de.kempalab.msdps;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
-import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.data.DataTable;
 
 /**
@@ -30,83 +29,64 @@ public class IsotopePattern extends MassSpectrum {
 	/*
 	 * ordered as the entries in the MassSpectrum
 	 */
-	private ArrayList<IsotopeFormula> formulas = new ArrayList<>();
-	private ArrayList<IsotopeFormula> peakInducingHeavyIsotopes = new ArrayList<>();
+	private IsotopeComposition isotopeComposition = new IsotopeComposition();
+	private IsotopeComposition peakInducingHeavyIsotopes = new IsotopeComposition();
 
-	public IsotopePattern(IntensityType intensityType, ArrayList<IsotopeFormula> formulas) {
-		super(intensityType);
-		this.formulas = formulas;
-	}
-
-	public IsotopePattern(MassSpectrum massSpectrum) {
-		super(massSpectrum.getIntensityType());
+	public IsotopePattern(MassSpectrum massSpectrum, boolean analyseHeavyIsotopes) {
+		super(massSpectrum.getIntensityType(), massSpectrum.getSpectrumType());
 		for (Entry<Double, Double> entry : massSpectrum.entrySet()) {
 			put(entry.getKey(), entry.getValue());
 		}
-		if (!massSpectrum.getCompositions().isEmpty()) {
-			for (Entry<Double,IsotopeFormula> entry : massSpectrum.getCompositions().entrySet()) {
-				formulas.add(entry.getValue());
-				IsotopeFormula heavyIsotopes = entry.getValue().getHeavyIsotopes();
-				this.peakInducingHeavyIsotopes.add(heavyIsotopes);
+		if (!massSpectrum.getCompositions().removeNullValues().isEmpty()) {
+			isotopeComposition = massSpectrum.getCompositions();
+			if (analyseHeavyIsotopes) {
+				for (Entry<Double,IsotopeFormula> entry : massSpectrum.getCompositions().entrySet()) {
+					if (entry.getValue() == null) {
+						peakInducingHeavyIsotopes.put(entry.getKey(), null);
+					} else {
+						IsotopeFormula heavyIsotopes = entry.getValue().getHeavyIsotopes();
+						peakInducingHeavyIsotopes.put(entry.getKey(), heavyIsotopes);
+					}
+				}
 			}
 		}
 	}
 
-	public ArrayList<IsotopeFormula> getFormulas() {
-		return formulas;
+	public IsotopeComposition getIsotopeComposition() {
+		return isotopeComposition;
 	}
 
-	public void setFormulas(ArrayList<IsotopeFormula> formulas) {
-		this.formulas = formulas;
+	public void setIsotopeComposition(IsotopeComposition isotopeComposition) {
+		this.isotopeComposition = isotopeComposition;
 	}
 
-	public IsotopeFormula getFormula(int index) {
-		return formulas.get(index);
-	}
-
-	/**
-	 * 
-	 * @param mass
-	 * @return The {@link IsotopeFormula} corresponding to this mass in the spectrum. An empty
-	 *         formula, if the mass is not part of the spectrum.
-	 * 
-	 */
-	public IsotopeFormula getFormula(Double mass) {
-		int entryCount = 0;
-		for (Entry<Double, Double> entry : this.entrySet()) {
-			if (entry.getKey().equals(mass)) {
-				return formulas.get(entryCount);
-			}
-			entryCount++;
-		}
-		return new IsotopeFormula();
-	}
-
-	/**
-	 * @return the peakInducingHeavyIsotopes
-	 */
-	public ArrayList<IsotopeFormula> getPeakInducingHeavyIsotopes() {
+	public IsotopeComposition getPeakInducingHeavyIsotopes() {
 		return peakInducingHeavyIsotopes;
 	}
 
-	/**
-	 * @param peakInducingHeavyIsotopes the peakInducingHeavyIsotopes to set
-	 */
-	public void setPeakInducingHeavyIsotopes(ArrayList<IsotopeFormula> peakInducingHeavyIsotopes) {
+	public void setPeakInducingHeavyIsotopes(IsotopeComposition peakInducingHeavyIsotopes) {
 		this.peakInducingHeavyIsotopes = peakInducingHeavyIsotopes;
 	}
-	
+
 	public DataTable toDataTable() {
 		DataTable dataTable = new DataTable("Mass", "Frequency", "Formula", "HeavyIsotopes");
 		dataTable.addColumn(this);
 		ArrayList<String> formulaStr = new ArrayList<>();
-		for (IsotopeFormula formula : formulas) {
-			formulaStr.add(formula.toSimpleString());
+		for (Entry<Double,IsotopeFormula> entry : compositions.entrySet()) {
+			if (entry.getValue() == null) {
+				formulaStr.add("");
+			} else {
+				formulaStr.add(entry.getValue().toSimpleString());				
+			}
 		}
 		dataTable.addColumn(formulaStr);
 		ArrayList<String> heavyIsotopesStr = new ArrayList<>();
-		for (IsotopeFormula heavyIsotope : peakInducingHeavyIsotopes) {
-			heavyIsotopesStr.add(heavyIsotope.toSimpleString());
+		for (Entry<Double,IsotopeFormula> entry : peakInducingHeavyIsotopes.entrySet()) {
+			if (entry.getValue() == null) {
+				heavyIsotopesStr.add("");
+			} else {
+				heavyIsotopesStr.add(entry.getValue().toSimpleString());				
+			}
 		}
 		dataTable.addColumn(heavyIsotopesStr);
 		return dataTable;
