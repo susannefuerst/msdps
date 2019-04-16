@@ -42,6 +42,8 @@ public class NACorrectorFileConverter {
 			int c13Count;
 			int n15Count;
 			String groupKey = "";
+			LinkedHashMap<String, double[][]> groupKeyIntensitiesMap = new LinkedHashMap<>();
+			ArrayList<String> formulas = new ArrayList<>();
 			double[][] singleIntensities = new double[10][10];
 			for (CSVRecord csvRecord : records) {
 				if (csvRecord.getRecordNumber() == 1) {
@@ -54,8 +56,16 @@ public class NACorrectorFileConverter {
 				formula = StringUtils.remove(details[MZmineDetailsIdentfier.FORMULA.getIndex()], MZmineDetailsIdentfier.FORMULA.getIdentifier());
 				metaboliteFragment = StringUtils.remove(details[MZmineDetailsIdentfier.ID.getIndex()], MZmineDetailsIdentfier.ID.getIdentifier());
 				metaboliteFragment = StringUtils.substringBefore(metaboliteFragment, "_");
+				// FIXME: this overwrites the group key each time
 				groupKey = filename + ";" + metaboliteFragment;
-				double intensity = Double.parseDouble(csvRecord.get(MZminePeakOutputHeader.PEAK_HEIGHT.getColumnNumber()));
+				if (groupKeyIntensitiesMap.get(groupKey) == null) {
+					// TODO: choose a more elegant way for the size of the array
+					singleIntensities = new double[10][10];
+					groupKeyIntensitiesMap.put(groupKey, singleIntensities);
+					formulas.add(formula);
+				}
+				Double intensity = Double
+						.parseDouble(csvRecord.get(MZminePeakOutputHeader.PEAK_HEIGHT.getColumnNumber()));
 				String name = StringUtils.remove(details[MZmineDetailsIdentfier.NAME.getIndex()], MZmineDetailsIdentfier.NAME.getIdentifier());
 				String[] nameTokens = StringUtils.split(name, "_");
 				int lastTokenIndex = nameTokens.length - 1;
@@ -64,12 +74,20 @@ public class NACorrectorFileConverter {
 				n15Count = Integer.parseInt(nameTokens[lastTokenIndex]);
 				singleIntensities[c13Count][n15Count] = singleIntensities[c13Count][n15Count] + intensity;
 			}
-			for (int c = 0; c < 10; c++) {
-				for (int n = 0; n < 10; n++) {
-					if(singleIntensities[c][n] > 0) {
-						naCorrectionInputTable.addRow(groupKey, String.valueOf(singleIntensities[c][n]), String.valueOf(c), String.valueOf(n), formula);
+			int entryCount = 0;
+			for (Entry<String, double[][]> entry : groupKeyIntensitiesMap.entrySet()) {
+				String currentGroupKey = entry.getKey();
+				double[][] currentSingleIntensities = entry.getValue();
+				for (int c = 0; c < 10; c++) {
+					for (int n = 0; n < 10; n++) {
+						if (currentSingleIntensities[c][n] > 0) {
+							naCorrectionInputTable.addRow(currentGroupKey,
+									String.valueOf(currentSingleIntensities[c][n]), String.valueOf(c),
+									String.valueOf(n), formulas.get(entryCount));
+						}
 					}
 				}
+				entryCount++;
 			}
 			naCorrectionInputFilePath = FileWriterUtils.checkFilePath(naCorrectionInputFilePath, FileWriterUtils.CSV_EXTENSION);
 			naCorrectionInputTable.writeToCsv("N/A", true, naCorrectionInputFilePath);
@@ -150,8 +168,8 @@ public class NACorrectorFileConverter {
 					}
 					entryCount++;
 				}
-				naCorrectionInputFilePath = FileWriterUtils.checkFilePath(naCorrectionInputFilePath, FileWriterUtils.CSV_EXTENSION);
 			}
+			naCorrectionInputFilePath = FileWriterUtils.checkFilePath(naCorrectionInputFilePath, FileWriterUtils.CSV_EXTENSION);
 			naCorrectionInputTable.writeToCsv("N/A", true, naCorrectionInputFilePath);
 		} catch (Exception e) {
 			e.printStackTrace();
