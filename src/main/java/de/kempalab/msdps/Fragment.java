@@ -209,6 +209,18 @@ public class Fragment {
 		newFragment.setCapacity("");
 		return newFragment;
 	}
+	
+	public Double maximalExperimentalShift() {
+		ElementFormula formula = getTracerCapacity().copy();
+		if(getFormula().get(Element.Si) != null) {
+			formula.put(Element.Si, getFormula().get(Element.Si));
+		}
+		Double maxShift = 0.0;
+		for (Entry<Element,Integer> entry : formula.entrySet()) {
+			maxShift = maxShift + entry.getKey().highestMass() * entry.getValue();
+		}
+		return maxShift;
+	}
 
 
 }

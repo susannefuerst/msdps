@@ -26,5 +26,4 @@ public class IsotopePatternCalculatorDemo {
 		IsotopePatternCalculatorResponse response = IsotopePatternCalculator.calculateNaturalPattern(calculatorRequest);
 		System.out.println((response.getPatternList().get(0)).toString());
 	}
-
 }

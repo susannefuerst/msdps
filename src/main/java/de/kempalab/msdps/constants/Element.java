@@ -78,6 +78,11 @@ public enum Element {
 	public double highestMass() {
 		return heaviestIsotope().getAtomicMass();
 	}
+	
+	public double highestShift() {
+		return heaviestIsotope().getMassShiftValue();
+	}
+
 
 	public Isotope heaviestIsotope() {
 		int index = getIsotopes().size() - 1;
@@ -118,7 +123,9 @@ public enum Element {
 				LOGGER.debug("isotope", isotope);
 				LOGGER.debug("atomicMass", isotope.getAtomicMass());
 				mass = mass + partition.get(index) * isotope.getAtomicMass();
-				formula.put(isotope, partition.get(index));
+				if (partition.get(index) != 0) {
+					formula.put(isotope, partition.get(index));
+				}
 			}
 			masses.add(mass);
 			composition.put(mass, formula);
