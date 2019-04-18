@@ -10,6 +10,7 @@ import de.kempalab.msdps.FragmentsDatabase;
 import de.kempalab.msdps.constants.Element;
 import de.kempalab.msdps.constants.IntensityType;
 import de.kempalab.msdps.constants.MetaboliteKey;
+import de.kempalab.msdps.constants.PathConstants;
 import de.kempalab.msdps.data.DataTable;
 import de.kempalab.msdps.data.IncorporationRate;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
@@ -61,6 +62,6 @@ public class ThreatenedIsotopePeakDatabaseCreator {
 		for (Thread thread : threads) {
 			thread.join();
 		}
-		table.writeToCsv("N/A", true, "C:\\Users\\sufuers\\tmp\\asn_isotope_peak_db.csv");
+		table.writeToCsv("N/A", true, PathConstants.FILE_OUTPUT_FOLDER.toAbsolutePath() + "db\\asn_isotope_peak_db.csv");
 	}
 }

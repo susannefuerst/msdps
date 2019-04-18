@@ -82,15 +82,21 @@ public class IsotopePeakPredictor implements Runnable {
 			} else {
 				shiftInducingIsotopes = spectrum.getComposition(exactMass).getHeavyIsotopes();
 			}
-			String heavyIsotopes = shiftInducingIsotopes.toSimpleString();
-			String c = shiftInducingIsotopes.get(Isotope.C_13) != null
-					? shiftInducingIsotopes.get(Isotope.C_13).toString()
-					: "0";
-			String n = shiftInducingIsotopes.get(Isotope.N_15) != null
-					? shiftInducingIsotopes.get(Isotope.N_15).toString()
-					: "0";
-			table.addRow(id, mass, rt, identity + "_" + c +"_" + n, formula, mass, predictedIntensity, heavyIsotopes, c, n);
-			entryCount++;
+			if (shiftInducingIsotopes == null
+					|| shiftInducingIsotopes.isEmpty()
+					|| shiftInducingIsotopes.containsKey(Isotope.NONE)
+					|| shiftInducingIsotopes.containsKey(Isotope.C_13)
+					|| shiftInducingIsotopes.containsKey(Isotope.N_15)
+					|| shiftInducingIsotopes.containsKey(Isotope.Si_29)
+					|| shiftInducingIsotopes.containsKey(Isotope.Si_30)) {
+				String heavyIsotopes = shiftInducingIsotopes.toSimpleString();
+				String c = shiftInducingIsotopes.get(Isotope.C_13) != null
+						? shiftInducingIsotopes.get(Isotope.C_13).toString() : "0";
+				String n = shiftInducingIsotopes.get(Isotope.N_15) != null
+						? shiftInducingIsotopes.get(Isotope.N_15).toString() : "0";
+				table.addRow(id, mass, rt, identity + "_" + c +"_" + n, formula, mass, predictedIntensity, heavyIsotopes, c, n);
+				entryCount++;
+			}
 		}
 	}
 

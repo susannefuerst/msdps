@@ -20,7 +20,7 @@ public class ThreatenedIsotopePeakDatabaseCreator2 {
 	public static final MetaboliteKey[] METABOLITES = { MetaboliteKey.ASN };
 //	public static final FragmentList FRAGMENTS = FragmentsDatabase.getAllFregments();
 	public static final FragmentList FRAGMENTS = FragmentsDatabase.getFragments(METABOLITES);
-	public static final double NUMBER_OF_FRAGMENTS = 1000.0;
+	public static final double NUMBER_OF_FRAGMENTS = 100000.0;
 	public static final Integer PRECISION = 4;
 	public static final double MIN_FREQUENCY = 0.0;
 	public static final IntensityType FREQUENCY_TYPE = IntensityType.RELATIVE;

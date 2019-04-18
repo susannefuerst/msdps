@@ -163,4 +163,24 @@ public class IsotopeFormula extends LinkedHashMap<Isotope, Integer> {
 		return isotopeFormula;
 
 	}
+
+	public IsotopeFormula add(IsotopeFormula formula) {
+		IsotopeFormula added = this.copy();
+		for (Entry<Isotope,Integer> entry : formula.entrySet()) {
+			if (this.get(entry.getKey()) != null) {
+				added.put(entry.getKey(), this.get(entry.getKey()) + entry.getValue());
+			} else {
+				added.put(entry.getKey(), entry.getValue());
+			}
+		}
+		return added;
+	}
+
+	private IsotopeFormula copy() {
+		IsotopeFormula copy = new IsotopeFormula();
+		for (Entry<Isotope,Integer> entry : this.entrySet()) {
+			copy.put(entry.getKey(), entry.getValue());
+		}
+		return copy;
+	}
 }
