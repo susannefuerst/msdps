@@ -21,7 +21,7 @@ public class MSLineChartCreator {
 		
 	}
 	
-	public static JFreeChart createMsLineChart(MassSpectrum spectrum, String title, String subtitle) {
+	public static JFreeChart createMsLineChart(MassSpectrum spectrum, String title, String subtitle, Boolean showPeakLabel) {
 		MSLineChartDataset spectrumDataset = new MSLineChartDataset(spectrum);
 		JFreeChart chart = ChartFactory.createXYBarChart(title, CHART_X_LABEL , false, CHART_Y_LABEL, spectrumDataset,
 				PlotOrientation.VERTICAL, true, true, false);
@@ -32,7 +32,9 @@ public class MSLineChartCreator {
 		renderer.setSeriesPaint(0, new Color(0, 0, 0)/*black*/);
 		renderer.setSeriesPaint(0, new Color(128, 128, 128)/* gray */);
 //		renderer.setBaseToolTipGenerator(new MSLineChartToolTipGenerator());
-		renderer.setBaseItemLabelGenerator(new MSLineChartLabelGenerator());
+		if (showPeakLabel) {
+			renderer.setBaseItemLabelGenerator(new MSLineChartLabelGenerator());
+		}
 		renderer.setBaseItemLabelFont(new Font("Arial", Font.BOLD, 12));
         renderer.setBaseItemLabelsVisible(true);
         renderer.setBaseItemLabelPaint(Color.black);

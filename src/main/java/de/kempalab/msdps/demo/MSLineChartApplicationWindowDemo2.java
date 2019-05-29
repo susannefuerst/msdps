@@ -49,7 +49,7 @@ public class MSLineChartApplicationWindowDemo2 {
 
 //		continuous = continuous.roundMasses(3);
 		MSLineChartApplicationWindow demo = new MSLineChartApplicationWindow("ASN-Mix-B", "ASN-Mix-B", "",
-				continuous);
+				continuous, true);
 		demo.pack();
 		demo.setSize(1300, 750);
 		RefineryUtilities.centerFrameOnScreen(demo);
