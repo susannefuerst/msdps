@@ -6,7 +6,7 @@ import de.kempalab.msdps.constants.NaturalConstants;
 
 public class FormulaMassCalculator {
 
-	public static final String[] FORMULAS = { "C9H19O2N2Si2" };
+	public static final String[] FORMULAS = { "PC6O3H18Si2" };
 	public static final String[] ISOTOPE_FORMULAS = { "(12C)2(13C)2(1H)10(15N)1(16O)2(28Si)1",
 			"(12C)5(13C)4(1H)19(15N)2(16O)2(28Si)2" };
 	final static int CHARGE = 1;

@@ -25,8 +25,8 @@ public class SaveMassSpectraToCsvDemo2 {
 
 	public static void main(String[] args) throws TypeMismatchException, IOException, FragmentNotFoundException {
 		IsotopePatternSimulatorRequest simulatorRequest = new IsotopePatternSimulatorRequest();
-		Fragment fragment = FragmentsDatabase.getFragment(FragmentKey.ASN_188);
-//		fragment.changeCapacity("N");
+		Fragment fragment = FragmentsDatabase.getFragment(FragmentKey.ASN_243);
+		fragment.changeCapacity("C4");
 		simulatorRequest.setFragments(new FragmentList(fragment));
 		simulatorRequest.setIncorporationRate(new IncorporationRate(0.5));
 		simulatorRequest.setMinimalIntensity(0.1);
@@ -49,7 +49,7 @@ public class SaveMassSpectraToCsvDemo2 {
 			dataTable.addConstantValueColumn(msDatabase.getIncorporationRate());
 			dataTable.writeToCsv("N/A", true, PathConstants.FILE_OUTPUT_FOLDER
 					.toAbsolutePath(
-							msDatabase.getFragmentKey().getMetaboliteKey().getAbbreviation() + "\\asn_188_mixB"));
+							msDatabase.getFragmentKey().getMetaboliteKey().getAbbreviation() + "\\asn_243"));
 		}
 	}
 

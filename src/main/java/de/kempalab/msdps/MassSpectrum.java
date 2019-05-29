@@ -393,6 +393,10 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 	
 	@Override
 	public String toString() {
+		return toDataTable().toString("NA", true);
+	}
+
+	public DataTable toDataTable() {
 		DataTable dataTable = new DataTable("Mass", "Frequency", "Composition");
 		dataTable.addColumn(this);
 		ArrayList<String> compositionList = new ArrayList<>();
@@ -400,7 +404,7 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 			compositionList.add(entry.getValue().toSimpleString());
 		}
 		dataTable.add(compositionList);
-		return dataTable.toString("NA", true);
+		return dataTable;
 	}
 	
 	public List<Entry<Double, Double>> toEntryList() {

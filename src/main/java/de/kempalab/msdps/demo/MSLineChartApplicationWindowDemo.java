@@ -83,7 +83,7 @@ public class MSLineChartApplicationWindowDemo {
 				simulatorRequest.getRoundedIntensityPrecision(), 0.1, IntensityType.RELATIVE);
 		MassSpectrum continuous = spectrum.simulateContinuousHighRes(120000, 100, false);
 //		continuous = continuous.roundMasses(3);
-		MSLineChartApplicationWindow demo = new MSLineChartApplicationWindow("Bar Demo 1", "", "", continuous);
+		MSLineChartApplicationWindow demo = new MSLineChartApplicationWindow("Bar Demo 1", "", "", continuous, true);
 		demo.pack();
 		demo.setSize(1300, 750);
 		RefineryUtilities.centerFrameOnScreen(demo);

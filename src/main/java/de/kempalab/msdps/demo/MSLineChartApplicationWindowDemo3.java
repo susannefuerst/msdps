@@ -48,7 +48,7 @@ public class MSLineChartApplicationWindowDemo3 {
 
 //		continuous = continuous.roundMasses(3);
 		MSLineChartApplicationWindow demo = new MSLineChartApplicationWindow("ASN-15N2-13C4", "ASN-15N2-13C4", "",
-				continuous);
+				continuous, true);
 		demo.pack();
 		demo.setSize(1300, 750);
 		RefineryUtilities.centerFrameOnScreen(demo);
