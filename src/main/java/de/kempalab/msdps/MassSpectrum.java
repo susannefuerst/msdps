@@ -473,11 +473,13 @@ public class MassSpectrum extends LinkedHashMap<Double,Double> {
 		}
 		MassSpectrum adjusted = new MassSpectrum(this.getIntensityType(), this.getSpectrumType());
 		for (Entry<Double, Double> entry : this.entrySet()) {
-			adjusted.put(entry.getKey() - charge * NaturalConstants.ELECTRON_MASS.getValue(), entry.getValue());
+			Double newMass = (entry.getKey() - charge * NaturalConstants.ELECTRON_MASS.getValue()) / Math.abs(charge);
+			adjusted.put(newMass, entry.getValue());
 		}
 		IsotopeComposition newComposition = new IsotopeComposition();
 		for (Entry<Double, IsotopeFormula> entry : getCompositions().entrySet()) {
-			newComposition.put(entry.getKey() - charge * NaturalConstants.ELECTRON_MASS.getValue(), entry.getValue());
+			Double newMass = (entry.getKey() - charge * NaturalConstants.ELECTRON_MASS.getValue()) / Math.abs(charge);
+			newComposition.put(newMass, entry.getValue());
 		}
 		adjusted.setCompositions(newComposition);
 		return adjusted;

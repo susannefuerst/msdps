@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.kempalab.msdps.IsotopeComposition;
+import de.kempalab.msdps.IsotopeFormula;
 import de.kempalab.msdps.IsotopeList;
 import de.kempalab.msdps.MassSpectrum;
 import de.kempalab.msdps.data.Partition;
@@ -76,6 +78,11 @@ public enum Element {
 	public double highestMass() {
 		return heaviestIsotope().getAtomicMass();
 	}
+	
+	public double highestShift() {
+		return heaviestIsotope().getMassShiftValue();
+	}
+
 
 	public Isotope heaviestIsotope() {
 		int index = getIsotopes().size() - 1;
@@ -106,18 +113,24 @@ public enum Element {
 		ArrayList<Double> massAbundancies = MathUtils.calculateAbundancies(allCombinations, isotopes, numberOfElements,
 				treshFaktor);
 		ArrayList<Double> masses = new ArrayList<>();
+		IsotopeComposition composition = new IsotopeComposition();
 		for (Partition partition : allCombinations) {
 			Double mass = 0.0;
+			IsotopeFormula formula = new IsotopeFormula();
 			for (int index = 0; index < partition.size(); index++) {
 				LOGGER.debug("summand", partition.get(index));
 				Isotope isotope = isotopes.get(index);
 				LOGGER.debug("isotope", isotope);
 				LOGGER.debug("atomicMass", isotope.getAtomicMass());
 				mass = mass + partition.get(index) * isotope.getAtomicMass();
-
+				if (partition.get(index) != 0) {
+					formula.put(isotope, partition.get(index));
+				}
 			}
 			masses.add(mass);
+			composition.put(mass, formula);
 		}
+		spectrum.setCompositions(composition);
 		for (Double mass : masses) {
 			Double abundance = massAbundancies.get(masses.indexOf(mass));
 			if (spectrum.get(mass) != null) {

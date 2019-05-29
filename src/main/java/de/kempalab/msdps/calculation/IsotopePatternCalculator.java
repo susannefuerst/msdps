@@ -6,6 +6,8 @@ import java.util.Map.Entry;
 import de.kempalab.msdps.ElementFormula;
 import de.kempalab.msdps.Fragment;
 import de.kempalab.msdps.FragmentList;
+import de.kempalab.msdps.IsotopeComposition;
+import de.kempalab.msdps.IsotopeFormula;
 import de.kempalab.msdps.IsotopePattern;
 import de.kempalab.msdps.MassSpectrum;
 import de.kempalab.msdps.MassSpectrumList;
@@ -136,13 +138,17 @@ public class IsotopePatternCalculator {
 			MassSpectrum firstSpectrum = combinedSpectra.get(i);
 			MassSpectrum secondSpectrum = multiElementSpectra.get(i+1);
 			MassSpectrum newCombinedSpectrum = new MassSpectrum(IntensityType.MID, SpectrumType.CENTROIDED);
+			IsotopeComposition newComposition = new IsotopeComposition();
 			for (Entry<Double,Double> firstEntry : firstSpectrum.entrySet()) {
 				for (Entry<Double,Double> secondEntry : secondSpectrum.entrySet()) {
 					Double newMass = firstEntry.getKey() + secondEntry.getKey();
 					Double newIntensity = firstEntry.getValue() * secondEntry.getValue();
+					IsotopeFormula newFormula = firstSpectrum.getComposition(firstEntry.getKey()).add(secondSpectrum.getComposition(secondEntry.getKey()));
 					newCombinedSpectrum.put(newMass, newIntensity);
+					newComposition.put(newMass, newFormula);
 				}
 			}
+			newCombinedSpectrum.setCompositions(newComposition);
 			combinedSpectra.add(newCombinedSpectrum);
 		}
 		return combinedSpectra;
