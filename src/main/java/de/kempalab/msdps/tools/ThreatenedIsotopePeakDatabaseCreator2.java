@@ -17,7 +17,10 @@ import de.kempalab.msdps.simulation.IsotopePatternSimulatorRequest;
 
 public class ThreatenedIsotopePeakDatabaseCreator2 {
 
-	public static final MetaboliteKey[] METABOLITES = { MetaboliteKey.ASN };
+	public static final MetaboliteKey[] METABOLITES = { 
+			MetaboliteKey.GLN, MetaboliteKey.GLU, MetaboliteKey.ALA, MetaboliteKey.ASP,
+			MetaboliteKey.ASN, MetaboliteKey.SER, MetaboliteKey.GLY
+			};
 //	public static final FragmentList FRAGMENTS = FragmentsDatabase.getAllFregments();
 	public static final FragmentList FRAGMENTS = FragmentsDatabase.getFragments(METABOLITES);
 	public static final double NUMBER_OF_FRAGMENTS = 100000.0;
@@ -53,6 +56,6 @@ public class ThreatenedIsotopePeakDatabaseCreator2 {
 		for (Thread thread : threads) {
 			thread.join();
 		}
-		table.writeToCsv("N/A", true, PathConstants.FILE_OUTPUT_FOLDER.toAbsolutePath() + "db\\asn_isotope_peak_db.csv");
+		table.writeToCsv("N/A", true, PathConstants.FILE_OUTPUT_FOLDER.toAbsolutePath() + "db\\aminoacids.csv");
 	}
 }
