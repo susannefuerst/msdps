@@ -60,7 +60,7 @@
   	<dependency>
 	    <groupId>io.github.mzmine</groupId>
 	    <artifactId>mzmine2</artifactId>
-	    <version>2.38</version>
+	    <version>2.40.1</version>
   	</dependency>
 	
   </dependencies>
