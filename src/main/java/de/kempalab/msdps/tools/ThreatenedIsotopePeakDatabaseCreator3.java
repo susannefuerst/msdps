@@ -15,11 +15,11 @@ import de.kempalab.msdps.data.DataTable;
 import de.kempalab.msdps.exception.FragmentNotFoundException;
 
 public class ThreatenedIsotopePeakDatabaseCreator3 {
-//	public static final MetaboliteKey[] METABOLITES = { MetaboliteKey.GLY };
-	public static final MetaboliteKey[] METABOLITES = { 
-			MetaboliteKey.GLN, MetaboliteKey.GLU, MetaboliteKey.ALA, MetaboliteKey.ASP,
-			MetaboliteKey.ASN, MetaboliteKey.SER, MetaboliteKey.GLY
-			};
+	public static final MetaboliteKey[] METABOLITES = { MetaboliteKey.GLN };
+//	public static final MetaboliteKey[] METABOLITES = { 
+//			MetaboliteKey.GLN, MetaboliteKey.GLU, MetaboliteKey.ALA, MetaboliteKey.ASP,
+//			MetaboliteKey.ASN, MetaboliteKey.SER, MetaboliteKey.GLY
+//			};
 //	public static final FragmentList FRAGMENTS = FragmentsDatabase.getAllFregments();
 	public static final FragmentList FRAGMENTS = FragmentsDatabase.getFragments(METABOLITES);
 	public static final Integer PRECISION = 4;
@@ -54,6 +54,6 @@ public class ThreatenedIsotopePeakDatabaseCreator3 {
 		for (Thread thread : threads) {
 			thread.join();
 		}
-		table.writeToCsv("N/A", true, PathConstants.FILE_OUTPUT_FOLDER.toAbsolutePath() + "db\\aminoacids.csv");
+		table.writeToCsv("N/A", true, PathConstants.FILE_OUTPUT_FOLDER.toAbsolutePath() + "db\\gln.csv");
 	}
 }
