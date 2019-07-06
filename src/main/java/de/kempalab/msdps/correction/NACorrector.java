@@ -39,11 +39,19 @@ public class NACorrector {
 				if(record.get(NACorrectionInputHeader.GROPUP_KEY.getColumnValue()).equals(currentGroupKey)) {
 					currentRecords.add(record);
 					if (record.getRecordNumber() == records.size()) {
-						recordLists.add(List.copyOf(currentRecords));
+						List<CSVRecord> copy = new ArrayList<CSVRecord>();
+						for (CSVRecord rec : currentRecords) {
+							copy.add(rec);
+						}
+						recordLists.add(copy);
 					}
 				} else {
 					currentGroupKey = record.get(NACorrectionInputHeader.GROPUP_KEY.getColumnValue());
-					recordLists.add(List.copyOf(currentRecords));
+					List<CSVRecord> copy = new ArrayList<CSVRecord>();
+					for (CSVRecord rec : currentRecords) {
+						copy.add(rec);
+					}
+					recordLists.add(copy);
 					currentRecords = new ArrayList<CSVRecord>();
 					currentRecords.add(record);
 				}
