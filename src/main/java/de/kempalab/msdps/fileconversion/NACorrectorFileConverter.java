@@ -175,6 +175,14 @@ public class NACorrectorFileConverter {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void convert(ArrayList<String> mzMineOutpuFilePaths, String naCorrectionInputFilePath) {
+		String[] array = new String[mzMineOutpuFilePaths.size()];
+		for (int i = 0; i < mzMineOutpuFilePaths.size(); i++) {
+			array[i] = mzMineOutpuFilePaths.get(i);
+		}
+		convert(array, naCorrectionInputFilePath);
+	}
 
 
 
