@@ -1,6 +1,6 @@
 fragmentFormula,moleculeName,shortMoleculeName,fragmentCapacity,fragmentBaseIntMass,derivate,exactMass,retentionTime,carbons
 C5H14NSi,Alanine,Ala,C2N,116,(2TMS),116.089,8.1704768,not unique
-C7H20NOSi2,Alanine,Ala,C2N,190,(2TMS),190.1078,8.1704768,
+C7H20NOSi2,Alanine,Ala,C2N,190,(2TMS),190.1078,8.1704768,"[2,3]"
 C8H22NSi2,Alanine,Ala,C2N,188,(3TMS),188.1285,13.18,"[2,3]"
 C10H28NOSi3,Alanine,Ala,NA,262,(3TMS),262.1473,13.18,
 C4H8NO2Si,Aspartic acid,Asp,C2N,130,(2TMS),130.0319,14.330037,
