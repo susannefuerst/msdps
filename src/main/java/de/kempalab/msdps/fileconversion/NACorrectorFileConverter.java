@@ -44,7 +44,7 @@ public class NACorrectorFileConverter {
 			String groupKey = "";
 			LinkedHashMap<String, double[][]> groupKeyIntensitiesMap = new LinkedHashMap<>();
 			ArrayList<String> formulas = new ArrayList<>();
-			double[][] singleIntensities = new double[10][10];
+//			double[][] singleIntensities = new double[10][10];
 			for (CSVRecord csvRecord : records) {
 				if (csvRecord.getRecordNumber() == 1) {
 					String peakHeightHeader = csvRecord.get(MZminePeakOutputHeader.PEAK_HEIGHT.getColumnNumber());
@@ -60,8 +60,8 @@ public class NACorrectorFileConverter {
 				groupKey = filename + ";" + metaboliteFragment;
 				if (groupKeyIntensitiesMap.get(groupKey) == null) {
 					// TODO: choose a more elegant way for the size of the array
-					singleIntensities = new double[10][10];
-					groupKeyIntensitiesMap.put(groupKey, singleIntensities);
+//					singleIntensities = new double[10][10];
+					groupKeyIntensitiesMap.put(groupKey, new double[10][10]);
 					formulas.add(formula);
 				}
 				Double intensity = Double
@@ -72,7 +72,7 @@ public class NACorrectorFileConverter {
 				int secondLastTokenIndex = nameTokens.length - 2;
 				c13Count = Integer.parseInt(nameTokens[secondLastTokenIndex]);
 				n15Count = Integer.parseInt(nameTokens[lastTokenIndex]);
-				singleIntensities[c13Count][n15Count] = singleIntensities[c13Count][n15Count] + intensity;
+				groupKeyIntensitiesMap.get(groupKey)[c13Count][n15Count] = groupKeyIntensitiesMap.get(groupKey)[c13Count][n15Count] + intensity;
 			}
 			int entryCount = 0;
 			for (Entry<String, double[][]> entry : groupKeyIntensitiesMap.entrySet()) {
@@ -123,7 +123,7 @@ public class NACorrectorFileConverter {
 				String groupKey = "";
 				LinkedHashMap<String, double[][]> groupKeyIntensitiesMap = new LinkedHashMap<>();
 				ArrayList<String> formulas = new ArrayList<>();
-				double[][] singleIntensities = new double[10][10];
+//				double[][] singleIntensities = new double[10][10];
 				for (CSVRecord csvRecord : records) {
 					if (csvRecord.getRecordNumber() == 1) {
 						String peakHeightHeader = csvRecord.get(MZminePeakOutputHeader.PEAK_HEIGHT.getColumnNumber());
@@ -139,8 +139,8 @@ public class NACorrectorFileConverter {
 					groupKey = filename + ";" + metaboliteFragment;
 					if (groupKeyIntensitiesMap.get(groupKey) == null) {
 						// TODO: choose a more elegant way for the size of the array
-						singleIntensities = new double[10][10];
-						groupKeyIntensitiesMap.put(groupKey, singleIntensities);
+//						singleIntensities = new double[10][10];
+						groupKeyIntensitiesMap.put(groupKey, new double[10][10]);
 						formulas.add(formula);
 					}
 					Double intensity = Double
@@ -151,7 +151,7 @@ public class NACorrectorFileConverter {
 					int secondLastTokenIndex = nameTokens.length - 2;
 					c13Count = Integer.parseInt(nameTokens[secondLastTokenIndex]);
 					n15Count = Integer.parseInt(nameTokens[lastTokenIndex]);
-					singleIntensities[c13Count][n15Count] = singleIntensities[c13Count][n15Count] + intensity;
+					groupKeyIntensitiesMap.get(groupKey)[c13Count][n15Count] = groupKeyIntensitiesMap.get(groupKey)[c13Count][n15Count] + intensity;
 				}
 				int entryCount = 0;
 				for (Entry<String, double[][]> entry : groupKeyIntensitiesMap.entrySet()) {
