@@ -316,7 +316,7 @@ public class IncorporationMap extends LinkedHashMap<IsotopeFormula, Double> {
 		for (Entry<Element, Integer> elementEntry : maxTracerFormula.entrySet()) {
 			Double sum = 0.0;
 			Isotope tracer = elementEntry.getKey().getTracer();
-			Integer maxElements = elementEntry.getValue();
+			Integer maxElements = elementEntry.getValue() == null ? 0 : elementEntry.getValue();
 			Integer markedElements = currentCorrectionIndex.get(tracer);
 			for (int k = markedElements + 1; k <= maxElements; k++) {
 				sum = sum + correctionProduct(tracer, maxElements, markedElements, k);
@@ -357,7 +357,7 @@ public class IncorporationMap extends LinkedHashMap<IsotopeFormula, Double> {
 		Double correctionProduct = 1.0;
 		for (Entry<Element, Integer> elementEntry : maxElementsFormula.entrySet()) {
 			Isotope tracer = elementEntry.getKey().getTracer();
-			Integer maxElements = elementEntry.getValue();
+			Integer maxElements = elementEntry.getValue() == null ? 0 : elementEntry.getValue();
 			Integer numberOfMarkedElements = alreadyCorrectedIndex.get(tracer);
 			Integer additionalElements = currentCorrectionIndex.get(tracer);
 			Integer n = maxElements - numberOfMarkedElements;

@@ -7,12 +7,12 @@ public enum MetaboliteKey {
 	ASP("Aspartic acid", "Asp"), //
 	CIT("Citric acid", "Cit"), //
 	DHAP("Dihydroxyacetone phosphate", "DHAP"), //
-	FRC("Fructose_MP", "Frc"), //
+	FRC("FructoseMP", "Frc"), //
 	FBP("Fructose-1_6-diphosphate", "FBP"), //
 	F6P("Fructose-6-phosphate", "F6P"), //
 	FUM("Fumaric acid", "Fum"), //
 	PGA6("Gluconic acid-6-phosphate", "6PGA"), //
-	GLC("Glucose_MP / BP", "Glc"), //
+	GLC("GlucoseMP / BP", "Glc"), //
 	G16P("Glucose-1/6-phosphate", "G1/6P"), //
 	G6P("Glucose-6-phosphate", "G6P"), //
 	GLU("Glutamic acid", "Glu"), //

@@ -1,6 +1,6 @@
 fragmentFormula,moleculeName,shortMoleculeName,fragmentCapacity,fragmentBaseIntMass,derivate,exactMass,retentionTime,carbons
 C5H14NSi,Alanine,Ala,C2N,116,(2TMS),116.089,8.1704768,not unique
-C7H20NOSi2,Alanine,Ala,C2N,190,(2TMS),190.1078,8.1704768,
+C7H20NOSi2,Alanine,Ala,C2N,190,(2TMS),190.1078,8.1704768,"[2,3]"
 C8H22NSi2,Alanine,Ala,C2N,188,(3TMS),188.1285,13.18,"[2,3]"
 C10H28NOSi3,Alanine,Ala,NA,262,(3TMS),262.1473,13.18,
 C4H8NO2Si,Aspartic acid,Asp,C2N,130,(2TMS),130.0319,14.330037,
@@ -41,10 +41,8 @@ C13H30NO4Si3,Glutamic acid,Glu,C4N,348,(3TMS),348.1477,17.22,
 C7H12NO3Si,Glutamic acid,Glu,C4N?,186,(2TMS),186.0581,NA,
 C9H20NO2Si2,Glutamic acid,Glu,C3N?,230,(2TMS),230.1027,NA,
 C10H22NO4Si2,Glutamic acid,Glu,C5N,276,(2TMS),276.1082,NA,all
-C4H7N2,Glutamine,Gln,C4N2,83,(3TMS),83.06037,19.28,
-C4H10NSi,Glutamine,Gln,C2N,100,(3TMS),100.0577,19.28,
 C7H14NOSi,Glutamine,Gln,C4N,156,(3TMS),156.0839,19.28,"[2,3,4,5]"
-C10H25N2OSi2,Glutamine,Gln,C4N,245,(3TMS),245.15,19.28,
+C10H25N2OSi2,Glutamine,Gln,C4N2,245,(3TMS),245.15,19.28,
 C9H19O3Si2,Glutaric acid_ 2-hydroxy-,2HG,C3,231,(3TMS),231.0867,NA,
 C10H23O3Si2,Glutaric acid_ 2-hydroxy-,2HG,C4,247,(3TMS),247.118,NA,symmetry
 C13H29O5Si3,Glutaric acid_ 2-hydroxy-,2HG,NA,349,(3TMS),349.1317,NA,sec. structure
